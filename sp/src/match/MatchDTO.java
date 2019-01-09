@@ -1,0 +1,162 @@
+package match;
+
+// 모임 매칭 글(모임장이 쓴 글) 
+public class MatchDTO {
+
+	// 매칭 글 인덱스
+	private Integer matchIx;
+
+	// 글 쓴 회원 인덱스
+	private Integer memberIx;
+
+	// 모임명
+	private String matchName;
+
+	// 시/도
+	private String sido;
+
+	// 시/군/구
+	private String sigungu;
+
+	// 한 주에 몇 회의 모임
+	private String timesAWeek;
+
+	// 요일
+	private String day;
+
+	// 구하고 싶은 팀원 수
+	private String totalWantedNumber;
+
+	// 나이제한
+	private String ageRestriction;
+
+	// 구체적인 사항
+	private String detail;
+
+	// 완료 여부
+	private String completedState;
+
+	// 공모전 글 쓴 날짜
+	private String writeDate;
+
+	// 기본 생성자
+	public MatchDTO() {
+		System.out.println("MatchDTO 생성");
+	}
+	
+	// 모든 필드 생성자
+	public MatchDTO(Integer matchIx, Integer memberIx, String matchName, String sido, String sigungu, String timesAWeek,
+			String day, String totalWantedNumber, String ageRestriction, String detail, String completedState,
+			String writeDate) {
+		super();
+		this.matchIx = matchIx;
+		this.memberIx = memberIx;
+		this.matchName = matchName;
+		this.sido = sido;
+		this.sigungu = sigungu;
+		this.timesAWeek = timesAWeek;
+		this.day = day;
+		this.totalWantedNumber = totalWantedNumber;
+		this.ageRestriction = ageRestriction;
+		this.detail = detail;
+		this.completedState = completedState;
+		this.writeDate = writeDate;
+	}
+	
+	public Integer getMatchIx() {
+		return matchIx;
+	}
+
+	public void setMatchIx(Integer matchIx) {
+		this.matchIx = matchIx;
+	}
+
+	public Integer getMemberIx() {
+		return memberIx;
+	}
+
+	public void setMemberIx(Integer memberIx) {
+		this.memberIx = memberIx;
+	}
+
+	public String getMatchName() {
+		return matchName;
+	}
+
+	public void setMatchName(String matchName) {
+		this.matchName = matchName;
+	}
+
+	public String getSido() {
+		return sido;
+	}
+
+	public void setSido(String sido) {
+		this.sido = sido;
+	}
+
+	public String getSigungu() {
+		return sigungu;
+	}
+
+	public void setSigungu(String sigungu) {
+		this.sigungu = sigungu;
+	}
+
+	public String getTimesAWeek() {
+		return timesAWeek;
+	}
+
+	public void setTimesAWeek(String timesAWeek) {
+		this.timesAWeek = timesAWeek;
+	}
+
+	public String getDay() {
+		return day;
+	}
+
+	public void setDay(String day) {
+		this.day = day;
+	}
+
+	public String getTotalWantedNumber() {
+		return totalWantedNumber;
+	}
+
+	public void setTotalWantedNumber(String totalWantedNumber) {
+		this.totalWantedNumber = totalWantedNumber;
+	}
+
+	public String getAgeRestriction() {
+		return ageRestriction;
+	}
+
+	public void setAgeRestriction(String ageRestriction) {
+		this.ageRestriction = ageRestriction;
+	}
+
+	public String getDetail() {
+		return detail;
+	}
+
+	public void setDetail(String detail) {
+		this.detail = detail;
+	}
+
+	public String getCompletedState() {
+		return completedState;
+	}
+
+	public void setCompletedState(String completedState) {
+		this.completedState = completedState;
+	}
+
+	public String getWriteDate() {
+		return writeDate;
+	}
+
+	public void setWriteDate(String writeDate) {
+		this.writeDate = writeDate;
+	}
+
+}
