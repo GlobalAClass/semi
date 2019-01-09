@@ -1,0 +1,51 @@
+@charset "UTF-8";
+body{
+	margin: 0px auto;
+	width: 680px;
+}
+header{
+	width: 680px;
+}
+header div{
+	text-align: right;
+	font-size: 12px;
+}
+header img{
+	width: 100px;
+	height: 100px;
+}
+header p{
+	text-align: center;
+}
+header nav{
+	background: #424242;
+	border-top: 1px solid black;
+	border-bottom: 1px solid black;
+}
+header nav li{
+	color: white;
+	list-style-type: none;
+	display: inline;
+	margin-left: 40px;
+	font-size: 29px;
+	font-weight: bold;
+}
+header a{
+	text-decoration: none;
+	color: black;
+	font-weight: bold;
+}
+nav a{
+	text-decoration: none;
+	color: white;
+	font-weight: bold;
+}
+section{
+	width: 680px;
+}
+footer{
+	clear: both;
+}
+footer p{
+	text-align: center;
+}
