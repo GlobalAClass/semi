@@ -19,8 +19,8 @@ header p{
 }
 header nav{
 	background: #424242;
-	border-top: 1px solid black;
-	border-bottom: 1px solid black;
+	padding: 1px;
+	
 }
 header nav li{
 	color: white;

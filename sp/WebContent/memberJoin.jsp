@@ -81,7 +81,7 @@ article table{
 				</tr>
 				<tr>
 					<th id="design">이름</th>
-					<td id="design" colspan="3"><input style="width:170px;height:20px;"	placeholder="내용을 입력해주세요" required="required" type="text" name="name"></td>
+					<td id="design" colspan="3"><input style="width:170px;height:20px;"	maxlength="15" placeholder="내용을 입력해주세요" required="required" type="text" name="name"></td>
 				</tr>
 				<tr>
 					<th id="design">분야/전공</th>
