@@ -10,7 +10,7 @@
 h1{
 	text-align: center;
 	font-size: 30px;
-	margin-top: 4px; 
+	margin-top: 4px;
 }
 article{
 	text-align: center;

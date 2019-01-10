@@ -4,7 +4,7 @@
 	<div>
 		<a href="/sp">HOME|</a>
 		<a href="/sp/login.jsp">로그인|</a>
-		<a>회원가입</a>
+		<a href="/sp/memberJoin.jsp">회원가입</a>
 	</div>
 	<p><img src="/sp/img/Yes.jpg"></p>
 	<nav>
