@@ -11,6 +11,15 @@ public class MatchDTO {
 
 	// 모임명
 	private String matchName;
+	
+	// 담당 역할-대분류
+	private String mainRole;
+	
+	// 담당 역할-소분휴
+	private String detailRole;
+	
+	// 현재 존재하는 팀원 수
+	private String originalMemberNumber;
 
 	// 시/도
 	private String sido;
@@ -45,13 +54,16 @@ public class MatchDTO {
 	}
 	
 	// 모든 필드 생성자
-	public MatchDTO(Integer matchIx, Integer memberIx, String matchName, String sido, String sigungu, String timesAWeek,
-			String day, String totalWantedNumber, String ageRestriction, String detail, String completedState,
-			String writeDate) {
+	public MatchDTO(Integer matchIx, Integer memberIx, String matchName, String mainRole, String detailRole,
+			String originalMemberNumber, String sido, String sigungu, String timesAWeek, String day,
+			String totalWantedNumber, String ageRestriction, String detail, String completedState, String writeDate) {
 		super();
 		this.matchIx = matchIx;
 		this.memberIx = memberIx;
 		this.matchName = matchName;
+		this.mainRole = mainRole;
+		this.detailRole = detailRole;
+		this.originalMemberNumber = originalMemberNumber;
 		this.sido = sido;
 		this.sigungu = sigungu;
 		this.timesAWeek = timesAWeek;
@@ -85,6 +97,30 @@ public class MatchDTO {
 
 	public void setMatchName(String matchName) {
 		this.matchName = matchName;
+	}
+	
+	public String getMainRole() {
+		return mainRole;
+	}
+
+	public void setMainRole(String mainRole) {
+		this.mainRole = mainRole;
+	}
+
+	public String getDetailRole() {
+		return detailRole;
+	}
+
+	public void setDetailRole(String detailRole) {
+		this.detailRole = detailRole;
+	}
+
+	public String getOriginalMemberNumber() {
+		return originalMemberNumber;
+	}
+
+	public void setOriginalMemberNumber(String originalMemberNumber) {
+		this.originalMemberNumber = originalMemberNumber;
 	}
 
 	public String getSido() {

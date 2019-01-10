@@ -16,7 +16,7 @@ public class MatchOriginalDTO {
 	    private String detailRole;
 
 	    // 해당 역할 인원 수 
-	    private String numberMember;
+	    private String memberNumber;
 	    
 	    // 기본 생성자
 	    public MatchOriginalDTO() {
@@ -25,13 +25,13 @@ public class MatchOriginalDTO {
 	    
 	    // 모든 필드 생성자
 	    public MatchOriginalDTO(Integer matchOriginalIx, Integer matchIx, String mainRole, String detailRole,
-				String numberMember) {
+				String memberNumber) {
 			super();
 			this.matchOriginalIx = matchOriginalIx;
 			this.matchIx = matchIx;
 			this.mainRole = mainRole;
 			this.detailRole = detailRole;
-			this.numberMember = numberMember;
+			this.memberNumber = memberNumber;
 		}
 
 	    public Integer getMatchOriginalIx() {
@@ -66,11 +66,11 @@ public class MatchOriginalDTO {
 	        this.detailRole = detailRole;
 	    }
 
-	    public String getNumberMember() {
-	        return numberMember;
+	    public String getmemberNumber() {
+	        return memberNumber;
 	    }
 
-	    public void setNumberMember(String numberMember) {
-	        this.numberMember = numberMember;
+	    public void setmemberNumber(String memberNumber) {
+	        this.memberNumber = memberNumber;
 	    }
 }

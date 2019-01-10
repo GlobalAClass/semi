@@ -11,10 +11,16 @@ public class MemberDetailDTO {
 
 	// 핸드폰번호
 	private String contact;
-
+	
+	// 핸드폰 번호 공개 동의
+	private String contactAgreement;
+	
 	// 카카오ID
 	private String kakaoId;
-
+	
+	// 카카오ID 공개 동의
+	private String kakaoIdAgreement;
+	
 	// 출생년도
 	private String birthYear;
 
@@ -39,13 +45,16 @@ public class MemberDetailDTO {
 	}
 
 	// 모든 필드를 가지는 생성자.
-	public MemberDetailDTO(Integer memberDetailIx, Integer memberIx, String contact, String kakaoId, String birthYear,
+	public MemberDetailDTO(Integer memberDetailIx, Integer memberIx, String contact, String contactAgreement, 
+			String kakaoId, String kakaoIdAgreement,String birthYear,
 			String sido, String sigungu, String profile, String profilePicturePath, String infoOpen) {
 		super();
 		this.memberDetailIx = memberDetailIx;
 		this.memberIx = memberIx;
 		this.contact = contact;
+		this.contactAgreement = contactAgreement;
 		this.kakaoId = kakaoId;
+		this.kakaoIdAgreement = kakaoIdAgreement;
 		this.birthYear = birthYear;
 		this.sido = sido;
 		this.sigungu = sigungu;
@@ -78,12 +87,28 @@ public class MemberDetailDTO {
 		this.contact = contact;
 	}
 
+	public String getContactAgreement() {
+		return contactAgreement;
+	}
+
+	public void setContactAgreement(String contactAgreement) {
+		this.contactAgreement = contactAgreement;
+	}
+
 	public String getKakaoId() {
 		return kakaoId;
 	}
 
 	public void setKakaoId(String kakaoId) {
 		this.kakaoId = kakaoId;
+	}
+	
+	public String getKakaoIdAgreement() {
+		return kakaoIdAgreement;
+	}
+
+	public void setKakaoIdAgreement(String kakaoIdAgreement) {
+		this.kakaoIdAgreement = kakaoIdAgreement;
 	}
 
 	public String getBirthYear() {

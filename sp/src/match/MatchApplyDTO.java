@@ -12,11 +12,8 @@ public class MatchApplyDTO {
 	// 매칭 글 인덱스
 	private Integer matchIx;
 
-	// 담당 역할-대분류
-	private String mainRole;
-
-	// 담당 역할-소분류
-	private String detailRole;
+	// 매칭 멤버 테이블 인덱스
+	private Integer matchWantedIx;
 
 	// 자기소개(추가 가능한역할,포부 etc)
 	private String aboutApplicant;
@@ -30,14 +27,13 @@ public class MatchApplyDTO {
 	}
 	
 	// 모든 필드 생성자
-	public MatchApplyDTO(Integer matchApplyIx, Integer memberIx, Integer matchIx, String mainRole, String detailRole,
+	public MatchApplyDTO(Integer matchApplyIx, Integer memberIx, Integer matchIx, Integer matchWantedIx,
 			String aboutApplicant, String otherExC) {
 		super();
 		this.matchApplyIx = matchApplyIx;
 		this.memberIx = memberIx;
 		this.matchIx = matchIx;
-		this.mainRole = mainRole;
-		this.detailRole = detailRole;
+		this.matchWantedIx = matchWantedIx;
 		this.aboutApplicant = aboutApplicant;
 		this.otherExC = otherExC;
 	}
@@ -66,20 +62,12 @@ public class MatchApplyDTO {
 		this.matchIx = matchIx;
 	}
 
-	public String getMainRole() {
-		return mainRole;
+	public Integer getMatchWantedIx() {
+		return matchWantedIx;
 	}
 
-	public void setMainRole(String mainRole) {
-		this.mainRole = mainRole;
-	}
-
-	public String getDetailRole() {
-		return detailRole;
-	}
-
-	public void setDetailRole(String detailRole) {
-		this.detailRole = detailRole;
+	public void setMatchWantedIx(Integer matchWantedIx) {
+		this.matchWantedIx = matchWantedIx;
 	}
 
 	public String getAboutApplicant() {

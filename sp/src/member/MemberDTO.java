@@ -46,12 +46,12 @@ public class MemberDTO {
 		this.memberIx = memberIx;
 	}
 
-	public String getEmail() {
+	public String getidEmail() {
 		return idEmail;
 	}
 
-	public void setEmail(String email) {
-		this.idEmail = email;
+	public void setidEmail(String idEmail) {
+		this.idEmail = idEmail;
 	}
 
 	public String getPwd() {

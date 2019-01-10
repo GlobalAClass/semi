@@ -4,7 +4,7 @@ package match;
 public class MatchWantedDTO {
 
 	// 매칭 멤버 테이블 인덱스
-	private Integer matchMemberIx;
+	private Integer matchWantedIx;
 
 	// 매칭 글 인덱스
 	private Integer matchIx;
@@ -21,7 +21,7 @@ public class MatchWantedDTO {
 	// 필요 인원 수
 	private String wantedNumber;
 
-	// 모집된 인원 수
+	// 해당 역할 모집된 인원 수
 	private String recruitedNumber;
 
 	// 기본 생성자
@@ -30,10 +30,10 @@ public class MatchWantedDTO {
 	}
 	
 	// 모든 필드 생성자
-	public MatchWantedDTO(Integer matchMemberIx, Integer matchIx, String mainRole, String detailRole,
+	public MatchWantedDTO(Integer matchWantedIx, Integer matchIx, String mainRole, String detailRole,
 			String requiredAbility, String wantedNumber, String recruitedNumber) {
 		super();
-		this.matchMemberIx = matchMemberIx;
+		this.matchWantedIx = matchWantedIx;
 		this.matchIx = matchIx;
 		this.mainRole = mainRole;
 		this.detailRole = detailRole;
@@ -42,12 +42,12 @@ public class MatchWantedDTO {
 		this.recruitedNumber = recruitedNumber;
 	}
 	
-	public Integer getMatchMemberIx() {
-		return matchMemberIx;
+	public Integer getmatchWantedIx() {
+		return matchWantedIx;
 	}
 
-	public void setMatchMemberIx(Integer matchMemberIx) {
-		this.matchMemberIx = matchMemberIx;
+	public void setmatchWantedIxx(Integer matchWantedIx) {
+		this.matchWantedIx = matchWantedIx;
 	}
 
 	public Integer getMatchIx() {
