@@ -1,0 +1,22 @@
+1. 형상관리는 git으로 한다.
+
+2. eclipse에서는 동기화(Syncrhronize Workspace)만 사용하고 push나 pull을 사용하지 말자.
+	push, pull, 히스토리 관리는 모두 sourcetree를 이용하자.
+
+3. 각자 로컬 폴더 backup을 만들어 프로젝트를 백업해 둔다.(Webcontents폴더와 src폴더만 백업)
+	파일을 수정하기 전에 backup-before폴더에 Webcontents폴더와 src폴더를 복사.
+	파일 수정한 후 backup-after폴더에 Webcontents폴더와 src폴더 복사.
+	그 후에 commit과 push를 하자.
+
+3. commit 시에 변경사항 기록은 최대한 자세히 기술한다.
+ex) 파일종류 : 파일명1, 파일명 2, 파일명3
+	파일명1 : 변경사항기술
+	파일명2 : 변경사항기술
+
+4. push를 하거나 pull을 하기전에는 항상 카톡방에 말하여
+	서로 동시에 push를 하거나 pull을 방지한다.
+
+6. 사용하다가 이상하다던가 문제가 발생시 꼭 연락을 해서 외부 저장소의 파일변경을 최소화 한다.
+	push를 계속하여 시도하지 말자.
+
+7. 
