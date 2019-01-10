@@ -1,0 +1,45 @@
+ DB연동을 필요할 때마다 문제는?
+지금까지의 연동은 요청이 있을 때마다 connection을 만들어서 연결했다.
+따라서 요청한개마다 DB연동시마다 추가적인 처리비용이 더 생기게 된다.
+추가적인 처리비용 : connection 연결과 닫음.
+따라서 Connection을 관리하는 하나의 Pool을 이용하여 비용절감을 추구하게 된다.
+
+Connection Pool
+DB와 미리 연결한 여러개의 Connection을 하나의 Pool에서 관리한다.
+필요할 때마다 Connection을 사용하고 사용후 Pool에 다시 반환하는 형식이다.
+이 Connection Pool을 구현한 것이 DBCP(database connection pool)이다.
+
+
+Connection Pool - DBCP을 이용하기 위한 절차.(appach tomcat, OracleDB 기준)
+
+1. 필요한 파일들을 다운로드 한다.
+appach tomcat의 Archives에 최상위 폴더의 commons 선택
+collections, dbcp, pool 3개의 폴더는 각각 binery폴더를 하위폴더로 가지고 있다.
+binery폴더 안의 원하는 버전의 파일을 선택하여 다운로드.
+각가의 다운로드한 압축파일 안의 jar파일들을 프로젝트에 옮김.
+
+2. User Guide를 이용하여 사용하기.
+자신이 쓰고 있는 tomcat버전의 JDBC DataSources 카테고리로 간다.
+자신에 맞는 DB를 선택한다.
+해당 configuration을 보고 알맞게 수정하여 자신의 서버configuration을 변경.
+1. 
+server.xml 문서 안의 <GlobalNamingResources> 안에 <Resource>추가
+ex) <Resource name="jdbc/myoracle" auth="Container"
+              type="javax.sql.DataSource" driverClassName="oracle.jdbc.OracleDriver"
+              url="jdbc:oracle:thin:@localhost:1521:orcl"
+              username="scott" password="1234" maxTotal="20" maxIdle="10"
+              maxWaitMillis="-1"/>
+2. 
+web.xml 문서 안의 <web-app> 안에 <resource-ref> 추가
+ex) <resource-ref>
+ <description>Oracle Datasource example</description>
+ <res-ref-name>jdbc/myoracle</res-ref-name>
+ <res-type>javax.sql.DataSource</res-type>
+ <res-auth>Container</res-auth>
+</resource-ref>
+3. 
+context.xml 문서 안의 <Context> 안에 <ResourceLink> 추가
+ex) <ResourceLink global="jdbc/myoracle" name="jdbc/myoracle" type="javax.sql.DataSource"/>
+
+이 때, 덤프 서버에만 설정을 변경하는 것을 추천한다. 문제 발생시 덤프서버만 지우고
+다시 설정하면 되기때문.

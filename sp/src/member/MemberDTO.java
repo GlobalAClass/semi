@@ -7,7 +7,7 @@ public class MemberDTO {
 	private Integer memberIx;
 
 	// 이메일(=아이디)
-	private String email;
+	private String idEmail;
 
 	// 비밀번호
 	private String pwd;
@@ -31,7 +31,7 @@ public class MemberDTO {
 			String fieldMajor) {
 		super();
 		this.memberIx = memberIx;
-		this.email = email;
+		this.idEmail = email;
 		this.pwd = pwd;
 		this.mName = mName;
 		this.emailAgreement = emailAgreement;
@@ -47,11 +47,11 @@ public class MemberDTO {
 	}
 
 	public String getEmail() {
-		return email;
+		return idEmail;
 	}
 
 	public void setEmail(String email) {
-		this.email = email;
+		this.idEmail = email;
 	}
 
 	public String getPwd() {
