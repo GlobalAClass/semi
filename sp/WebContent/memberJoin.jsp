@@ -12,7 +12,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>회원가입</title>
 <link rel="stylesheet" type="text/css" href="css/mainLayout.css">
 <style>
 h1{
@@ -56,12 +56,22 @@ function select(){
 		document.memberJoin.idEmail2.value="";
 	}
 }
+//공백 제거 함수
+function noSpaceThisForm(obj) {
+    var space_pattern = /\s/;  // 정규표현식에서 공백문자 = \s
+    if(space_pattern.exec(obj.value)) { //공백 체크, exec는 정규표현식 패턴에 맞는 문자열 탐색
+        alert("해당 항목에는 공백을 사용할수 없습니다.\n공백은 자동적으로 제거 됩니다.");
+        obj.value = obj.value.replace(/\s/g,''); // 공백제거, 공백을 문자열 내 모든 패턴(g=global)찾아 대체
+        return false;
+    }
+ // onkeyup="noSpaceForm(this);" onchange="noSpaceForm(this);"
+}
 //비밀번호와 비밀번호 확인이 같은지 출력.
 function checkPwd(){
 	pwd = document.memberJoin.pwd.value;
 	pwd2 = document.memberJoin.pwd2.value;
 	
-	if(typeof pwd2 != "undefined" && pwd2>0){
+	if(typeof pwd2 != "undefined" && pwd2.length>0){
 		if(pwd == pwd2){
 			document.memberJoin.checkpwd.value = "비밀번호가 일치합니다.";
 			document.memberJoin.checkpwd.style.color = 'green';
@@ -86,9 +96,15 @@ function checkEmailPop(){
 		alert("이메일주소를 올바르게 입력하세요.");
 	}
 }
-//분야,전공 찾기 팝업
+//분야,전공 찾기 팝업 - 윈도우 창 기준으로 팝업 중앙에 뜨게 함.
 function fieldMajorPop(){
-	
+	var popwidth = 500; //팝업창 가로 길이 설정
+	var popheight = 500; //팝업창 가로 길이 설정
+	//윈도우창의 크기 절반, 팝업창의 크기 절반 수치
+	var popupX = (window.screen.availWidth-popwidth)/2; 
+	var popupY = (window.screen.availHeight-popheight)/2; 
+	window.open('fieldMajorPop.jsp', 'fieldMajorPop', 'width='+popwidth+', height='+popheight
+				+',left='+popupX + ', top='+ popupY );
 }
 </script>
 </head>
@@ -129,10 +145,10 @@ function fieldMajorPop(){
 					<th id="design">이메일</th>
 					<td id="design">
 						<input style="width:50%;height:20px;" type="text" placeholder="내용을 입력해주세요" 
-								required="required" name="idEmail" 
-								value=<%if(idEmail1==null){ out.print("");}else{out.print(idEmail1);} %>>@
+								required="required" name="idEmail"  onchange="noSpaceThisForm(this);"
+								value=<%if(idEmail1==null){ out.print("");}else{out.print(idEmail1);}%>>@
 						<br>
-						<input style="width:40%;height:20px;" type="text" name="idEmail2" required="required" 
+						<input style="width:40%;height:20px;" type="text" name="idEmail2" required="required" onchange="noSpaceThisForm(this);"
 								value=<%if(idEmail2==null){ out.print("");}else{out.print(idEmail2);} %>>
 						<select name="selectEmail" onchange="select()" style="margin-top: 10px">
 							<option value="">선택하세요</option>
@@ -150,27 +166,30 @@ function fieldMajorPop(){
 				<tr>
 					<th id="design">비밀번호</th>
 					<td id="design" colspan="3">
-						<input style="width:170px;height:20px;" placeholder="내용을 입력해주세요" required="required" type="password" name="pwd" onchange="checkPwd()">
+						<input style="width:170px;height:20px;" placeholder="내용을 입력해주세요" required="required" 
+								type="password" name="pwd" onchange="noSpaceThisForm(this);checkPwd()">
 					</td>
 				</tr>
 				<tr>
 					<th id="design">비밀번호확인</th>
 					<td id="design" colspan="3">
-						<input style="width:170px;height:20px;" placeholder="내용을 입력해주세요" required="required" type="password" name="pwd2" onchange="checkPwd()">
+						<input style="width:170px;height:20px;" placeholder="내용을 입력해주세요" required="required" 
+								type="password" name="pwd2" onchange="noSpaceThisForm(this);checkPwd()">
 						<input type="text" name=checkpwd disabled="disabled" style="width: 200px; border: none; background: none;">
 					</td>
 				</tr>
 				<tr>
 					<th id="design">이름</th>
 					<td id="design" colspan="3">
-						<input style="width:170px;height:20px;"	maxlength="15" placeholder="내용을 입력해주세요" required="required" type="text" name="MName">
+						<input style="width:170px;height:20px;"	maxlength="15" placeholder="내용을 입력해주세요" required="required" 
+								type="text" name="MName" onchange="noSpaceThisForm(this);">
 					</td>
 				</tr>
 				<tr>
 					<th id="design">분야/전공</th>
 					<td colspan="3" id="design">
-						<input style="width:170px;height:20px;" type="text" name="fieldMajor">
-						<input type="button" value="찾기">
+						<input style="width:170px;height:20px;" type="text" name="fieldMajor" readonly="readonly" required="required">
+						<input type="button" value="찾기"  onclick="fieldMajorPop()">
 					</td>
 				</tr>
 				<tr>
