@@ -6,7 +6,7 @@
 		<a href="/sp/login.jsp">로그인|</a>
 		<a href="/sp/memberJoin.jsp">회원가입</a>
 	</div>
-	<p><img src="/sp/img/Yes.jpg"></p>
+	<p><img src="/sp/img/Yes.jpg"></p> 
 	<nav>
 		<ul>
 			<li><a href="/sp/contentInfo.jsp">공모전 정보</a></li>

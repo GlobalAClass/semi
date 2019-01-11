@@ -4,20 +4,72 @@ import java.sql.*;
 import java.util.*;
 
 public class MemberDAO {
-	
+
 	private static final int ERROR = -1;
-	
+
 	private Connection conn;
 	private PreparedStatement ps;
 	private ResultSet rs;
-	
+
 	// 기본 생성자.
 	public MemberDAO() {
 		System.out.println("MemeberDAO 생성");
 	}
-	
-	// 회원 필수 정보 입력
-	public int JoinMember(MemberDTO mdto) {
+
+	// 회원 필수 정보가 null, ""인지 확인하기.
+	public boolean nullEmptyCheck(String str) {
+		if (str != null && !str.equals("") && str.length() > 0) {
+			System.out.println(str+"트루");
+			return true;
+		} else {
+			return false;
+		}
+	}
+	public boolean memberJoinCheck(MemberDTO mdto) {
+
+		if(nullEmptyCheck(mdto.getidEmail())&&
+				nullEmptyCheck(mdto.getPwd())&&
+				nullEmptyCheck(mdto.getMName())&&
+				nullEmptyCheck(mdto.getFieldMajor())&&
+				nullEmptyCheck(mdto.getEmailAgreement())){
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	//idEmail 중복 확인
+	public boolean checkEmail(String idEmail) {
+		try {
+			conn = db.DB.getConn();
+			String sql = "select 1 from Member_TB where ID_EMAIL = '"+ idEmail+"'";
+			ps = conn.prepareStatement(sql);
+			rs = ps.executeQuery();
+			
+			if(rs.next()) {
+				//아이디가 이미 DB에 존재
+				return true;
+			}else {
+				//아이디가 DB에 없음
+				return false;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return true; // error 
+		} finally {
+			try {
+				if (ps != null)
+					ps.close();
+				if (conn != null)
+					conn.close();
+			} catch (Exception e2) {
+
+			}
+		}
+	}
+
+	// DB에 회원 필수 정보 입력
+	public int memberJoin(MemberDTO mdto) {
 		try {
 			conn = db.DB.getConn();
 			String sql = "Insert into Member_TB values(Member_TB_SEQ.nextval, ?, ?, ?, ?, ?)";
@@ -27,23 +79,23 @@ public class MemberDAO {
 			ps.setString(3, mdto.getMName());
 			ps.setString(4, mdto.getEmailAgreement());
 			ps.setString(5, mdto.getFieldMajor());
-			
+
 			int count = ps.executeUpdate();
 			return count;
-			
-		}catch(Exception e){
+
+		} catch (Exception e) {
 			e.printStackTrace();
 			return ERROR; // error = -1
-		}finally {
+		} finally {
 			try {
-				if(ps!=null)ps.close();
-				if(conn!=null)conn.close();
-			}catch(Exception e2){
-				
+				if (ps != null)
+					ps.close();
+				if (conn != null)
+					conn.close();
+			} catch (Exception e2) {
+
 			}
 		}
 	}
-	
-	
 
 }
