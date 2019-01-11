@@ -4,9 +4,19 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>모임 검색</title>
 <link rel="stylesheet" type="text/css" href="/sp/css/mainLayout.css">
 <style>
+section select{
+	font-size: 15px;
+	margin-left:10px;
+	float: left;
+	margin-bottom: 20px;
+}
+form{
+	margin-left:10px;
+	float: left;
+}
 </style>
 <script>
 function select(){
@@ -36,7 +46,6 @@ function select(){
 	<%@include file="/header.jsp"%>
 	<section>
 		<article>
-		<div>
 			<select>
 				<option selected>지역</option>
 				<option value="서울특별시">서울특별시</option>
@@ -73,8 +82,6 @@ function select(){
 				<option value="planner">기획자</option>
 				<option value="etc">etc</option>
 			</select>
-			</div>
-			<div>
 			<form id="developer" style="display: none;">
 				<input type="button" value="서버">
 				<input type="button" value="DB">
@@ -110,8 +117,12 @@ function select(){
 				<input type="button" value="통계 분석">
 				<input type="button" value="아이디어">
 			</form>
-			</div>
 		</article>
+	</section>
+	<section>
+	<article style="margin:20px;clear:both;">
+	<%@include file="moimCard.jsp" %>
+	</article>
 	</section>
 	<%@include file="/footer.jsp"%>
 </body>

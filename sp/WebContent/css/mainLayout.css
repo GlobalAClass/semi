@@ -1,17 +1,22 @@
 @charset "UTF-8";
 body{
 	margin: 0px auto;
-	width: 680px;
+	width: 1200px;
 }
 header{
-	width: 680px;
+	width: 1200px;
 }
 header div{
 	text-align: right;
-	font-size: 12px;
+	font-size: 18px;
+}
+header div a{
+	text-decoration: none;
+	color: black;
+	font-weight: bold;
 }
 header img{
-	width: 100px;
+	width: 120px;
 	height: 100px;
 }
 header p{
@@ -20,28 +25,21 @@ header p{
 header nav{
 	background: #424242;
 	padding: 1px;
-	
+}
+header nav a{
+	text-decoration: none;
+	color: white;
+	font-weight: bold;
+	font-size: 32px;
 }
 header nav li{
-	color: white;
 	list-style-type: none;
 	display: inline;
-	margin-left: 40px;
-	font-size: 29px;
-	font-weight: bold;
+	margin-left: 158px;
 }
-header a{
-	text-decoration: none;
-	color: black;
-	font-weight: bold;
-}
-nav a{
-	text-decoration: none;
-	color: white;
-	font-weight: bold;
-}
+
 section{
-	width: 680px;
+	width: 1200px;
 }
 footer{
 	clear: both;
