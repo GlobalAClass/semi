@@ -10,7 +10,7 @@
 	<nav>
 		<ul>
 			<li><a href="/sp/contentInfo.jsp">공모전 정보</a></li>
-			<li>모임 검색</li>
+			<li><a href="/sp/moimsearch/moimSearch.jsp">모임 검색</a></li>
 			<li>사람 검색</li>
 		</ul>
 	</nav>
