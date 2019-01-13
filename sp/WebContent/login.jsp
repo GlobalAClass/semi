@@ -4,15 +4,15 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>로그인 하기</title>
 <link rel="stylesheet" type="text/css" href="css/mainLayout.css">
 <style>
 h1{
 	text-align: center;
 	font-size: 30px;
-	margin-top: 4px;
 }
-article{
+table{
+	margin: 0px auto;
 	text-align: center;
 }
 #login{
@@ -20,7 +20,13 @@ article{
 	font-size: 20px;
 	font-weight: bold;
 	color: white;
-}	
+	width:100px;
+	height:120px;
+}
+.t1{
+	width:240px;
+	height:40px;
+}
 </style>
 </head>
 <body>
@@ -29,10 +35,21 @@ article{
 	<article>
 		<form name="login.jsp" action="login_ok.jsp">
 		<h1>로그인</h1>
-		<input style="width:240px;height:26px;" type="text" name="id" placeholder="아이디" required="required"><br><br>
-		<input style="width:240px;height:26px;" type="password" name="pwd" placeholder="비밀번호" required="required"><br><br>
-		<input id="login" style="width:250px;height:34px;" type="submit" value="로그인">
-		<div>회원가입&nbsp;&nbsp;|&nbsp;&nbsp;ID/PW찾기</div>
+		<table>
+		<tr>
+			<td><input type="text" name="id" placeholder=" 아이디" required="required" class="t1"></td>
+			<td rowspan="2"><input id="login" type="submit" value="로그인"></td>
+		</tr>
+		<tr>
+			<td><input type="password" name="pwd" placeholder=" 비밀번호" required="required" class="t1"></td>
+		</tr>
+		<tr>
+			<td colspan="2" style="font-size:12px;color:gray;">홈페이지 방문이 처음이신가요?</td>
+		</tr>
+		<tr>
+			<td colspan="2"><a href="/sp/memberJoin.jsp" style="font-size:20px;color:black;">회원가입</a></td>
+		</tr>
+		</table>
 		</form>
 	</article>
 </section>
