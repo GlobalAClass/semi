@@ -9,7 +9,7 @@
 	<p><img src="/sp/img/Yes.jpg"></p> 
 	<nav>
 		<ul>
-			<li><a href="/sp/contentInfo.jsp">공모전 정보</a></li>
+			<li><a href="/sp/Competition/Competition.jsp">공모전 정보</a></li>
 			<li><a href="/sp/moimsearch/moimSearch.jsp">모임 검색</a></li>
 			<li><a href="/sp/humansearch/humanSearch.jsp">사람 검색</a></li>
 		</ul>
