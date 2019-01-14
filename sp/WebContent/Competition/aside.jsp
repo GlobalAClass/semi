@@ -1,29 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
 <style>
-#aside h2{
+h2{
 	background: #424242;
 	color: white;
-	margin: 0px;
 	padding: 9px;
+	text-align: center;
 }
-#aside{
-	width: 155px;
-	height: 800px;
-	overflow: hidden;
-	position: relative;
-	float: left;
-	border: 1px solid #D8D8D8;
+aside, article{
+	float:left;
+}
+aside{
+	width: 200px;
 }
 </style>
-</head>
-<body>
-<aside id="aside">
+<aside>
 		<h2>공모전 정보</h2>
 	<nav>
 		<ul>
@@ -36,5 +27,3 @@
 		</ul>
 	</nav>
 </aside>
-</body>
-</html>

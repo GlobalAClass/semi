@@ -4,6 +4,10 @@
 aside, article{
 	float: left;
 }
+aside{
+
+	border:gray 1px solid;
+}
 </style>
 <aside>
 	<p>프로필</p>

@@ -13,16 +13,15 @@
 	font-size: 15px;
 	font-weight: bold;
 }
-table{
-	width: 500x;
+#card{
+	width: 700px;
 	height: 200px;
 	border: gray solid 0.5px;
 	padding: 2px;
+	margin:10px;
 }
 </style>
-<section>
-<article>
-<table>
+<table id="card">
 	<tr>
 		<td class="t1" colspan="3" align="right">글 작성일</td>
 	</tr>
@@ -49,5 +48,3 @@ table{
 	<tr>
 	</tr>
 </table>
-</article>
-</section>

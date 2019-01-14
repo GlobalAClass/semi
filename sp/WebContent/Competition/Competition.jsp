@@ -17,7 +17,7 @@ h1{
 </head>
 <body>
 <%@include file="/header.jsp" %>
-<%@include file="/aside.jsp" %>
+<%@include file="/Competition/aside.jsp" %>
 <section>
 	<article>
 		<h1>전체공모전</h1>
@@ -34,7 +34,7 @@ h1{
 			<tbody>
 				<tr>
 					<td>광고</td>
-					<td><a href="/sp/Competition/Competition_title.jsp">부산은행 썸패스 UCC공모전</a></td>
+					<td><a href="/sp/Competition/CompetitionDetail.jsp">부산은행 썸패스 UCC공모전</a></td>
 					<td>2018.12.25 ~ 2019.01.05</td>
 					<td>개인</td>
 					<td>조회수</td>

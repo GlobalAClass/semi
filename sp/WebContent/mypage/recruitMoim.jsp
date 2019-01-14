@@ -9,7 +9,7 @@
 <style>
 article{
 	width:900px;
-	margin:20px;
+	margin:20px;"
 }
 </style>
 </head>
@@ -19,8 +19,8 @@ article{
 <section>
 <article>
 	<div align="center">
-	<h2>마이페이지 - 내가 만든 모임</h2>	
-	<%@include file="/mypage/makeMoimCard.jsp" %>
+	<h2>마이페이지 - 내가 지원한 모임</h2>
+	<%@include file="/mypage/recruitMoimCard.jsp" %>
 	</div>
 </article>
 </section>
