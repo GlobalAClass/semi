@@ -1,5 +1,16 @@
+<%@page import="java.util.Calendar"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+
+<%@ page import="member.MemberDTO" %>
+<%@ page import="member.MemberDAO" %>
+<%@ page import="java.util.Date" %>
+
+
+<jsp:useBean id="mdto" class="member.MemberDTO"/>
+<jsp:setProperty property="*" name="mdto"/>
+<jsp:useBean id="mdao" class="member.MemberDAO" scope="session"/>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -41,6 +52,11 @@ h1{
 </head>
 <body>
 <%@include file="/header.jsp"%>
+<input type="text" hidden="" name="idEmail" value="<%=mdto.getidEmail()%>">
+<input type="text" hidden="" name="pwd" value="<%=mdto.getPwd()%>">
+<input type="text" hidden="" name="MName" value="<%=mdto.getMName()%>">
+<input type="text" hidden="" name="fieldMajor" value="<%=mdto.getFieldMajor()%>">
+<input type="text" hidden="" name="emailAgreement" value="<%=mdto.getEmailAgreement()%>">
 <section>
 	<article>
 		<form name="memberJoin" action="memberJoin_ok.jsp">
@@ -81,7 +97,9 @@ h1{
 					<td id="design">
 						<select>
 							<%
-							for(int i=1935;i<=2019;i++){
+							Calendar cal = Calendar.getInstance();
+							int y = cal.get(Calendar.YEAR);
+							for(int i=y;i>y-120;i--){
 								%>
 								<option value="<%=i%>"><%=i%></option>
 								<%
