@@ -7,7 +7,7 @@ public class CompetitionInfoDTO {
 	private Integer competitionInfoIx;
 
 	// 공모전 제목
-	private String cName;
+	private String CName;
 
 	// 분야
 	private String field;
@@ -19,7 +19,7 @@ public class CompetitionInfoDTO {
 	private String auspice;
 
 	// 주관
-	private String manage;
+	private String CManage;
 
 	// 참가자격
 	private String entitlement;
@@ -28,10 +28,13 @@ public class CompetitionInfoDTO {
 	private String period;
 
 	// 홈페이지링크
-	private String link;
+	private String CLink;
 
 	// 공모전 상세 내역
 	private String detail;
+	
+	// 공모전 분류
+	private String cCategory;
 	
 	// 기본 생성자
 	public CompetitionInfoDTO() {
@@ -39,19 +42,20 @@ public class CompetitionInfoDTO {
 	}
 	
 	// 모든 필드 가지는 생성자
-	public CompetitionInfoDTO(Integer competitionInfoIx, String cName, String field, String teamSolo, String auspice,
-			String manage, String entitlement, String period, String link, String detail) {
+	public CompetitionInfoDTO(Integer competitionInfoIx, String CName, String field, String teamSolo, String auspice,
+			String CManage, String entitlement, String period, String CLink, String detail, String cCategory) {
 		super();
 		this.competitionInfoIx = competitionInfoIx;
-		this.cName = cName;
+		this.CName = CName;
 		this.field = field;
 		this.teamSolo = teamSolo;
 		this.auspice = auspice;
-		this.manage = manage;
+		this.CManage = CManage;
 		this.entitlement = entitlement;
 		this.period = period;
-		this.link = link;
+		this.CLink = CLink;
 		this.detail = detail;
+		this.cCategory = cCategory;
 	}
 
 	public Integer getCompetitionInfoIx() {
@@ -63,11 +67,11 @@ public class CompetitionInfoDTO {
 	}
 
 	public String getCName() {
-		return cName;
+		return CName;
 	}
 
-	public void setCName(String cName) {
-		this.cName = cName;
+	public void setCName(String CName) {
+		this.CName = CName;
 	}
 
 	public String getField() {
@@ -94,12 +98,12 @@ public class CompetitionInfoDTO {
 		this.auspice = auspice;
 	}
 
-	public String getManage() {
-		return manage;
+	public String getCManage() {
+		return CManage;
 	}
 
-	public void setManage(String manage) {
-		this.manage = manage;
+	public void setCManage(String CManage) {
+		this.CManage = CManage;
 	}
 
 	public String getEntitlement() {
@@ -118,12 +122,12 @@ public class CompetitionInfoDTO {
 		this.period = period;
 	}
 
-	public String getLink() {
-		return link;
+	public String getCLink() {
+		return CLink;
 	}
 
-	public void setLink(String link) {
-		this.link = link;
+	public void setCLink(String CLink) {
+		this.CLink = CLink;
 	}
 
 	public String getDetail() {
@@ -133,5 +137,15 @@ public class CompetitionInfoDTO {
 	public void setDetail(String detail) {
 		this.detail = detail;
 	}
+
+	public String getcCategory() {
+		return cCategory;
+	}
+
+	public void setcCategory(String cCategory) {
+		this.cCategory = cCategory;
+	}
+	
+	
 
 }
