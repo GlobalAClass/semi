@@ -80,7 +80,7 @@ article{
 		<!-- 내부 영역 -->
 		<div align="center">
 		<!-- 현재 생성된 모임 클릭 시 -->
-		<p align="right"><input type="button" value="모임 생성하기"></p>
+		<p align="right"><a href="/sp/Competition/CompetitionMoimMake.jsp"><input type="button" value="모임 생성하기"></a></p>
 		<%@include file="CompetitionMoimCard.jsp" %>
 		<!-- 공모전 상세보기 클릭 시 -->
 		</div>
