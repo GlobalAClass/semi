@@ -33,6 +33,9 @@ public class CompetitionInfoDTO {
 	// 공모전 상세 내역
 	private String detail;
 	
+	// 공모전 조회수
+	private Integer readnum;
+	
 	// 기본 생성자
 	public CompetitionInfoDTO() {
 		System.out.println("CompetitionInfoDTO 생성");
@@ -40,7 +43,7 @@ public class CompetitionInfoDTO {
 	
 	// 모든 필드 가지는 생성자
 	public CompetitionInfoDTO(Integer competitionInfoIx, String CName, String field, String teamSolo, String auspice,
-			String CManage, String entitlement, String period, String CLink, String detail) {
+			String CManage, String entitlement, String period, String CLink, String detail, Integer readnum) {
 		super();
 		this.competitionInfoIx = competitionInfoIx;
 		this.CName = CName;
@@ -134,4 +137,13 @@ public class CompetitionInfoDTO {
 		this.detail = detail;
 	}
 
+	public Integer getReadnum() {
+		return readnum;
+	}
+
+	public void setReadnum(Integer readnum) {
+		this.readnum = readnum;
+	}
+
+	
 }
