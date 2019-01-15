@@ -33,9 +33,6 @@ public class CompetitionInfoDTO {
 	// 공모전 상세 내역
 	private String detail;
 	
-	// 공모전 분류
-	private String cCategory;
-	
 	// 기본 생성자
 	public CompetitionInfoDTO() {
 		System.out.println("CompetitionInfoDTO 생성");
@@ -43,7 +40,7 @@ public class CompetitionInfoDTO {
 	
 	// 모든 필드 가지는 생성자
 	public CompetitionInfoDTO(Integer competitionInfoIx, String CName, String field, String teamSolo, String auspice,
-			String CManage, String entitlement, String period, String CLink, String detail, String cCategory) {
+			String CManage, String entitlement, String period, String CLink, String detail) {
 		super();
 		this.competitionInfoIx = competitionInfoIx;
 		this.CName = CName;
@@ -55,7 +52,6 @@ public class CompetitionInfoDTO {
 		this.period = period;
 		this.CLink = CLink;
 		this.detail = detail;
-		this.cCategory = cCategory;
 	}
 
 	public Integer getCompetitionInfoIx() {
@@ -137,15 +133,5 @@ public class CompetitionInfoDTO {
 	public void setDetail(String detail) {
 		this.detail = detail;
 	}
-
-	public String getcCategory() {
-		return cCategory;
-	}
-
-	public void setcCategory(String cCategory) {
-		this.cCategory = cCategory;
-	}
-	
-	
 
 }
