@@ -24,6 +24,25 @@ h1{
 }
 </style>
 </head>
+<%
+int totalcnt=cdao.getTotalCnt();
+int listsize=10;
+int pagesize=10;
+String cp_s=request.getParameter("cp");
+if(cp_s==null||cp_s.equals("")){
+	cp_s="1";
+}
+int cp=Integer.parseInt(cp_s);
+
+int totalpage=totalcnt/listsize+1;
+if(totalcnt%listsize==0){
+	totalpage--;
+}
+int usergroup=cp/pagesize;
+if(cp%pagesize==0){
+	usergroup--;
+}
+%>
 <body>
 <%@include file="/header.jsp" %>
 <%@include file="/Competition/aside.jsp" %>
@@ -44,7 +63,7 @@ h1{
 				</thead>
 				<tbody>
 				<%
-				ArrayList<CompetitionInfoDTO> arr=cdao.CompetitionAllList();
+				ArrayList<CompetitionInfoDTO> arr=cdao.CompetitionAllList(cp,listsize);
 				if(arr==null||arr.size()==0){
 					%>
 					<tr>
@@ -56,7 +75,7 @@ h1{
 						%>
 						<tr>
 							<td><%=arr.get(i).getField()%></td>
-							<td><%=arr.get(i).getCName()%></td>
+							<td><a href="/sp/Competition/CompetitionDetail.jsp"><%=arr.get(i).getCName()%></a></td>
 							<td><%=arr.get(i).getPeriod()%></td>
 							<td><%=arr.get(i).getTeamSolo()%></td>
 							<td><%=arr.get(i).getReadnum()%></td>
@@ -66,6 +85,34 @@ h1{
 				}
 				%>
 				</tbody>
+				<tfoot>
+					<tr>
+						<td colspan="5" align="center">
+						<%
+						if(usergroup!=0){
+							%>
+							<a href="Competition.jsp?cp=<%=(usergroup-1)*pagesize+pagesize%>">&lt;&lt;</a>
+							<%
+						}
+						%>
+						<%
+						for(int i=usergroup*pagesize+1;i<usergroup*pagesize+pagesize;i++){
+							%>
+							&nbsp;&nbsp;<a href="Competition.jsp?cp=<%=i%>"><%=i%></a>&nbsp;&nbsp;
+							<%
+							if(i==totalpage)break;
+						}
+						%>
+						<%
+						if(usergroup!=(totalpage/pagesize-(totalpage%pagesize==0?1:0))){
+							%>
+							<a href="Competition.jsp?cp=<%=(usergroup+1)*pagesize+1%>">&gt;&gt;</a>
+							<%
+						}
+						%>
+						</td>
+					</tr>
+				</tfoot>
 			</table>
 		</div>
 		</form>
