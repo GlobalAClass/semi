@@ -56,6 +56,27 @@ h1{
 .height_50px{
 	height: 50px;
 }
+input[type="radio"] {
+    display:none;
+}
+
+input[type="radio"] + label {
+    color:black;
+}
+
+input[type="radio"] + label span {
+    display:inline-block;
+    width:19px;
+    height:19px;
+    margin:-2px 10px 0 0;
+    vertical-align:middle;
+    background:url(/sp/img/check_radio_sheet-psd.png)  -425px -40px no-repeat;
+    cursor:pointer;
+}
+
+input[type="radio"]:checked + label span {
+    background:url(/sp/img/check_radio_sheet-psd.png) -445px -40px no-repeat;
+}
 </style>
 </head>
 <script type="text/javascript">
@@ -189,7 +210,7 @@ function select(part){
 		ary = ['기획','마케팅','컨텐츠 제작','SNS','온라인 마케팅'];
 		break;
 	case "etc": //나중에 추가할 세부역할들.
-		ary = [];
+		ary = ['영상 제작',	'영상 촬영','영상 편집','통계 분석','아이디어'];
 		break;
 	}
 	//버튼 추가
@@ -279,7 +300,7 @@ function formCheck(){
 					</td>
 				</tr>
 				<tr>
-					<td align="center" class="height_50px"><input type="file" name="profilePicturePath" onchange="showImg(this);" accept=""></td>
+					<td colspan="2" align="center" class="height_50px"><input type="file" name="profilePicturePath" onchange="showImg(this);" accept=""></td>
 				</tr>
 				<tr>
 					<th class="height_50px">핸드폰번호
@@ -292,13 +313,22 @@ function formCheck(){
 							<input style="width:70px;height:15px;" type="text" name="tel2" maxlength="4" onkeyup="checktel(this);">
 							<input style="text" hidden="" name="contact" value="">
 					</th>
-					<td></td>
+					<td>핸드폰 번호 공개 동의
+						<input type="radio" id="r1" name="contactAgreement" value="true"/>
+    					<label for="r1"><span></span>예</label>
+    					<input type="radio" id="r2" name="contactAgreement" value="false"/>
+    					<label for="r2"><span></span>아니오</label>
+    				</td>
 				</tr>
 				<tr>
 					<th class="height_50px">카카오톡ID
 						<input style="width:170px;height:20px;" type="text" name="kakaoId" placeholder="내용을 입력해주세요" onkeyup="checkKakaoId(this);">
 					</th>
-					<td></td>
+					<td>카카오톡ID 공개 동의
+						<input type="radio" id="r3" name="kakaoIdAgreement" value="true"/>
+    					<label for="r3"><span></span>예</label>
+    					<input type="radio" id="r4" name="kakaoIdAgreement" value="false"/>
+    					<label for="r4"><span></span>아니오</label></td>
 				</tr>
 				<tr>
 					<td id="design" align="center" colspan="2">연락을받고싶은 항목에 정보를 입력해주세요.<br>이메일보다 빠르게 상대방과 연락을 주고 받을 수 있습니다.</td>

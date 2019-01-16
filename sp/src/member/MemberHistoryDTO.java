@@ -45,6 +45,17 @@ public class MemberHistoryDTO {
 		this.award = award;
 		this.detail = detail;
 	}
+	//입려 받는 필드만 갖는 생성자.
+	public MemberHistoryDTO(String cName, String period, String mainRole, String detailRole, String award,
+			String detail) {
+		super();
+		this.cName = cName;
+		this.period = period;
+		this.mainRole = mainRole;
+		this.detailRole = detailRole;
+		this.award = award;
+		this.detail = detail;
+	}
 
 	public Integer getMemberHistroyIx() {
 		return memberHistroyIx;
