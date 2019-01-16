@@ -63,7 +63,6 @@ function searchFieldMajor(){
 }
 //분야/전공 선택했을 때
 function selectFieldMajor(obj){
-	
 	opener.document.memberJoin.fieldMajor.value=obj.value;
     window.self.close();
 }
