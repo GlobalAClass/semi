@@ -182,10 +182,10 @@ function select(part){
 			<div style="font-size:25px; font-weight: bold;">자기소개서 작성</div>
 			<table style="width:800px;height:200px;text-align:left;">
 				<tr>
-					<td rowspan="4" style="width:100px"><img src="/sp/img/profile.jpg" id="pfimg">
+					<td rowspan="4" style="width:120px;"><img src="/sp/img/profile.jpg" id="pfimg">
 					<input style="width:90px; font-size:11px;" type="button" value="사진 수정하기">
 					</td>
-					<th style="width:150px;height:80px;">담당 역할</th>
+					<th style="width:150px;height:100px;">담당 역할</th>
 					<td>
 					<select id="part" onchange="select(this)" style="width:130px;height:25px;">
 						<option selected>선택하기</option>

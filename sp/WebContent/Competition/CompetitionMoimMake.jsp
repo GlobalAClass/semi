@@ -73,21 +73,22 @@ function addOption(obj){
 }
 function select(part){
 	var partname=part.value; //선택한 역할 값.
-	var role = document.getElementById("role"); //현재 part 기준으로 다음 태그인 <div>태그 가리킴. 이 안에 세부역할 버튼들을 생성함.
+	var inputRes=part.nextSibling;
+	var role=inputRes.nextSibling.nextSibling; //4번째 위치한 버튼 들어가야하는 <div>태그
 	
 	//담당역할 선택 -> 세부사항 기입 불가, 세부사항 빈문자열.
 	if(partname=="담당 역할"){
-		role.nextSibling.value = ''; //<div>태그의 다음 태그이므로 세부사항을 입력하는 <input>태그를 가리킴.
-		role.nextSibling.readOnly=true;
+		inputRes.value = ''; //part 다음 태그인 세부사항을 입력하는 <input>태그를 가리킴.
+		inputRes.readOnly=true;
 	}else{
-		role.nextSibling.readOnly=false;
+		inputRes.readOnly=false;
 	}
 	//div안에 있는 버튼 삭제
 	while(role.firstChild) {
 	  role.removeChild(role.firstChild);
 	}
 	//버튼에 사용할 value값들
-	var ary=0; //value값들을 저장할 배열 변수 선언
+	var ary; //value값들을 저장할 배열 변수 선언
 	switch(partname){
 	case "developer":
 		ary = ['개발자','서버','DB','블록체인','클라우드','빅데이터','데이터 분석','IOS','안드로이드','WEB'];
@@ -102,20 +103,17 @@ function select(part){
 		ary = ['영상 제작',	'영상 촬영','영상 편집','통계 분석','아이디어'];
 		break;
 	}
-	
 	//버튼 추가
-	for(var i=0; i<ary.length;i++){
-		var bu =  document.createElement("INPUT");
+	for(i=0; i<ary.length;i++){
+		var bu =  document.createElement("input");
 		bu.type = "button";
 		bu.value = ary[i];
 		bu.style.marginRight = "4px";
-		bu.onclick = function(){document.getElementById("detailRole").value = this.value;}; //기능 : 버튼 클릭시에 버튼 값이 자동으로 text에 입력
-		
+		bu.onclick = function(){inputRes.value = this.value;}; //기능 : 버튼 클릭시에 버튼 값이 자동으로 text에 입력
 		role.appendChild(bu);
 	}
 }
 //현재 팀이 존재하는지 확인 하여 세부사항 작성칸 출력 여부
-//또한 팀원이 몇명 존재하는지 확인
 function nowTeam(res){
 	switch(res){
 	case "yes":
@@ -125,7 +123,95 @@ function nowTeam(res){
 		document.all.nowTeamMember.style.display="none";
 		break;
 	}
+}
+var cnt=0;
+var people = new Array(); //각 테이블의 인원수가 선택될 때 저장할 배열
+function addTeam(){
+
+	var tb = document.getElementById('tb');
+	var row = tb.insertRow(cnt);
 	
+	row.innerHTML='<div>'
+					+'<table>'
+						+'<tr>'
+						+'<td style="width:80px;height:100px;border-bottom:0.5px gray dotted;">'
+						+'<img src="/sp/img/profile.jpg" id="pfimg">'
+						+'</td>'
+						+'<td style="width:420px;border-bottom:0.5px gray dotted;">'
+						+'<select name="mainRole'+cnt+'" onchange="select(this)" style="width:130px;height:25px;">'
+							+'<option selected>선택하기</option>'
+							+'<option value="developer">개발자</option>'
+							+'<option value="desiner">디자이너</option>'
+							+'<option value="planner">기획자</option>'
+							+'<option value="etc">etc</option>'
+						+'</select>'
+						+'<input style="width:170px;height:20px;margin-left:10px;" type="text" class="detailRole'+cnt+'" name="detailRole'+cnt+'">'
+						+'<div style="font-size:11px; color:#D20505;">해당 담당 역할이 없는경우 직접 작성해주세요. (1개 선택 가능)</div>'
+						+'<div id="btnDivnowTeam'+cnt+'"></div>'
+						+'</td>'
+						+'<td style="border-bottom:0.5px gray dotted;">'
+							+' 인원 수 '
+							+'<select name="ogMemNum" onchange="cntTeam(this)">'
+								+'<option value="1" selected>1명</option>'
+								+'<option value="2">2명</option>'
+								+'<option value="3">3명</option>'
+								+'<option value="4">4명</option>'
+							+'</select>'	
+							+'</td>'
+							+'<td style="border-bottom:0.5px gray dotted;">'
+							+'<input type="button" value="-" onclick="delTeam(this);" style="margin-left:20px"> 팀원 삭제하기'									
+							+'</td>'										
+						+'</td>'
+						+'</tr>'
+					+'</table>'
+				+'</div>'
+	people.push(1); //테이블 생성하면 해당 인덱스에 인원수 1 넣어주기
+	cnt++;
+	
+	var sum=0;
+	for(var i=0;i<cnt;i++){
+		sum += Number(people[i]);
+	}
+	document.all.sumTeam.value=sum;
+				
+}
+
+function delTeam(row){
+
+	var idx = row.parentNode.parentNode.rowIndex; //삭제 눌린 해당 인덱스 찾기
+	var tb = document.getElementById('tb');
+	tb.deleteRow(idx); //인덱스에 해당하는 줄 지우기
+	people.splice(idx,1); //테이블 삭제되면 해당 인덱스에 해당하는 인원수 넣은 배열 삭제
+	cnt--;
+	
+	var sum=0;
+	for(var i=0;i<cnt;i++){
+		sum += Number(people[i]);
+	}
+	document.all.sumTeam.value=sum;
+	
+}
+
+function cntTeam(count){
+	var sum=0;
+	var idx = count.parentNode.parentNode.rowIndex; //select box가 선택된 해당 인덱스
+	for(var i=0;i<cnt;i++){
+		if(i==idx){
+			people[i]=count.value;
+		}
+	}
+	for(var i=0;i<cnt;i++){
+		sum += Number(people[i]);
+	}
+	document.all.sumTeam.value=sum;
+}
+function ageNoMatter(cb){
+	if(cb.checked==true){
+		document.all.ageVisible.style.display="none";
+		//무관 데이터 db로 저장되도록
+	}else{
+		document.all.ageVisible.style.display="";
+	}
 }
 </script>
 </head>
@@ -180,21 +266,20 @@ function nowTeam(res){
 			<p style="text-align:left;font-size:25px; font-weight: bold;">모임 개설자 소개</p>
 			<table style="width:800px;height:200px;text-align:left;">
 				<tr>
-					<td rowspan="4" style="width:100px"><img src="/sp/img/profile.jpg" id="pfimg">
+					<td rowspan="4" style="width:120px"><img src="/sp/img/profile.jpg" id="pfimg">
 					<input style="width:90px; font-size:11px;" type="button" value="사진 수정하기">
 					</td>
 					<th style="width:150px;height:80px;">담당 역할</th>
 					<td>
-					<select id="part" onchange="select(this)" style="width:130px;height:25px;">
+					<select name="mainRole" onchange="select(this)" style="width:130px;height:25px;">
 						<option selected>선택하기</option>
 						<option value="developer">개발자</option>
 						<option value="desiner">디자이너</option>
 						<option value="planner">기획자</option>
 						<option value="etc">etc</option>
 					</select>
-					<input style="width:170px;height:20px;" type="text" id="detailRole" name="detailRole">
+					<input style="width:170px;height:20px;" type="text" id="dRole" name="detailRole">
 					<div style="font-size:11px; color:#D20505;">해당 담당 역할이 없는경우 직접 작성해주세요. (1개 선택 가능)</div>
-					<div id="role"></div>
 					</td>
 				</tr>
 				<tr>
@@ -248,17 +333,15 @@ function nowTeam(res){
 				<input type="radio" name="team" value="no" onchange="nowTeam(this.value)" checked>아니오
 			</div>
 			<div id="nowTeamMember" style="display: none;">
-			<p>현재 존재하는 팀원수(본인포함)
-			<select onchange="nowTeam(this.value)">
-				<option value="2" selected>2명</option>
-				<option value="3">3명</option>
-				<option value="4">4명</option>
-				<option value="5">5명</option>
-			</select>
-			</p>
-			<div id="tRole">
-			팀원의 역할을 간단하게 소개해주세요
-			</div>
+				<h5 style="color:gray;">현재 팀원의 역할을 간단하게 소개해주세요</h5>
+				<table style="width:800px;border:1px gray dotted;">
+					<tbody id="tb">
+					</tbody>
+					<tr>
+					<td colspan="5" style="font-size:15px;"><input type="button" value="+" onclick="addTeam();"> 팀원 추가하기</td>
+					</tr>
+				</table>
+				<h3>현재 구성된 총 팀원 수 : <input type="text" id="sumTeam" value="0" style="font-size:20px;width:12px;border:0px;">명</h3>
 			</div>
 		</div>
 		<div class="bodytype">
@@ -297,17 +380,11 @@ function nowTeam(res){
 			<input style="width:230px;height:22px;" type="text" name="timesAWeek" placeholder="가능한 요일/시간대 작성" required="required">
 		</div>
 		<div class="bodytype">
-			<div style="font-size:25px;font-weight: bold;margin-right: 40px;">이런 사람을 구하고 있어요</div>
-			<p>나이 제한
-			<input style="width:45px;height:25px;" type="text" name="ageRestriction">
-			<input style="width:20px;height:20px;" type="checkbox" value="나이 무관">나이 무관</p>
-			구하고 싶은 팀원 수
-			<select style="width:45px;height:25px;">
-				<option>1명</option>
-				<option>2명</option>
-				<option>3명</option>
-				<option>4명</option>
-			</select>
+			<div style="font-size:25px;font-weight: bold;margin-right: 40px;margin-bottom:15px;">이런 사람을 구하고 있어요</div>
+			<span>나이</span>
+			<span id="ageVisible" style="display: none;"><input style="width:45px;height:25px;margin-left:10px;" type="text" name="ageRestriction">세 이하</span>
+			<span><input style="width:20px;height:20px;" type="checkbox" onclick="ageNoMatter(this)" checked> 무관</span>
+			<!-- 인원 추가하는 모듈 만들자 -->
 		</div>
 		<div class="bodytype">
 			<div style="margin-top:15px;margin-bottom:15px;"><font style="font-size:25px;font-weight:bold;margin-right:300px;">이런 기술/장비를 다뤄보고 싶어요</font>
@@ -316,7 +393,7 @@ function nowTeam(res){
 		</div>
 		<div class="bodytype2">
 			<div style="font-size:25px;font-weight:bold;margin-bottom:15px;">공모전 모임 상세 소개</div>
-			<textarea style="width:800px; height: 150px;" placeholder="소개하고 싶은 공모전 모임 관련 세부사항을 작성해주세요."></textarea>
+			<textarea style="width:800px; height: 150px;" placeholder="소개하고 싶은 모임 관련 정보를 작성해주세요.&#13;&#10;EX)입선 이상을 목표로 열심히 진행중입니다."></textarea>
 		</div>
 		<div style="text-align:center;">
 				<input class="btn" type="submit" value="모임 만들기">
