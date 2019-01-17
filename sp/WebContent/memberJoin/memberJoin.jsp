@@ -13,7 +13,7 @@
 <head>
 <meta charset="UTF-8">
 <title>회원가입</title>
-<link rel="stylesheet" type="text/css" href="css/mainLayout.css">
+<link rel="stylesheet" type="text/css" href="/sp/css/mainLayout.css">
 <style>
 h1{
 	text-align: center;
@@ -91,7 +91,7 @@ function checkEmailPop(){
 	idEmail2=document.memberJoin.idEmail2.value;
 	
 	if(typeof(idEmail)!="undefined" && idEmail!="" && typeof(idEmail2)!="undefined" && idEmail2!=""){
-		var go_ref = '/sp/memberJoin.jsp?'+'&idEmail1='+idEmail+'&idEmail2='+idEmail2;
+		var go_ref = '/sp/memberJoin/memberJoin.jsp?'+'&idEmail1='+idEmail+'&idEmail2='+idEmail2;
 		location.href = go_ref;
 	}else{
 		alert("이메일주소를 올바르게 입력하세요.");

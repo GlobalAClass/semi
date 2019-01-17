@@ -15,29 +15,6 @@ public class MemberDAO {
 	public MemberDAO() {
 		System.out.println("MemeberDAO 생성");
 	}
-
-	// 회원 필수 정보가 null, ""인지 확인하기.
-	public boolean nullEmptyCheck(String str) {
-		if (str != null && !str.equals("") && str.length() > 0) {
-			System.out.println(str+"트루");
-			return true;
-		} else {
-			return false;
-		}
-	}
-	public boolean memberJoinCheck(MemberDTO mdto) {
-
-		if(nullEmptyCheck(mdto.getidEmail())&&
-				nullEmptyCheck(mdto.getPwd())&&
-				nullEmptyCheck(mdto.getMName())&&
-				nullEmptyCheck(mdto.getFieldMajor())&&
-				nullEmptyCheck(mdto.getEmailAgreement())){
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
 	//idEmail 중복 확인
 	public boolean checkEmail(String idEmail) {
 		try {
@@ -58,6 +35,8 @@ public class MemberDAO {
 			return true; // error 
 		} finally {
 			try {
+				if (rs != null)
+					rs.close();
 				if (ps != null)
 					ps.close();
 				if (conn != null)
@@ -97,5 +76,31 @@ public class MemberDAO {
 			}
 		}
 	}
+	
+	// 회원 인덱스 구하기.
+	public int getMemberIndex(String idEmail) {
+		try {
+			conn = db.DB.getConn();
+			String sql = "select MEMBER_IX from Member_TB where ID_EMAIL = '"+idEmail+"'";
+			ps = conn.prepareStatement(sql);
+			rs = ps.executeQuery();
+			
+			rs.next();
+			return rs.getInt(1);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ERROR; // error = -1
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (ps != null)
+					ps.close();
+				if (conn != null)
+					conn.close();
+			} catch (Exception e2) {
 
+			}
+		}
+	}
 }
