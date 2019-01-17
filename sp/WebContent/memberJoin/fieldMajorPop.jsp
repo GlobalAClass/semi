@@ -49,8 +49,8 @@ form ul li input:hover{
 					list.add(major);
 				}
 			}
-		
-		}catch(Exception e){
+			br.close();
+		} catch(Exception e){
 			e.printStackTrace();
 		}
 	}

@@ -62,6 +62,7 @@ input[type="radio"] {
 
 input[type="radio"] + label {
     color:black;
+    margin-left: 5px;
 }
 
 input[type="radio"] + label span {
@@ -70,20 +71,20 @@ input[type="radio"] + label span {
     height:19px;
     margin:-2px 10px 0 0;
     vertical-align:middle;
-    background:url(/sp/img/check_radio_sheet-psd.png)  -425px -40px no-repeat;
+    background:url(/sp/img/check_radio_sheet.png)  -39px top no-repeat;
     cursor:pointer;
 }
 
 input[type="radio"]:checked + label span {
-    background:url(/sp/img/check_radio_sheet-psd.png) -445px -40px no-repeat;
+    background:url(/sp/img/check_radio_sheet.png) -58px top no-repeat;
 }
 </style>
 </head>
 <script type="text/javascript">
 //지역 선택시에 추가 옵션 보여주는 함수.
 function addOption(obj){
-	var option = obj.value;
-	var ary;
+	var option = obj.value; 
+	var ary; 
 	var addop = memberJoin.sigungu;
 	//추가 옵션이 이미 있던 경우 삭제해주기. 길이를 1로 두는 것은 '선택해주세요'만 남기고 삭제하기 위해서이다.
 	if(addop.length>1){
