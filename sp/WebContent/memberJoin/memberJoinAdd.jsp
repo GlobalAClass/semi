@@ -18,7 +18,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link rel="stylesheet" type="text/css" href="css/mainLayout.css">
+<link rel="stylesheet" type="text/css" href="/sp/css/mainLayout.css">
 <style>
 h1{
 	text-align: center;
@@ -143,9 +143,9 @@ function pageAdd(){
 								+'<td id="design"><input type="text" style="width:170px; height:20px;" name="cName'+addCount+'"></td>'
 							+'</tr>'
 							+'<tr><th id="design">공모전 기간</th>'
-								+'<td id="design"><input style="width:170px;height:20px;" type="text" name="period'+addCount+'_1" onchange="checkPeriod(this);">&nbsp;~&nbsp;'
-												+'<input style="width:170px;height:20px;" type="text" name="period'+addCount+'_2" onchange="checkPeriod(this);">'
-												+'<input type="text" hidden="" name="period'+addCount+'" value="">'+'<span style="margin-left:8px; font-size:5px; color:#A9D0F5;">기간은 년,월,일 순서로 0000-00-00으로 입력해주세요</span></td>'
+								+'<td id="design"><input style="width:170px;height:20px;" type="text" id="period'+addCount+'_1" name="period'+addCount+'_1" onchange="checkPeriod(this);">&nbsp;~&nbsp;'
+												+'<input style="width:170px;height:20px;" type="text" id="period'+addCount+'_2" name="period'+addCount+'_2" onchange="checkPeriod(this);">'
+												+'<input type="text" hidden="" id="period'+addCount+'" name="period'+addCount+'" value="">'+'<span style="margin-left:8px; font-size:5px; color:#A9D0F5;">기간은 년,월,일 순서로 0000-00-00으로 입력해주세요</span></td>'
 							+'</tr>'
 							+'<tr><th id="design">담당역할</th>'
 								+'<td id="design"><select id="part" onchange="select(this)" name=mainRole'+addCount+'>'
@@ -220,15 +220,15 @@ function select(part){
 		bu.value = ary[i];
 		bu.style.marginRight = "4px";
 		bu.onclick = function(){role.nextSibling.value = this.value;}; //기능 : 버튼 클릭시에 버튼 값이 자동으로 text에 입력
-		role.append(bu);
+		role.appendChild(bu);
 	}
 }
-//핸드폰 번호 입력시에 번호만 입력할 수 있도록 하기.
+//핸드폰 번호 입력시에 4자리의 번호만 입력할 수 있도록 하기. 
 function checktel(tel){
-    var num_pattern = /[^0-9]/;  // 정규표현식 사용. []안에서 ^는 '일치하지 않는'을 의미한다.
-    if(num_pattern.exec(tel.value)) { //exec는 정규표현식 패턴에 맞는 문자열 탐색
-        alert("해당 항목에는 숫자만 사용할수 있습니다.\n다른 문자는 자동적으로 제거 됩니다.");
-        tel.value = tel.value.replace(/[^0-9]/g,''); //숫자를 제외한 문자열 내 모든 패턴(g=global)찾아 빈문자열로 대체.
+    var num_pattern = /^\d{4}$/;  // 정규표현식 사용. []안에서 ^는 '일치하지 않는'을 의미한다.
+    if(!num_pattern.exec(tel.value)) { //exec는 정규표현식 패턴에 맞는 문자열 탐색
+        alert("해당 항목에는 4자리의 숫자만 사용할수 있습니다.\n다른 문자는 자동적으로 제거 됩니다.");
+        tel.value = tel.value.replace(/^\d{4}$/g,''); //숫자를 제외한 문자열 내 모든 패턴(g=global)찾아 빈문자열로 대체.
         return false;
     }
 }
@@ -272,8 +272,11 @@ function showImg(profile){
 }
 function formCheck(){
 	memberJoin.addCount.value = addCount; // 공모전 상세이력 한개도 추가 안했을 때, 0전송됨.
-	memberJoin.contact.value = memberJoin.headtel.value + memberJoin.tel1.value + memberJoin.tel2.value;
-	
+	memberJoin.contact.value = memberJoin.headtel.value +"-"+ memberJoin.tel1.value +"-"+ memberJoin.tel2.value;
+	for(i=0; i<addCount; i++){
+		document.getElementById("period"+i).value = document.getElementById('period'+i+'_1').value
+													+'~'+document.getElementById('period'+i+'_2').value;
+	}
 	return true;
 }
 </script>
@@ -300,7 +303,9 @@ function formCheck(){
 					</td>
 				</tr>
 				<tr>
-					<td colspan="2" align="center" class="height_50px"><input type="file" name="profilePicturePath" onchange="showImg(this);" accept=""></td>
+					<td colspan="2" align="center" class="height_50px">
+						<input type="file" name="picture" onchange="showImg(this);" accept="">
+					</td>
 				</tr>
 				<tr>
 					<th class="height_50px">핸드폰번호
@@ -309,14 +314,14 @@ function formCheck(){
 							<option>011</option>
 							<option>018</option>
 						</select>-
-							<input style="width:70px;height:15px;" type="text" name="tel1" maxlength="4" onkeyup="checktel(this);">-
-							<input style="width:70px;height:15px;" type="text" name="tel2" maxlength="4" onkeyup="checktel(this);">
+							<input style="width:70px;height:15px;" type="text" name="tel1" maxlength="4" onchange="checktel(this);">-
+							<input style="width:70px;height:15px;" type="text" name="tel2" maxlength="4" onchange="checktel(this);">
 							<input style="text" hidden="" name="contact" value="">
 					</th>
 					<td>핸드폰 번호 공개 동의
 						<input type="radio" id="r1" name="contactAgreement" value="true"/>
     					<label for="r1"><span></span>예</label>
-    					<input type="radio" id="r2" name="contactAgreement" value="false"/>
+    					<input type="radio" id="r2" name="contactAgreement" value="false" checked="checked"/>
     					<label for="r2"><span></span>아니오</label>
     				</td>
 				</tr>
@@ -327,7 +332,7 @@ function formCheck(){
 					<td>카카오톡ID 공개 동의
 						<input type="radio" id="r3" name="kakaoIdAgreement" value="true"/>
     					<label for="r3"><span></span>예</label>
-    					<input type="radio" id="r4" name="kakaoIdAgreement" value="false"/>
+    					<input type="radio" id="r4" name="kakaoIdAgreement" value="false" checked="checked"/>
     					<label for="r4"><span></span>아니오</label></td>
 				</tr>
 				<tr>
@@ -391,7 +396,7 @@ function formCheck(){
 				<tr>
 					<th>자기소개</th>
 					<td>
-						<textarea name="profile" rows="12" cols="78" onkeyup="checkLength(this);" placeholder="자신이 현재 관심있는 분야 /프로젝트를 작성해주세요."></textarea>
+						<textarea name="mProfile" rows="12" cols="78" onkeyup="checkLength(this);" placeholder="자신이 현재 관심있는 분야 /프로젝트를 작성해주세요."></textarea>
 						<input type="text" readonly="readonly" name="lengthinfo" style="border: none;">
 					</td>
 				</tr>

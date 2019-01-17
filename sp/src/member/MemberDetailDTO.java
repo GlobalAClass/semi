@@ -31,13 +31,7 @@ public class MemberDetailDTO {
 	private String sigungu;
 
 	// 자기소개
-	private String profile;
-
-	// 프로필 사진 경로
-	private String profilePicturePath;
-
-	// 추가내용 공개/비공개
-	private String infoOpen;
+	private String mProfile;
 
 	// 기본 생성자
 	public MemberDetailDTO() {
@@ -47,7 +41,7 @@ public class MemberDetailDTO {
 	// 모든 필드를 가지는 생성자.
 	public MemberDetailDTO(Integer memberDetailIx, Integer memberIx, String contact, String contactAgreement, 
 			String kakaoId, String kakaoIdAgreement,String birthYear,
-			String sido, String sigungu, String profile, String profilePicturePath, String infoOpen) {
+			String sido, String sigungu, String mProfile) {
 		super();
 		this.memberDetailIx = memberDetailIx;
 		this.memberIx = memberIx;
@@ -58,9 +52,7 @@ public class MemberDetailDTO {
 		this.birthYear = birthYear;
 		this.sido = sido;
 		this.sigungu = sigungu;
-		this.profile = profile;
-		this.profilePicturePath = profilePicturePath;
-		this.infoOpen = infoOpen;
+		this.mProfile = mProfile;
 	}
 
 	public Integer getMemberDetailIx() {
@@ -135,28 +127,12 @@ public class MemberDetailDTO {
 		this.sigungu = sigungu;
 	}
 
-	public String getProfile() {
-		return profile;
+	public String getmProfile() {
+		return mProfile;
 	}
 
-	public void setProfile(String profile) {
-		this.profile = profile;
-	}
-
-	public String getProfilePicturePath() {
-		return profilePicturePath;
-	}
-
-	public void setProfilePicturePath(String profilePicturePath) {
-		this.profilePicturePath = profilePicturePath;
-	}
-
-	public String getInfoOpen() {
-		return infoOpen;
-	}
-
-	public void setInfoOpen(String infoOpen) {
-		this.infoOpen = infoOpen;
+	public void setmProfile(String mProfile) {
+		this.mProfile = mProfile;
 	}
 
 }
