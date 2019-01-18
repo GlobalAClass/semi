@@ -26,20 +26,16 @@ h1{
 	margin-top: 4px;
 }
 #memberinput{
-	border-top: 1px solid black;
-	background: #BDBDBD;
-	color: white;
+	border-top: 1px solid gray;
+	border-bottom: 1px solid gray;
+	color:gray;
 	font-size: 18px;
-	font-weight: bold;
 	padding: 5px;
 }
-#table_design{
-	width:100%;
-	height:180px;
-}
-#table_design2{
-	width:100%;
-	height: 320px;
+.th_style{
+	font-size:20px;
+	font-weight: bold;
+	border-bottom: 1px dotted black;
 }
 #design{
 	border-bottom: 1px dotted black;
@@ -49,12 +45,6 @@ h1{
 	color: white;
 	font-size: 18px;
 	font-weight: bold;
-}
-.height_170px{
-	height: 170px;
-}
-.height_50px{
-	height: 50px;
 }
 input[type="radio"] {
     display:none;
@@ -253,7 +243,7 @@ function checkPeriod(obj) {
 }
 //미리보기 이미지를 기본으로 세팅
 function setDefaultImg(){
-	memberJoin.proimg.src = "/sp/img/프로필.png";
+	memberJoin.proimg.src = "/sp/img/profile_default.jpg";
 }
 //미리보기 이미지를 선택한 그림파일로 세팅
 function showImg(profile){
@@ -311,39 +301,38 @@ function formCheck(){
 			<input type="text" hidden="hidden" name="emailAgreement" value="<%=mdto.getEmailAgreement()%>">
 			<input type="text" hidden="hidden" name="addCount" value="">
 		<h1 >회원가입</h1>
-		<div id="memberinput">회원정보 입력</div>
-		<fieldset>
-		<legend>추가입력정보</legend>
-			<table id="table_design" >
+		<div id="memberinput">1. 필수 입력정보 > <span style="color:black;font-weight: bold;">2. 추가 입력정보</span> > 3. 회원가입 완료</div>
+		<div align="center">	
+			<table style="width:100%;">
 				<tr>
-					<td align="center" class="height_170px" colspan="2">
-						<img width="150" height="150" name="proimg" src="/sp/img/프로필.png">
+					<td align="center" class="height_170px" colspan="3">
+						<img width="150" height="150" name="proimg" src="/sp/img/profile_default.jpg">
 					</td>
 				</tr>
 				<tr>
-					<td colspan="2" align="center" class="height_50px">
+					<td colspan="3" align="center" class="height_50px">
 						<label style="margin-right:60px;">&nbsp;</label>
 						<input type="file" name="picture" onchange="showImg(this);" accept=""><br>
-						<span style="margin-left:8px; font-size:5px; color:#FA5882;">파일 크기 제한은 5MB입니다.</span>
+						<span style="margin-left:8px; font-size:8px; color:#FA5882;">파일 크기 제한은 5MB입니다.</span>
 					</td>
 				</tr>
 				<tr>
-					<td colspan="2" align="center" style="height: 10px;">
+					<td colspan="3" align="center" style="height: 10px;">
 						
 					</td>
 				</tr>
 				<tr>
-					<th class="height_50px">핸드폰번호
-						<select name="headtel">
+					<th class="th_style">핸드폰번호</th>
+					<td id="design">
+						<select name="headtel" style="width:50px;height:35px;">
 							<option>010</option>
 							<option>011</option>
 							<option>018</option>
 						</select>-
-							<input style="width:70px;height:15px;" type="text" name="tel1" maxlength="4" onchange="checktel(this);">-
-							<input style="width:70px;height:15px;" type="text" name="tel2" maxlength="4" onchange="checktel(this);">
+							<input style="width:70px;height:30px;" type="text" name="tel1" maxlength="4" onchange="checktel(this);">-
+							<input style="width:70px;height:30px;" type="text" name="tel2" maxlength="4" onchange="checktel(this);">
 							<input style="text" hidden="" name="contact" value="">
-					</th>
-					<td>핸드폰 번호 공개 동의
+						핸드폰 번호 공개 동의
 						<input type="radio" id="r1" name="contactAgreement" value="true"/>
     					<label for="r1"><span></span>예</label>
     					<input type="radio" id="r2" name="contactAgreement" value="false" checked="checked"/>
@@ -351,24 +340,22 @@ function formCheck(){
     				</td>
 				</tr>
 				<tr>
-					<th class="height_50px">카카오톡ID
-						<input style="width:170px;height:20px;" type="text" name="kakaoId" placeholder="내용을 입력해주세요" onkeyup="checkKakaoId(this);">
-					</th>
-					<td>카카오톡ID 공개 동의
+					<th class="th_style">카카오톡ID</th>
+					<td id="design">
+					<input style="width:220px;height:30px;" type="text" name="kakaoId" placeholder="내용을 입력해주세요" onkeyup="checkKakaoId(this);">
+						카카오톡 ID 공개 동의
 						<input type="radio" id="r3" name="kakaoIdAgreement" value="true"/>
     					<label for="r3"><span></span>예</label>
     					<input type="radio" id="r4" name="kakaoIdAgreement" value="false" checked="checked"/>
     					<label for="r4"><span></span>아니오</label></td>
 				</tr>
 				<tr>
-					<td id="design" align="center" colspan="2">연락을받고싶은 항목에 정보를 입력해주세요.<br>이메일보다 빠르게 상대방과 연락을 주고 받을 수 있습니다.</td>
+					<td id="design" align="center" colspan="3">연락을받고싶은 항목에 정보를 입력해주세요.<br>이메일보다 빠르게 상대방과 연락을 주고 받을 수 있습니다.</td>
 				</tr>
-			</table>
-			<table id="table_design2">
 				<tr>
-					<th id="design">출생년도</th>
+					<th class="th_style">출생년도</th>
 					<td id="design">
-						<select name="birthYear">
+						<select name="birthYear" style="width:170px;height:35px;">
 							<option value="">선택해주세요</option>
 							<%
 							Calendar cal = Calendar.getInstance(); //서버시간기준으로 120세까지만 선택가능.
@@ -383,9 +370,9 @@ function formCheck(){
 					</td>
 				</tr>
 				<tr>
-					<th id="design">지역</th>
+					<th class="th_style">지역</th>
 					<td id="design">
-						<select onchange="addOption(this)" name="sido">
+						<select onchange="addOption(this)" name="sido" style="width:170px;height:35px;">
 							<option selected>선택해주세요</option>
 							<option >서울특별시</option>
 							<option>인천광역시</option>
@@ -405,13 +392,13 @@ function formCheck(){
 							<option>전라남도</option>
 							<option>제주도</option>
 						</select>
-						<select hidden="" name="sigungu"> <!-- 추가옵션 달릴 부분 -->
+						<select hidden="" name="sigungu" style="width:170px;height:35px;"> <!-- 추가옵션 달릴 부분 -->
 							<option selected>선택해주세요</option>
 						</select>
 					</td>
 				</tr>
 				<tr>
-					<th id="design">공모전 이력&nbsp;</th>
+					<th class="th_style">공모전 이력&nbsp;</th>
 					<td id="design">
 						<input type="button" value="+" onclick="pageAdd();">&nbsp;
 						<input type="button" value="-" onclick="pageDel();">
@@ -420,19 +407,19 @@ function formCheck(){
 				<tbody id="tb">
 				</tbody>
 				<tr>
-					<th>자기소개</th>
-					<td>
+					<th class="th_style">자기소개</th>
+					<td id="design">
 						<textarea name="mProfile" rows="12" cols="78" onkeyup="checkLength(this);" placeholder="자신이 현재 관심있는 분야 /프로젝트를 작성해주세요."></textarea>
 						<input type="text" readonly="readonly" name="lengthinfo" style="border: none;">
 					</td>
 				</tr>
 				<tr>
 					<td colspan="2" align="center">
-						<input id="join" type="submit" value="가입하기">
+						<input style="width:100px;height:35px;" type="submit" value="가입하기">
 					</td>
 				</tr>
 			</table>
-		</fieldset>
+			</div>
 		</form>
 	</article>
 </section>

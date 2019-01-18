@@ -21,11 +21,10 @@ h1{
 	margin-top: 4px;
 }
 #memberinput{
-	border-top: 1px solid black;
-	background: #BDBDBD;
-	color: white;
+	border-top: 1px solid gray;
+	border-bottom: 1px solid gray;
+	color:gray;
 	font-size: 18px;
-	font-weight: bold;
 	padding: 5px;
 }
 #addinfo{
@@ -39,6 +38,11 @@ article table{
 	height: 400px;
 }
 #design{
+	border-bottom: 1px dotted black;
+}
+.th_style{
+	font-size:20px;
+	font-weight: bold;
 	border-bottom: 1px dotted black;
 }
 </style>
@@ -155,12 +159,10 @@ function formCheck(){
 	<article>
 		<form name="memberJoin" action="memberJoinAdd.jsp" method="post" onsubmit="return formCheck()">
 		<h1>회원가입</h1>
-		<div id="memberinput">회원정보 입력</div>
-		<fieldset>
-		<legend>필수입력정보</legend>
+		<div id="memberinput"><span style="color:black;font-weight: bold;">1. 필수 입력정보</span> > 2. 추가 입력정보 > 3. 회원가입 완료</div>
 			<table>
 				<tr>
-					<th id="design">이메일</th>
+					<th class="th_style">이메일</th>
 					<td id="design">
 						<input type="text" hidden="" name="idEmail" value=""><!-- 중복 확인된 아이디값 넣을 태그 -->
 						<%
@@ -188,13 +190,12 @@ function formCheck(){
 								}
 							}
 						%>
-						<input style="width:50%;height:20px;" type="text" placeholder="내용을 입력해주세요" 
+						<input style="width:150px;height:25px;" type="text" placeholder=" 아이디 입력" 
 								required="required" name="idEmail1"  onchange="noSpaceThisForm(this);"
-								value=<%if(idEmail1==null){ out.print("");}else{out.print(idEmail1);}%>>@
-						<br>
-						<input style="width:40%;height:20px;" type="text" name="idEmail2" required="required" onchange="noSpaceThisForm(this);"
+								value=<%if(idEmail1==null){ out.print("");}else{out.print(idEmail1);}%>> @
+						<input style="width:150px;height:25px;" type="text" name="idEmail2" required="required" onchange="noSpaceThisForm(this);"
 								value=<%if(idEmail2==null){ out.print("");}else{out.print(idEmail2);} %>>
-						<select name="selectEmail" onchange="select()" style="margin-top: 10px">
+						<select name="selectEmail" onchange="select()" style="width:150px;height:30px;">
 							<option value="">선택하세요</option>
 							<option value="naver.com">naver.com</option>
 							<option value="hanmail.net">hanmail.net</option>
@@ -204,56 +205,54 @@ function formCheck(){
 							<option value="gmail.com">gmail.com</option>
 							<option value="직접입력">직접입력</option>
 						</select>
-						<input type="button" name="cid" value="중복확인" style="margin-left: 50px;" onclick="checkEmailPop()">
+						<input type="button" name="cid" value="중복확인" style="width:80px;height:30px;margin-left: 20px;" onclick="checkEmailPop()">
 					</td>
 				</tr>
 				<tr>
-					<th id="design">비밀번호</th>
+					<th class="th_style">비밀번호</th>
 					<td id="design" colspan="3">
 						<input type="text" hidden="" name="pwd" value="">
-						<input style="width:170px;height:20px;" placeholder="내용을 입력해주세요" required="required" 
+						<input style="width:250px;height:30px;" placeholder="비밀번호 입력" required="required" 
 								type="password" name="pwd1" onchange="noSpaceThisForm(this);checkPwd()">
 					</td>
 				</tr>
 				<tr>
-					<th id="design">비밀번호확인</th>
+					<th class="th_style">비밀번호 확인</th>
 					<td id="design" colspan="3">
-						<input style="width:170px;height:20px;" placeholder="내용을 입력해주세요" required="required" 
+						<input style="width:250px;height:30px;" placeholder="비밀번호 재입력" required="required" 
 								type="password" name="pwd2" onchange="noSpaceThisForm(this);checkPwd()">
 						<input type="text" name=checkpwd disabled="disabled" style="width: 200px; border: none; background: none;">
 					</td>
 				</tr>
 				<tr>
-					<th id="design">이름</th>
+					<th class="th_style">이름</th>
 					<td id="design" colspan="3">
-						<input style="width:170px;height:20px;"	maxlength="15" placeholder="내용을 입력해주세요" required="required" 
+						<input style="width:150px;height:30px;"	maxlength="15" placeholder="실명을 입력해주세요" required="required" 
 								type="text" name="MName" onchange="noSpaceThisForm(this);">
 					</td>
 				</tr>
 				<tr>
-					<th id="design">분야/전공</th>
+					<th class="th_style">분야/전공</th>
 					<td colspan="3" id="design">
-						<input style="width:170px;height:20px;" type="text" name="fieldMajor" readonly="readonly" required="required">
-						<input type="button" value="찾기"  onclick="fieldMajorPop()">
+						<input style="width:150px;height:30px;" type="text" name="fieldMajor" readonly="readonly" required="required">
+						<input type="button" value="찾기"  onclick="fieldMajorPop()" style="width:70px;height:35px;">
 					</td>
 				</tr>
 				<tr>
-					<th id="design">수신동의</th>
+					<th class="th_style">수신동의</th>
 					<td id="design" colspan="3">이메일 수신을 허가하시겠습니까?
 						<input type="radio" name="emailAgreement" value="true" required="required">예
 						<input type="radio" name="emailAgreement" value="false" required="required">아니오
 					</td>
 				</tr>
 				<tr>
-					<th></th>
-					<td align="center">&nbsp;&nbsp;
-						<input type="submit" value="확인">&nbsp;&nbsp;&nbsp;&nbsp;
-						<input type="button" value="취소" onclick="javascript:location.href='/sp/index.jsp';">
+					<td colspan="2" align="center">
+						<input type="submit" value="다음으로" style="width:100px;height:35px;">
+						<input type="button" value="가입 취소" onclick="javascript:location.href='/sp/index.jsp';" style="width:110px;height:35px;">
 						<!--  <a href="/sp/memberJoin2.jsp"><input id="addinfo" type="button" value="+"></a> -->
 					</td>
 				</tr>
 			</table>
-			</fieldset>
 		</form>
 	</article>
 </section>

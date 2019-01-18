@@ -73,12 +73,12 @@ function addOption(obj){
 }
 function select(part){
 	var partname=part.value; //선택한 역할 값.
-	var inputRes=part.nextSibling;
+	var inputRes=part.nextSibling; //part 다음 태그인 세부사항을 입력하는 <input>태그를 가리킴.
 	var role=inputRes.nextSibling.nextSibling; //4번째 위치한 버튼 들어가야하는 <div>태그
 	
 	//담당역할 선택 -> 세부사항 기입 불가, 세부사항 빈문자열.
 	if(partname=="담당 역할"){
-		inputRes.value = ''; //part 다음 태그인 세부사항을 입력하는 <input>태그를 가리킴.
+		inputRes.value = ''; 
 		inputRes.readOnly=true;
 	}else{
 		inputRes.readOnly=false;
@@ -125,7 +125,7 @@ function nowTeam(res){
 	}
 }
 var cnt=0;
-var people = new Array(); //각 테이블의 인원수가 선택될 때 저장할 배열
+var people = new Array(); //각 담당 역할의 인원수가 선택될 때 저장할 배열
 function addTeam(){
 
 	var tb = document.getElementById('tb');
@@ -165,18 +165,18 @@ function addTeam(){
 						+'</tr>'
 					+'</table>'
 				+'</div>'
-	people.push(1); //테이블 생성하면 해당 인덱스에 인원수 1 넣어주기
+	people.push(1); //테이블 생성하면 인원수 계산하는 배열에 인원수 1 넣어주기
 	cnt++;
 	
 	var sum=0;
 	for(var i=0;i<cnt;i++){
 		sum += Number(people[i]);
 	}
-	document.all.sumTeam.value=sum;
+	document.all.sumTeam.value=sum; //계산된 인원수 출력해서 보여주기
 				
 }
 
-function delTeam(row){
+function delTeam(row){ //팀원 삭제하는 함수
 
 	var idx = row.parentNode.parentNode.rowIndex; //삭제 눌린 해당 인덱스 찾기
 	var tb = document.getElementById('tb');
@@ -192,7 +192,7 @@ function delTeam(row){
 	
 }
 
-function cntTeam(count){
+function cntTeam(count){ //셀렉트 박스 변경될 때 마다 인원수 측정하여 변경해주는 함수
 	var sum=0;
 	var idx = count.parentNode.parentNode.rowIndex; //select box가 선택된 해당 인덱스
 	for(var i=0;i<cnt;i++){
@@ -205,10 +205,11 @@ function cntTeam(count){
 	}
 	document.all.sumTeam.value=sum;
 }
-function ageNoMatter(cb){
+
+function ageNoMatter(cb){ //나이 무관인 경우 나이 입력할 수 있는 text칸 숨기기
 	if(cb.checked==true){
 		document.all.ageVisible.style.display="none";
-		//무관 데이터 db로 저장되도록
+		//무관 데이터 db로 저장되도록 설정해야함
 	}else{
 		document.all.ageVisible.style.display="";
 	}

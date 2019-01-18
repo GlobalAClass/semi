@@ -24,6 +24,7 @@ if(mname==null){
 	<div>
 		<a href="/sp">HOME |</a>
 		<a><%=mname %>님은 공모전 준비중~ |</a>
+		<a href="/sp/mypage/myProfile.jsp">마이페이지 |</a>
 		<a href="/sp/logout.jsp">로그아웃</a>
 	</div>
 <%
