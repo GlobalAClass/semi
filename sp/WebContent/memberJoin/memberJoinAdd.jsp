@@ -141,11 +141,11 @@ function pageAdd(){
 	cell2.innerHTML = '<fieldset><legend>공모전이력</legend>'
 						+'<table id="table_design">'
 							+'<tr><th id="design">공모전 이름</th>'
-								+'<td id="design"><input type="text" style="width:170px; height:20px;" name="cName'+addCount+'"></td>'
+								+'<td id="design"><input type="text" style="width:170px; height:20px;" name="cName'+addCount+'" required="required"></td>'
 							+'</tr>'
 							+'<tr><th id="design">공모전 기간</th>'
-								+'<td id="design"><input style="width:170px;height:20px;" type="text" id="period'+addCount+'_1" name="period'+addCount+'_1" onchange="checkPeriod(this);">&nbsp;~&nbsp;'
-												+'<input style="width:170px;height:20px;" type="text" id="period'+addCount+'_2" name="period'+addCount+'_2" onchange="checkPeriod(this);">'
+								+'<td id="design"><input style="width:170px;height:20px;" type="text" id="period'+addCount+'_1" name="period'+addCount+'_1" onchange="checkPeriod(this);" required="required">&nbsp;~&nbsp;'
+												+'<input style="width:170px;height:20px;" type="text" id="period'+addCount+'_2" name="period'+addCount+'_2" onchange="checkPeriod(this);" required="required">'
 												+'<input type="text" hidden="" id="period'+addCount+'" name="period'+addCount+'" value="">'+'<span style="margin-left:8px; font-size:5px; color:#A9D0F5;">기간은 년,월,일 순서로 0000-00-00으로 입력해주세요</span></td>'
 							+'</tr>'
 							+'<tr><th id="design">담당역할</th>'
@@ -229,7 +229,7 @@ function checktel(tel){
     var num_pattern = /^\d{4}$/;  // 정규표현식 사용. []안에서 ^는 '일치하지 않는'을 의미한다.
     if(!num_pattern.exec(tel.value)) { //exec는 정규표현식 패턴에 맞는 문자열 탐색
         alert("해당 항목에는 4자리의 숫자만 사용할수 있습니다.\n다른 문자는 자동적으로 제거 됩니다.");
-        tel.value = tel.value.replace(/^\d{4}$/g,''); //숫자를 제외한 문자열 내 모든 패턴(g=global)찾아 빈문자열로 대체.
+        tel.value = tel.value.replace(/.*/g,''); //숫자를 제외한 문자열 내 모든 패턴(g=global)찾아 빈문자열로 대체.
         return false;
     }
 }
@@ -273,7 +273,24 @@ function showImg(profile){
 }
 function formCheck(){
 	memberJoin.addCount.value = addCount; // 공모전 상세이력 한개도 추가 안했을 때, 0전송됨.
+	//전화번호 조합
 	memberJoin.contact.value = memberJoin.headtel.value +"-"+ memberJoin.tel1.value +"-"+ memberJoin.tel2.value;
+	//전화번호 입력 안했을 때, 빈문자열 저장.
+	if(memberJoin.contact.value == "010--")
+		memberJoin.contact.value = "";
+	//생년월일 선택 안했을 때, 빈 문자열 저장.
+	if(memberJoin.birthYear.value == "선택해주세요"){
+		memberJoin.birthYear.value = "";
+	}
+	//시도 선택 안했을 때, 빈 문자열 저장.
+	if(memberJoin.sido.value == "선택해주세요"){
+		memberJoin.sido.value = "";
+	}
+	//시군구 선택 안했을 때, 빈 문자열 저장.
+	if(memberJoin.sigungu.value == "선택해주세요"){
+		memberJoin.sigungu.value = "";
+	}
+	//공모전 상세이력의 기간 조합
 	for(i=0; i<addCount; i++){
 		document.getElementById("period"+i).value = document.getElementById('period'+i+'_1').value
 													+'~'+document.getElementById('period'+i+'_2').value;
@@ -285,14 +302,14 @@ function formCheck(){
 <%@include file="/header.jsp"%>
 <section>
 	<article>
-		<form name="memberJoin" action="memberJoin_ok.jsp" method="post" onsubmit="return formCheck()">
+		<form name="memberJoin" action="memberJoin_ok.jsp" method="post" onsubmit="return formCheck()" enctype="multipart/form-data">
 			<!-- 이전 필수 가입페이지에서 넘어오는 파라미터들 -->
-			<input type="text" hidden="" name="idEmail" value="<%=mdto.getidEmail()%>">
-			<input type="text" hidden="" name="pwd" value="<%=mdto.getPwd()%>">
-			<input type="text" hidden="" name="MName" value="<%=mdto.getMName()%>">
-			<input type="text" hidden="" name="fieldMajor" value="<%=mdto.getFieldMajor()%>">
-			<input type="text" hidden="" name="emailAgreement" value="<%=mdto.getEmailAgreement()%>">
-			<input type="text" hidden="" name="addCount" value="">
+			<input type="text" hidden="hidden" name="idEmail" value="<%=mdto.getidEmail()%>">
+			<input type="text" hidden="hidden" name="pwd" value="<%=mdto.getPwd()%>">
+			<input type="text" hidden="hidden" name="MName" value="<%=mdto.getMName()%>">
+			<input type="text" hidden="hidden" name="fieldMajor" value="<%=mdto.getFieldMajor()%>">
+			<input type="text" hidden="hidden" name="emailAgreement" value="<%=mdto.getEmailAgreement()%>">
+			<input type="text" hidden="hidden" name="addCount" value="">
 		<h1 >회원가입</h1>
 		<div id="memberinput">회원정보 입력</div>
 		<fieldset>
@@ -305,7 +322,14 @@ function formCheck(){
 				</tr>
 				<tr>
 					<td colspan="2" align="center" class="height_50px">
-						<input type="file" name="picture" onchange="showImg(this);" accept="">
+						<label style="margin-right:60px;">&nbsp;</label>
+						<input type="file" name="picture" onchange="showImg(this);" accept=""><br>
+						<span style="margin-left:8px; font-size:5px; color:#FA5882;">파일 크기 제한은 5MB입니다.</span>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" align="center" style="height: 10px;">
+						
 					</td>
 				</tr>
 				<tr>
@@ -345,6 +369,7 @@ function formCheck(){
 					<th id="design">출생년도</th>
 					<td id="design">
 						<select name="birthYear">
+							<option value="">선택해주세요</option>
 							<%
 							Calendar cal = Calendar.getInstance(); //서버시간기준으로 120세까지만 선택가능.
 							int y = cal.get(Calendar.YEAR);

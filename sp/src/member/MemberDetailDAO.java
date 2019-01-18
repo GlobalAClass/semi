@@ -17,6 +17,7 @@ public class MemberDetailDAO {
 	//회원 추가정보 DB에 입력.
 	public int memberDetailJoin(MemberDetailDTO mddto, int member_ix) {
 		try {
+			System.out.println("memberDetailJoin() 호출");
 			conn = db.DB.getConn();
 			String sql = "Insert into Member_Detail_TB values(Member_Detail_TB_SEQ.nextval, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			ps = conn.prepareStatement(sql);

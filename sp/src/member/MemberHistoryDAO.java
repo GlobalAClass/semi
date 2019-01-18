@@ -17,6 +17,7 @@ public class MemberHistoryDAO {
 	
 	public int memberHistoryJoin(MemberHistoryDTO mhdto, int member_ix) {
 		try {
+			System.out.println("memberHistoryDTO() 호출");
 			conn = db.DB.getConn();
 			String sql = "Insert into Member_History_TB values(Member_History_TB_SEQ.nextval, ?, ?, ?, ?, ?, ?, ?)";
 			ps = conn.prepareStatement(sql);

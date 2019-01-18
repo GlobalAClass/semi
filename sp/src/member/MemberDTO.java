@@ -37,6 +37,15 @@ public class MemberDTO {
 		this.emailAgreement = emailAgreement;
 		this.fieldMajor = fieldMajor;
 	}
+	// 인덱스를 제외한 생성자.
+	public MemberDTO(String idEmail, String pwd, String mName, String emailAgreement, String fieldMajor) {
+		super();
+		this.idEmail = idEmail;
+		this.pwd = pwd;
+		this.mName = mName;
+		this.emailAgreement = emailAgreement;
+		this.fieldMajor = fieldMajor;
+	}
 
 	public Integer getMemberIx() {
 		return memberIx;

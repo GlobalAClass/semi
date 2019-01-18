@@ -54,6 +54,20 @@ public class MemberDetailDTO {
 		this.sigungu = sigungu;
 		this.mProfile = mProfile;
 	}
+	// 인덱스 2개를 제외한 생성자.
+	public MemberDetailDTO(String contact, String contactAgreement, String kakaoId, String kakaoIdAgreement,
+			String birthYear, String sido, String sigungu, String mProfile) {
+		super();
+		this.contact = contact;
+		this.contactAgreement = contactAgreement;
+		this.kakaoId = kakaoId;
+		this.kakaoIdAgreement = kakaoIdAgreement;
+		this.birthYear = birthYear;
+		this.sido = sido;
+		this.sigungu = sigungu;
+		this.mProfile = mProfile;
+	}
+	
 
 	public Integer getMemberDetailIx() {
 		return memberDetailIx;

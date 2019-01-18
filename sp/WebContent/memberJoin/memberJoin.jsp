@@ -85,16 +85,30 @@ function checkPwd(){
 		document.memberJoin.checkpwd.style.color = 'red';
 	}
 }
+//올바른 이메일 주소인지 확인. = ^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$ 
+function checkCorrectEmail(str) {
+    var email_pattern = /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/;
+    if(!email_pattern.exec(str)) { //exec는 정규표현식 패턴에 맞는 문자열 탐색
+        return false;
+    }else{
+    	return true;
+    }
+}
 //아이디(=이메일) 중복 확인 ------------> idEmail2가 com, net, etc...으로 끝나는지 확인하는 논리 추가해야함.
 function checkEmailPop(){
 	idEmail=document.memberJoin.idEmail1.value;
 	idEmail2=document.memberJoin.idEmail2.value;
 	
 	if(typeof(idEmail)!="undefined" && idEmail!="" && typeof(idEmail2)!="undefined" && idEmail2!=""){
-		var go_ref = '/sp/memberJoin/memberJoin.jsp?'+'&idEmail1='+idEmail+'&idEmail2='+idEmail2;
-		location.href = go_ref;
+		var email_str = idEmail+'@'+idEmail2; //올바른 이메일 주소인지 확인하기 위한 문자열 변수.
+		if(checkCorrectEmail(email_str)){ //checkCorrectEmail(str)은 올바른 이메일 주소면 true 아니면 false 반환. 해당 함수는 바로 위에 선언되어있음.
+			var go_ref = '/sp/memberJoin/memberJoin.jsp?'+'&idEmail1='+idEmail+'&idEmail2='+idEmail2;
+			location.href = go_ref;	
+		}else{
+	        alert("올바른 이메일 주소를 입력하세요");
+		}
 	}else{
-		alert("이메일주소를 올바르게 입력하세요.");
+		alert("이메일주소를 입력하세요.");
 	}
 }
 //분야,전공 찾기 팝업 - 윈도우 창 기준으로 팝업 중앙에 뜨게 함.
@@ -154,7 +168,7 @@ function formCheck(){
 							String idEmail2 = request.getParameter("idEmail2");
 							
 							if(idEmail1!=null && !idEmail1.equals("") && idEmail2!=null && !idEmail2.equals("")){
-								//이메일 주소를 합쳐서 mdto에 set하기
+								//각각의 텍스트 값 합쳐서 이메일 주소 만들기.
 								String idEmail =  idEmail1+"@"+idEmail2;
 								//이메일 중복 확인
 								if(mdao.checkEmail(idEmail)){
@@ -166,7 +180,7 @@ function formCheck(){
 								}else{
 									%>
 									<script>
-										alert('<%=idEmail%>. \n사용 가능한 아이디입니다.');
+										alert('<%=idEmail%> \n사용 가능한 아이디입니다.');
 										memberJoin.idEmail.value = '<%=idEmail%>';
 										//alert(memberJoin.idEmail.value);
 									</script>
