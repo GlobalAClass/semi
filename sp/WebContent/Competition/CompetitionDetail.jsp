@@ -55,7 +55,7 @@ article{
 		<div>
 			<table style="width:800px;height:250px;">
 				<tr>
-					<td style="width:200px;height:250px;" rowspan="9"><img style="width:200px;height:250px;border: 1px solid gray; margin-right:30px;" src="/sp/img/content.jpg"></td>
+					<td style="width:200px;height:250px;" rowspan="9"><img style="width:200px;height:250px;border: 1px solid gray; margin-right:30px;" src="/sp/img/content/<%=dto.getCImage()%>"></td>
 				</tr>
 				<tr>
 					<td colspan="2" style="font-size:20px;"><%=dto.getCName()%></td>
