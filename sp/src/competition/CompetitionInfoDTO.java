@@ -57,9 +57,11 @@ public class CompetitionInfoDTO {
 		this.detail = detail;
 	}
 	
-	// 전체 공모전 페이지 
-	public CompetitionInfoDTO(String CName, String field, String teamSolo, String period, Integer readnum) {
+	// 전체 공모전 페이지 생성자
+	public CompetitionInfoDTO(Integer competitionInfoIx, String CName, String field, String teamSolo, String period,
+			Integer readnum) {
 		super();
+		this.competitionInfoIx = competitionInfoIx;
 		this.CName = CName;
 		this.field = field;
 		this.teamSolo = teamSolo;

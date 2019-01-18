@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.*" %>
-<%@ page import="competition.*"%>
+<%@ page import="competition.*" %>
 <jsp:useBean id="cdto" class="competition.CompetitionInfoDTO"/>
 <jsp:setProperty property="*" name="cdto"/>
 <jsp:useBean id="cdao" class="competition.CompetitionInfoDAO"/>
@@ -11,36 +11,10 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" type="text/css" href="/sp/css/mainLayout.css">
-<style>
-#main{
-	float:left;
-	width:1000px;
-	height:auto;
-}
-h1{
-	font-size: 30px;
-	text-align: center;
-	margin: 0px;
-	padding: 9px;
-}
-#main tbody a{
-	font-size:15px;
-	vertical-align:middle;
-	text-decoration:underline;
-	color: black;
-	font-weight: bold;
-}
-#main tfoot a{
-	font-size:15px;
-	vertical-align:middle;
-	text-decoration:underline;
-	color: black;
-}
-</style>
-</head>
 <%
-//전체 공모전 목록보기 페이징
-int totalcnt=cdao.getTotalCnt();
+String field=request.getParameter("field");
+
+int totalcnt=cdao.getTotalCnt2(field);
 int listsize=10;
 int pagesize=10;
 String cp_s=request.getParameter("cp");
@@ -57,15 +31,30 @@ int usergroup=cp/pagesize;
 if(cp%pagesize==0){
 	usergroup--;
 }
+ArrayList<CompetitionInfoDTO> arr=cdao.CompetitionFieldList(field,cp,listsize);
 %>
+<style>
+#main{
+	float:left;
+	width:1000px;
+	height:auto;
+}
+h1{
+	font-size: 30px;
+	text-align: center;
+	margin: 0px;
+	padding: 9px;
+}
+</style>
+</head>
 <body>
 <%@include file="/header.jsp"%>
 <%@include file="/Competition/aside.jsp"%>
 <section>
 	<article>
-		<form name="Competition" >
+		<form name="Competition">
 		<div id="main">
-		<h1>전체공모전</h1>
+		<h1><%=field%></h1>
 			<table style="width:650px;height:auto;margin-left:190px;" border="1">
 				<thead>
 					<tr>
@@ -77,28 +66,27 @@ if(cp%pagesize==0){
 					</tr>
 				</thead>
 				<tbody>
-				<%
-				ArrayList<CompetitionInfoDTO> arr=cdao.CompetitionAllList(cp,listsize);
-				if(arr==null||arr.size()==0){
-					%>
-					<tr>
-						<td colspan="5"><h2>공모전이 등록되지 않았습니다.</h2></td>
-					</tr>
 					<%
-				}else{
-					for(int i=0;i<arr.size();i++){
+					if(arr==null||arr.size()==0){
 						%>
 						<tr>
-							<td><%=arr.get(i).getField()%></td>
-							<td><a href="CompetitionDetail.jsp?ix=<%=arr.get(i).getCompetitionInfoIx()%>"><%=arr.get(i).getCName()%></a></td>
-							<td><%=arr.get(i).getPeriod()%></td>
-							<td><%=arr.get(i).getTeamSolo()%></td>
-							<td><%=arr.get(i).getReadnum()%></td>
+							<td colspan="5"><h2>공모전이 등록되지 않았습니다.</h2></td>
 						</tr>
 						<%
+					}else{
+						for(int i=0;i<arr.size();i++){
+							%>
+							<tr>
+								<td><%=arr.get(i).getField()%></td>
+								<td><a href="CompetitionDetail.jsp?ix=<%=arr.get(i).getCompetitionInfoIx()%>"><%=arr.get(i).getCName()%></a></td>
+								<td><%=arr.get(i).getPeriod()%></td>
+								<td><%=arr.get(i).getTeamSolo()%></td>
+								<td><%=arr.get(i).getReadnum()%></td>
+							</tr>
+							<%
+						}
 					}
-				}
-				%>
+					%>
 				</tbody>
 				<tfoot>
 					<tr>
@@ -106,14 +94,14 @@ if(cp%pagesize==0){
 						<%
 						if(usergroup!=0){
 							%>
-							<a href="Competition.jsp?cp=<%=(usergroup-1)*pagesize+pagesize%>">&lt;&lt;</a>
+							<a href="CompetitionField.jsp?cp=<%=(usergroup-1)*pagesize+pagesize%>&field=<%=field%>">&lt;&lt;</a>
 							<%
 						}
 						%>
 						<%
 						for(int i=usergroup*pagesize+1;i<usergroup*pagesize+pagesize;i++){
 							%>
-							&nbsp;&nbsp;<a href="Competition.jsp?cp=<%=i%>"><%=i%></a>&nbsp;&nbsp;
+							&nbsp;&nbsp;<a href="CompetitionField.jsp?cp=<%=i%>&field=<%=field%>"><%=i%></a>&nbsp;&nbsp;
 							<%
 							if(i==totalpage)break;
 						}
@@ -121,7 +109,7 @@ if(cp%pagesize==0){
 						<%
 						if(usergroup!=(totalpage/pagesize-(totalpage%pagesize==0?1:0))){
 							%>
-							<a href="Competition.jsp?cp=<%=(usergroup+1)*pagesize+1%>">&gt;&gt;</a>
+							<a href="CompetitionField.jsp?cp=<%=(usergroup+1)*pagesize+1%>&field=<%=field%>">&gt;&gt;</a>
 							<%
 						}
 						%>

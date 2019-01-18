@@ -1,5 +1,27 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="competition.*" %>
+<jsp:useBean id="cdto" class="competition.CompetitionInfoDTO"/>
+<jsp:setProperty property="*" name="cdto"/>
+<jsp:useBean id="cdao" class="competition.CompetitionInfoDAO"/>
+<% 
+// 공모전 제목 클릭시 공모전 정보인덱스로 값 받아오기
+String ix_s=request.getParameter("ix");
+if(ix_s==null||ix_s.equals("")){
+	ix_s="0";
+}
+Integer ix=Integer.parseInt(ix_s);
+//공모전 제목 클릭시 정보보기 DAO
+CompetitionInfoDTO dto=cdao.CompetitionCNameInfo(ix);
+if(dto==null){
+	%>
+	<script>
+	window.alret('삭제된 공모전이거나 잘못된 접근입니다.');
+	location.href='Competition.jsp';
+	</script>
+	<%
+}
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -36,35 +58,35 @@ article{
 					<td style="width:200px;height:250px;" rowspan="9"><img style="width:200px;height:250px;border: 1px solid gray; margin-right:30px;" src="/sp/img/content.jpg"></td>
 				</tr>
 				<tr>
-					<td colspan="2" style="font-size:20px;">어촌 사랑 초등학생 공모전</td>
+					<td colspan="2" style="font-size:20px;"><%=dto.getCName()%></td>
 				</tr>
 				<tr>
 					<td class="sub">분야</td>
-					<td>디자인</td>
+					<td><%=dto.getField()%></td>
 				</tr>
 				<tr>
 					<td class="sub">팀/개인</td>
-					<td>개인</td>
+					<td><%=dto.getTeamSolo()%></td>
 				</tr>
 				<tr>
 					<td class="sub">주최</td>
-					<td>고용노동부</td>
+					<td><%=dto.getAuspice()%></td>
 				</tr>
 				<tr>
 					<td class="sub">주관</td>
-					<td>방송통신위원회, 안전보건공단</td>
+					<td><%=dto.getCManage()%></td>
 				</tr>
 				<tr>
 					<td class="sub">참가자격</td>
-					<td>초등학생</td>
+					<td><%=dto.getEntitlement()%></td>
 				</tr>
 				<tr>
 					<td class="sub">접수기간</td>
-					<td>2018-12-21 ~ 2019-01-30</td>
+					<td><%=dto.getPeriod()%></td>
 				</tr>
 				<tr>
 					<td class="sub">홈페이지</td>
-					<td><a>홈페이지 링크 걸기</a></td>
+					<td><a><%=dto.getCLink()%></a></td>
 				</tr>
 			</table>
 		</div>
