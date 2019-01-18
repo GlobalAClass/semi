@@ -350,7 +350,7 @@ function formCheck(){
     					<label for="r4"><span></span>아니오</label></td>
 				</tr>
 				<tr>
-					<td id="design" align="center" colspan="3">연락을받고싶은 항목에 정보를 입력해주세요.<br>이메일보다 빠르게 상대방과 연락을 주고 받을 수 있습니다.</td>
+					<td id="design" style="color:gray;" colspan="3">연락을받고싶은 항목에 정보를 입력해주세요.<br>이메일보다 빠르게 상대방과 연락을 주고 받을 수 있습니다.</td>
 				</tr>
 				<tr>
 					<th class="th_style">출생년도</th>
@@ -412,6 +412,9 @@ function formCheck(){
 						<textarea name="mProfile" rows="12" cols="78" onkeyup="checkLength(this);" placeholder="자신이 현재 관심있는 분야 /프로젝트를 작성해주세요."></textarea>
 						<input type="text" readonly="readonly" name="lengthinfo" style="border: none;">
 					</td>
+				</tr>
+				<tr>
+				<td colspan="2"><div align="center" style="color:gray;font-weight: bold;font-size:30px;margin:10px;">추가정보를 입력하지 않아도 회원 가입이 가능합니다.</div></td>
 				</tr>
 				<tr>
 					<td colspan="2" align="center">
