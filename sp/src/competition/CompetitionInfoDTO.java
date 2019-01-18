@@ -36,6 +36,9 @@ public class CompetitionInfoDTO {
 	// 공모전 조회수
 	private Integer readnum;
 	
+	//공모전 이미지 파일명
+	private String CImage;
+	
 	// 기본 생성자
 	public CompetitionInfoDTO() {
 		System.out.println("CompetitionInfoDTO 생성");
@@ -43,7 +46,8 @@ public class CompetitionInfoDTO {
 	
 	// 모든 필드 가지는 생성자
 	public CompetitionInfoDTO(Integer competitionInfoIx, String CName, String field, String teamSolo, String auspice,
-			String CManage, String entitlement, String period, String CLink, String detail, Integer readnum) {
+			String CManage, String entitlement, String period, String CLink, String detail, Integer readnum,
+			String CImage) {
 		super();
 		this.competitionInfoIx = competitionInfoIx;
 		this.CName = CName;
@@ -55,11 +59,13 @@ public class CompetitionInfoDTO {
 		this.period = period;
 		this.CLink = CLink;
 		this.detail = detail;
+		this.readnum = readnum;
+		this.CImage = CImage;
 	}
 	
 	// 전체 공모전 페이지 생성자
 	public CompetitionInfoDTO(Integer competitionInfoIx, String CName, String field, String teamSolo, String period,
-			Integer readnum) {
+			Integer readnum, String CImage) {
 		super();
 		this.competitionInfoIx = competitionInfoIx;
 		this.CName = CName;
@@ -67,6 +73,7 @@ public class CompetitionInfoDTO {
 		this.teamSolo = teamSolo;
 		this.period = period;
 		this.readnum = readnum;
+		this.CImage = CImage;
 	}
 	
 	public Integer getCompetitionInfoIx() {
@@ -157,5 +164,13 @@ public class CompetitionInfoDTO {
 		this.readnum = readnum;
 	}
 
+	public String getCImage() {
+		return CImage;
+	}
+
+	public void setCImage(String cImage) {
+		CImage = cImage;
+	}
+	
 	
 }

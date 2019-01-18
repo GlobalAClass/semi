@@ -39,7 +39,9 @@ public class CompetitionInfoDAO{
 				String period=rs.getString("PERIOD");
 				//공모전 조회수
 				Integer readnum=rs.getInt("READNUM");
-				CompetitionInfoDTO dto=new CompetitionInfoDTO(competitionInfoIx, CName, field, teamSolo, period, readnum);
+				//공모전 이미지 파일명
+				String CImage=rs.getString("C_IMAGE");
+				CompetitionInfoDTO dto=new CompetitionInfoDTO(competitionInfoIx, CName, field, teamSolo, period, readnum, CImage);
 				arr.add(dto);
 			}
 			return arr;
@@ -81,7 +83,9 @@ public class CompetitionInfoDAO{
 				String period=rs.getString("PERIOD");
 				//공모전 조회수
 				Integer readnum=rs.getInt("READNUM");
-				CompetitionInfoDTO dtos=new CompetitionInfoDTO(competitionInfoIx, CName, field, teamSolo, period, readnum);
+				//공모전 이미지 파일명
+				String CImage=rs.getString("C_IMAGE");
+				CompetitionInfoDTO dtos=new CompetitionInfoDTO(competitionInfoIx, CName, field, teamSolo, period, readnum, CImage);		
 				arr.add(dtos);
 			}
 			return arr;
@@ -128,7 +132,9 @@ public class CompetitionInfoDAO{
 				String detail=rs.getString("DETAIL");
 				//공모전 조회수
 				Integer  readnum=rs.getInt("READNUM");
-				dtos=new CompetitionInfoDTO(ix, CName, field, teamSolo, auspice, CManage, entitlement, period, CLink, detail, readnum);
+				//공모전 이미지 파일명
+				String CImage=rs.getString("C_IMAGE");
+				dtos=new CompetitionInfoDTO(ix, CName, field, teamSolo, auspice, CManage, entitlement, period, CLink, detail, readnum, CImage);
 			}
 			return dtos;
 		}catch(Exception e) {
