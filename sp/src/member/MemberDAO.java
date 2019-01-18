@@ -15,24 +15,25 @@ public class MemberDAO {
 	public MemberDAO() {
 		System.out.println("MemeberDAO 생성");
 	}
-	//idEmail 중복 확인
+
+	// idEmail 중복 확인
 	public boolean checkEmail(String idEmail) {
 		try {
 			conn = db.DB.getConn();
-			String sql = "select 1 from Member_TB where ID_EMAIL = '"+ idEmail+"'";
+			String sql = "select 1 from Member_TB where ID_EMAIL = '" + idEmail + "'";
 			ps = conn.prepareStatement(sql);
 			rs = ps.executeQuery();
-			
-			if(rs.next()) {
-				//아이디가 이미 DB에 존재
+
+			if (rs.next()) {
+				// 아이디가 이미 DB에 존재
 				return true;
-			}else {
-				//아이디가 DB에 없음
+			} else {
+				// 아이디가 DB에 없음
 				return false;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			return true; // error 
+			return true; // error
 		} finally {
 			try {
 				if (rs != null)
@@ -78,16 +79,16 @@ public class MemberDAO {
 			}
 		}
 	}
-	
+
 	// 회원 인덱스 구하기.
 	public int getMemberIndex(String idEmail) {
 		try {
 			System.out.println(" getMemberIndex(String idEmail) 호출");
 			conn = db.DB.getConn();
-			String sql = "select MEMBER_IX from Member_TB where ID_EMAIL = '"+idEmail+"'";
+			String sql = "select MEMBER_IX from Member_TB where ID_EMAIL = '" + idEmail + "'";
 			ps = conn.prepareStatement(sql);
 			rs = ps.executeQuery();
-			
+
 			rs.next();
 			return rs.getInt(1);
 		} catch (Exception e) {
@@ -106,8 +107,8 @@ public class MemberDAO {
 			}
 		}
 	}
-	
-	//회원 테이블의 다음 시퀀스 값 구하기.
+
+	// 회원 테이블의 다음 시퀀스 값 구하기.
 	public int getMemberSEQUENCE() {
 		try {
 			System.out.println("getMemberSEQUENCE()호출");
@@ -115,7 +116,7 @@ public class MemberDAO {
 			String sql = "select Member_TB_SEQ.nextval from dual";
 			ps = conn.prepareStatement(sql);
 			rs = ps.executeQuery();
-			
+
 			rs.next();
 			return rs.getInt(1);
 		} catch (Exception e) {
@@ -134,4 +135,72 @@ public class MemberDAO {
 			}
 		}
 	}
+
+	// 로그인
+	public boolean ChceckidEmailPwd(String idEmail, String pwd) {
+		try {
+			conn = db.DB.getConn();
+
+			String sql = "select pwd from Member_TB where ID_EMAIL=?";
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, idEmail);
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				String dbpwd = rs.getString("pwd");
+				if (dbpwd.equals(pwd)) {
+					return true;
+				} else {
+					return false;
+				}
+
+			} else {
+				return false;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (ps != null)
+					ps.close();
+				if (conn != null)
+					conn.close();
+			} catch (Exception e2) {
+
+			}
+		}
+	}
+
+	public String getMemberName(String idEmail) {
+		try {
+			conn = db.DB.getConn();
+			String sql = "select m_name from Member_TB where ID_EMAIL=?";
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, idEmail);
+			rs = ps.executeQuery();
+
+			if (rs.next()) {
+				return rs.getString("M_NAME");
+			} else {
+				return null;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (ps != null)
+					ps.close();
+				if (conn != null)
+					conn.close();
+			} catch (Exception e2) {
+
+			}
+		}
+	}
+
 }
