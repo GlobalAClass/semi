@@ -82,7 +82,7 @@ for(int i =0; i<cks.length; i++){
 			<td><input type="password" name="pwd" placeholder=" 비밀번호" required="required" class="t1"></td>
 		</tr>
 		<tr>
-			<td colspan="2"><input type="checkbox" id="check" name="rememberid" checked=<%=idEmail==null||idEmail.equals("")? "":"checked" %>/>
+			<td colspan="2"><input type="checkbox" id="check" name="rememberidEmail" value="on" <%=idEmail==null||idEmail.equals("")? "":"checked" %>/>
     					<label for="check"><span></span>ID 기억하기</label></td>
 		</tr>
 		<tr>
