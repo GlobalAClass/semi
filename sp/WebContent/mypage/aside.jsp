@@ -13,6 +13,13 @@ aside, article{
 aside{
 	width: 200px;
 }
+aside a{
+	font-size:15px;
+	vertical-align:middle;
+	text-decoration:none;
+	color: black;
+	font-weight: bold;
+}
 </style>
 <aside>
 	<h2>마이페이지</h2>

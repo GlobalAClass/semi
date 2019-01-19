@@ -39,11 +39,32 @@ ArrayList<CompetitionInfoDTO> arr=cdao.CompetitionFieldList(field,cp,listsize);
 	width:1000px;
 	height:auto;
 }
+#main thead th{
+	background: #424242;
+	color:white;
+	border-top: 0.5px solid black;
+	border-bottom: 0.5px solid black;
+	border-spacing: 0px;
+}
 h1{
 	font-size: 30px;
 	text-align: center;
 	margin: 0px;
 	padding: 9px;
+}
+tbody a{
+	text-decoration:none;
+	cursor: pointer;
+	color: black;
+	font-weight: bold;
+}
+tbody a:hover{
+	background: #BDBDBD;
+	font-weight: bold;
+}
+tfoot a{
+	text-decoration: none;
+	color:#58ACFA;
 }
 </style>
 </head>
@@ -55,7 +76,7 @@ h1{
 		<form name="Competition">
 		<div id="main">
 		<h1><%=field%></h1>
-			<table style="width:650px;height:auto;margin-left:190px;" border="1">
+			<table style="width:650px;height:auto;margin-left:190px;" border="1" cellspacing="0">
 				<thead>
 					<tr>
 						<th>분류</th>
