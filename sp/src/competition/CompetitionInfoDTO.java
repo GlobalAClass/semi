@@ -1,5 +1,7 @@
 package competition;
 
+import javax.xml.crypto.Data;
+
 //공모전 정보
 public class CompetitionInfoDTO {
 
@@ -74,6 +76,15 @@ public class CompetitionInfoDTO {
 		this.period = period;
 		this.readnum = readnum;
 		this.CImage = CImage;
+	}
+	
+	//조회수 많은 공모전 생성자
+	public CompetitionInfoDTO(Integer competitionInfoIx, String CName, String field, Integer readnum) {
+		super();
+		this.competitionInfoIx = competitionInfoIx;
+		this.CName = CName;
+		this.field = field;
+		this.readnum = readnum;
 	}
 	
 	public Integer getCompetitionInfoIx() {
