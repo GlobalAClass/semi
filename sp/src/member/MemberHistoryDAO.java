@@ -46,4 +46,42 @@ public class MemberHistoryDAO {
 			}
 		}
 	}
+	
+	
+	//각 개인별 공모전 이력 출력하기 위해 사용하는 메소드
+	public ArrayList<MemberHistoryDTO> myProfileHistoryInfo(int idx) {
+		try {
+			conn=db.DB.getConn();
+			
+			String sql="SELECT * FROM MEMBER_HISTORY_TB WHERE MEMBER_IX=?";
+			ps=conn.prepareStatement(sql);
+			ps.setInt(1, idx);
+			
+			rs=ps.executeQuery();
+			
+			ArrayList<MemberHistoryDTO> arr=new ArrayList<MemberHistoryDTO>();
+			while(rs.next()) {
+				String cName=rs.getString("C_NAME");
+				String period=rs.getString("PERIOD");
+				String mainRole=rs.getString("MAIN_ROLE");
+				String detailRole=rs.getString("DETAIL_ROLE");
+				String award=rs.getString("AWARD");
+				String detail=rs.getString("DETAIL");
+				
+				MemberHistoryDTO dto=new MemberHistoryDTO(cName, period, mainRole, detailRole, award, detail);
+				arr.add(dto);
+			}
+			return arr;
+		}catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}finally {
+			try {
+				if(rs!=null)rs.close();
+				if(ps!=null)ps.close();
+				if(conn!=null)conn.close();
+			}catch(Exception e2) {}
+		}
+	}
+
 }

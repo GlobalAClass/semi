@@ -1,12 +1,24 @@
+<%@page import="member.MemberHistoryDTO"%>
 <%@page import="member.MemberDetailDTO"%>
 <%@page import="member.MemberDTO"%>
 <%@page import="java.util.Calendar"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.Date" %>
+<%@ page import="java.util.*" %>
 
 <jsp:useBean id="dao" class="member.MemberDAO"></jsp:useBean>
 <jsp:useBean id="ddao" class="member.MemberDetailDAO"></jsp:useBean>
+<jsp:useBean id="hdao" class="member.MemberHistoryDAO"></jsp:useBean>
+
+<%
+String idEmail = (String)session.getAttribute("sidEmail");
+int index=dao.getMemberIndex(idEmail); //이메일을 통해 테이블 인덱스 얻기.
+MemberDTO dto=dao.myProfileInfo(index); //그 멤버의 기본정보 가져오는 dao메소드.
+MemberDetailDTO ddto=ddao.myProfileDetailInfo(index);
+ArrayList<MemberHistoryDTO> arr = hdao.myProfileHistoryInfo(index); //그 멤버의 상세정보 가져오는 dao 메소드.
+int cnt=arr.size();
+%>
 
 <!DOCTYPE html>
 <html>
@@ -125,7 +137,7 @@ function addOption(obj){
 	}
 }
 //공모전 상세이력 추가.
-var addCount = 0;
+var addCount = <%=cnt%>; //만약 공모전 이력 받은것이 있으면 여기 몇 개 있는지 넣어주고 추가할 수 있도록 나타내주자.
 function pageAdd(){
 	var tb = document.getElementById('tb');
 	var row = tb.insertRow(tb.rows.length);
@@ -150,7 +162,7 @@ function pageAdd(){
 						+'<tr>'
 							+'<th class="th2">담당역할</th>'
 							+'<td class="td_line">'
-							+'<select id="part" onchange="select(this)" name=mainRole'+addCount+'>'
+							+'<select id="part" onchange="select(this)" name="mainRole'+addCount+'">'
 								+'<option selected>담당 역할</option>'
 								+'<option value="developer">개발자</option>'
 								+'<option value="desiner">디자이너</option>'
@@ -169,7 +181,7 @@ function pageAdd(){
 						+'<tr>'
 							+'<th class="th2">상세내용</th>'
 							+'<td class="td_line">'
-							+'<textarea style="width:400px;height:200px;" placeholder="필요에 따라 입력해주세요.\n어떤 활약을 펼쳤는지 간단하게 작성해주시면 도움이 됩니다." name=detail'+addCount+'></textarea>'
+							+'<textarea style="width:400px;height:200px;" placeholder="필요에 따라 입력해주세요.\n어떤 활약을 펼쳤는지 간단하게 작성해주시면 도움이 됩니다." name="detail'+addCount+'"></textarea>'
 						+'</td>'
 						+'</tr>'
 					+'</table>'
@@ -178,6 +190,12 @@ function pageAdd(){
 	cell1.style.fontWeight="bold";
 	cell2.style.borderBottom="1px dotted black";
 	addCount++;
+}
+function pageDelPopup(){
+	var result = confirm('삭제되면 데이터 복구가 불가능합니다.\n그래도 삭제하시겠습니까?');
+    if(result==true){
+    	pageDel();
+    }
 }
 //공모전 상세이력 삭제.
 function pageDel(){
@@ -230,21 +248,16 @@ function select(part){
 		role.appendChild(bu);
 	}
 }
+
 </script>
 </head>
 <body>
 <%@include file="/header.jsp" %>
 <%@include file="/mypage/aside.jsp" %>
-<%
-	String idEmail = (String)session.getAttribute("sidEmail");
-	int index=dao.getMemberIndex(idEmail); //이메일을 통해 테이블 인덱스 얻기.
-	MemberDTO dto=dao.myProfileInfo(index); //그 멤버의 기본정보 가져오는 dao메소드.
-	MemberDetailDTO ddto=ddao.myProfileDetailInfo(index); //그 멤버의 상세정보 가져오는 dao 메소드.
-%>
 
 <section>
 <article>
-	<form name="myProfile">
+	<form name="myProfile" action="myProfile_ok.jsp" method="post" onsubmit="return formCheck()">
 	<div align="center" style="font-size:40px;font-weight:bold;">프로필 수정하기</div>
 	<div class="p_div" align="center">
 	<div align="left" style="margin-botton:15px;font-size:30px;font-weight:bold;">기본 인적사항</div>
@@ -260,8 +273,8 @@ function select(part){
 			</tr>
 			<tr>
 				<td colspan="2"><img src="/sp/img/mail.png" class="msgImg"><%=dto.getidEmail() %></td>
-				<td><img src="/sp/img/kakao.jpg" class="msgImg"><%=ddto.getKakaoId() %></td>
-				<td><img src="/sp/img/tell.jpg" class="msgImg"><%=ddto.getContact() %></td>
+				<td><img src="/sp/img/kakao.jpg" class="msgImg"><%=(ddto.getKakaoIdAgreement().equals("true"))?ddto.getKakaoId():"비공개" %></td>
+				<td><img src="/sp/img/tell.jpg" class="msgImg"><%=(ddto.getContactAgreement().equals("true"))?ddto.getContact():"비공개" %></td>
 			</tr>
 			<tr>
 				<td style="width:120px;">
@@ -282,14 +295,10 @@ function select(part){
 			</tr>
 			<tr>
 				<th class="th1">수신동의</th>
+				<%String email=dto.getEmailAgreement(); %>
 				<td colspan="3">이메일 수신을 허가하시겠습니까?
-					<%
-					if(dto.getEmailAgreement().equals("true")){
-						
-					}
-					%>
-					<input type="radio" name="emailAgreement" value="true" required="required">예
-					<input type="radio" name="emailAgreement" value="false" required="required">아니오
+					<input type="radio" id="emailyes" name="emailAgreement" value="true" required="required" <%=(email.equals("true"))?"checked":""%>>예
+					<input type="radio" id="emailno" name="emailAgreement" value="false" required="required" <%=(email.equals("false"))?"checked":""%>>아니오
 				</td>
 			</tr>
 			</table>
@@ -310,17 +319,25 @@ function select(part){
 		%>
 		<td>
 			<select name="headtel" style="height:30px;">
-				<option value="010">010</option>
-				<option value="011">011</option>
-				<option value="018">018</option>
+				<%
+				String tel[]={"010","011","018"};
+				for(int i=0;i<tel.length;i++){
+					if(tel[i].equals(num1)){
+						%><option selected><%=tel[i] %></option><%
+					}else{
+						%><option><%=tel[i] %><option><%
+					}
+				}
+				
+				%>
 			</select> -
 				<input style="width:70px;height:25px;" type="text" name="tel1" maxlength="4" onchange="checktel(this);" value="<%=num2%>"> -
 				<input style="width:70px;height:25px;" type="text" name="tel2" maxlength="4" onchange="checktel(this);" value="<%=num3%>">
 				<input style="text" hidden="" name="contact" value="">
 			핸드폰 번호 공개 동의
-			<input type="radio" id="r1" name="contactAgreement" value="true">
+			<input type="radio" id="r1" name="contactAgreement" value="true" <%=(gca.equals("true"))?"checked":""%>>
     		<label for="r1"><span></span>예</label>
-    		<input type="radio" id="r2" name="contactAgreement" value="false">
+    		<input type="radio" id="r2" name="contactAgreement" value="false" <%=(gca.equals("false"))?"checked":""%>>
     		<label for="r2"><span></span>아니오</label>
     	</td>	
 	</tr>
@@ -332,9 +349,9 @@ function select(part){
 		<td>
 		<input style="width:170px;height:25px;" type="text" name="kakaoId" placeholder="내용을 입력해주세요" onkeyup="checkKakaoId(this);" value="<%=ddto.getKakaoId()%>">
 		카카오톡ID 공개 동의
-			<input type="radio" id="r3" name="kakaoIdAgreement" value="true">
+			<input type="radio" id="r3" name="kakaoIdAgreement" value="true" <%=(gkia.equals("true"))?"checked":""%>>
     		<label for="r3"><span></span>예</label>
-    		<input type="radio" id="r4" name="kakaoIdAgreement" value="false">
+    		<input type="radio" id="r4" name="kakaoIdAgreement" value="false" <%=(gkia.equals("false"))?"checked":""%>>
     		<label for="r4"><span></span>아니오</label>
     	</td>		
 	</tr>
@@ -346,7 +363,6 @@ function select(part){
 		<%int gbyear = Integer.parseInt(ddto.getBirthYear()); %>
 		<td>
 			<select name="birthYear" style="height:30px;">
-				<option value="">db에서 가져온값</option>
 				<%
 				Calendar cal = Calendar.getInstance(); //서버시간기준으로 120세까지만 선택가능.
 				int y = cal.get(Calendar.YEAR);
@@ -399,10 +415,66 @@ function select(part){
 		<th class="th1">공모전 이력&nbsp;</th>
 		<td>
 			<input type="button" value="+" onclick="pageAdd();">&nbsp;
-			<input type="button" value="-" onclick="pageDel();">
+			<input type="button" value="-" onclick="pageDelPopup();">
 		</td>
 	</tr>
 		<tbody id="tb">
+		<%
+		for(int i=0;i<cnt;i++){
+		%>
+			<tr>
+			<td>공모전 이력 <%=i+1 %> </td>
+			<td>
+				<table id="table_design">
+					<tr>
+						<th class="th2">공모전 이름</th>
+						<td class="td_line">
+						<input type="text"style="width: 170px; height: 20px;" name="cName+'addCount'+" required="required" value="<%=arr.get(i).getCName() %>">
+						</td>
+					</tr>
+					<tr>
+						<th class="th2">공모전 기간</th>
+						<%
+						String period=arr.get(i).getPeriod();
+						String p1=period.substring(0,period.indexOf('~'));
+						String p2=period.substring(period.lastIndexOf('~')+1);
+						%>
+						<td class="td_line"><input style="width: 170px; height: 20px;" type="text" id="period'+addCount+'_1" name="period'+addCount+'_1" onchange="checkPeriod(this);" required="required" placeholder=" ex) 2018-01-01" value="<%=p1%>">
+						&nbsp;~&nbsp;
+						<input style="width: 170px; height: 20px;" type="text" id="period'+addCount+'_2" name="period'+addCount+'_2" onchange="checkPeriod(this);" required="required" placeholder=" ex) 2018-06-30" value="<%=p2%>">
+						<input type="text" hidden="" id="period'+addCount+'" name="period'+addCount+'" value="">
+					</td>
+					</tr>
+					<tr>
+						<th class="th2">담당역할</th>
+						<% String role=arr.get(i).getDetailRole(); %>
+						<td class="td_line">
+						<select id="part" onchange="select(this)" name="mainRole'+addCount+'">
+							<option selected>담당 역할</option>
+							<option value="developer">개발자</option>
+							<option value="desiner">디자이너</option>
+							<option value="planner">기획자</option>
+							<option value="etc">etc</option>
+						</select>
+						<div id="roleaddCount"></div>
+						<input style="width: 170px; height: 20px;" type="text" id="detailRolea'+addCount+'" name="detailRole'+addCount+'" value="<%=role %>">
+						</td>
+					</tr>
+					<tr>
+						<th class="th2">수상내역</th>
+						<td class="td_line"><input style="width: 170px; height: 20px;" type="text" placeholder="ex)입선" name="award'+addCount+'" value="<%=arr.get(i).getAward()%>">
+					</td>
+					</tr>
+					<tr>
+						<th class="th2">상세내용</th>
+						<td class="td_line">
+						<textarea style="width:400px;height:200px;" placeholder="필요에 따라 입력해주세요.\n어떤 활약을 펼쳤는지 간단하게 작성해주시면 도움이 됩니다." name="detail'+addCount+'"><%=arr.get(i).getDetail() %></textarea>
+					</td>
+					</tr>
+				</table>
+			</td>
+			</tr>
+		<%} %>
 		</tbody>
 	<tr>
 		<th class="th1">자기소개</th>

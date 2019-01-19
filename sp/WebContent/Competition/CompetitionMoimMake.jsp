@@ -71,10 +71,57 @@ function addOption(obj){
 		CompetitionMoimMake.sigungu.hidden=true;
 	}
 }
+function selectFirst(part){
+	var partname=part.value; //선택한 역할 값.
+	var role = document.getElementById("btn"); //버튼 들어갈 <div> 태그
+	var input = document.getElementById("dRole"); //세부사항 들어갈 <input> 태그
+	
+	//담당역할 선택 -> 세부사항 기입 불가, 세부사항 빈문자열.
+	if(partname=="담당 역할"){
+		input.value = '';
+		input.readOnly=true;
+	}else{
+		input.readOnly=false;
+	}
+	//div안에 있는 버튼 삭제
+	while(role.firstChild) {
+	  role.removeChild(role.firstChild);
+	}
+	//버튼에 사용할 value값들
+	var ary=0; //value값들을 저장할 배열 변수 선언
+	switch(partname){
+	case "developer":
+		ary = ['개발자','서버','DB','블록체인','클라우드','빅데이터','데이터 분석','IOS','안드로이드','WEB'];
+		break;
+	case "desiner":
+		ary = ['UI/UX디자인','일러스트','에프터이펙트','포토샵','3D MAX','웹툰프로토타이핑 툴','BI디자인'];
+		break;
+	case "planner":
+		ary = ['기획','마케팅','컨텐츠 제작','SNS','온라인 마케팅'];
+		break;
+	case "etc": //나중에 추가할 세부역할들.
+		ary = ['영상 제작',	'영상 촬영','영상 편집','통계 분석','아이디어'];
+		break;
+	}
+	
+	//버튼 추가
+	for(var i=0; i<ary.length;i++){
+		var bu =  document.createElement("INPUT");
+		bu.type = "button";
+		bu.value = ary[i];
+		bu.style.marginRight = "4px";
+		bu.onclick = function(){document.getElementById("dRole").value = this.value;}; //기능 : 버튼 클릭시에 버튼 값이 자동으로 text에 입력
+		
+		role.appendChild(bu);
+	}
+}
+
 function select(part){
 	var partname=part.value; //선택한 역할 값.
 	var inputRes=part.nextSibling; //part 다음 태그인 세부사항을 입력하는 <input>태그를 가리킴.
 	var role=inputRes.nextSibling.nextSibling; //4번째 위치한 버튼 들어가야하는 <div>태그
+	
+	alert(inputRes);
 	
 	//담당역할 선택 -> 세부사항 기입 불가, 세부사항 빈문자열.
 	if(partname=="담당 역할"){
@@ -272,7 +319,7 @@ function ageNoMatter(cb){ //나이 무관인 경우 나이 입력할 수 있는 
 					</td>
 					<th style="width:150px;height:80px;">담당 역할</th>
 					<td>
-					<select name="mainRole" onchange="select(this)" style="width:130px;height:25px;">
+					<select name="mainRole" onchange="selectFirst(this)" style="width:130px;height:25px;">
 						<option selected>선택하기</option>
 						<option value="developer">개발자</option>
 						<option value="desiner">디자이너</option>
@@ -281,6 +328,7 @@ function ageNoMatter(cb){ //나이 무관인 경우 나이 입력할 수 있는 
 					</select>
 					<input style="width:170px;height:20px;" type="text" id="dRole" name="detailRole">
 					<div style="font-size:11px; color:#D20505;">해당 담당 역할이 없는경우 직접 작성해주세요. (1개 선택 가능)</div>
+					<div id="btn"></div>
 					</td>
 				</tr>
 				<tr>
