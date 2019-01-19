@@ -29,7 +29,7 @@
 		MultipartRequest mr = new MultipartRequest(request, path, sizeLimit, "utf-8", new DefaultFileRenamePolicy());
 		//회원 필수 정보 DTO
 		MemberDTO mdto = new MemberDTO(mr.getParameter("idEmail"), mr.getParameter("pwd"), mr.getParameter("MName"), 
-										mr.getParameter("fieldMajor"), mr.getParameter("emailAgreement"));
+										mr.getParameter("emailAgreement"),mr.getParameter("fieldMajor"));
 		//회원 추가 정보 DTO
 		MemberDetailDTO mddto = new MemberDetailDTO(mr.getParameter("contact"),mr.getParameter("contactAgreement"),mr.getParameter("kakaoId"),
 													mr.getParameter("kakaoIdAgreement"), mr.getParameter("birthYear"),mr.getParameter("sido"),

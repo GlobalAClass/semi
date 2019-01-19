@@ -1,7 +1,13 @@
+<%@page import="member.MemberDetailDTO"%>
+<%@page import="member.MemberDTO"%>
 <%@page import="java.util.Calendar"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.Date" %>
+
+<jsp:useBean id="dao" class="member.MemberDAO"></jsp:useBean>
+<jsp:useBean id="ddao" class="member.MemberDetailDAO"></jsp:useBean>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -92,9 +98,9 @@ function checkKakaoId(obj) {
 }
 //지역 선택시에 추가 옵션 보여주는 함수.
 function addOption(obj){
-	var option = obj.value; 
+	var option = obj.value;
 	var ary; 
-	var addop = memberJoin.sigungu;
+	var addop = myProfile.sigungu;
 	//추가 옵션이 이미 있던 경우 삭제해주기. 길이를 1로 두는 것은 '선택해주세요'만 남기고 삭제하기 위해서이다.
 	if(addop.length>1){
 		for(i=0; i<addop.length;i++){
@@ -111,11 +117,11 @@ function addOption(obj){
 			var op = new Option();
 			op.value = ary[i];
 			op.text = ary[i];
-			memberJoin.sigungu.add(op);
+			myProfile.sigungu.add(op);
 		}
-		memberJoin.sigungu.hidden=false;
+		myProfile.sigungu.hidden=false;
 	}else{
-		memberJoin.sigungu.hidden=true;
+		myProfile.sigungu.hidden=true;
 	}
 }
 //공모전 상세이력 추가.
@@ -163,7 +169,7 @@ function pageAdd(){
 						+'<tr>'
 							+'<th class="th2">상세내용</th>'
 							+'<td class="td_line">'
-							+'<textarea rows="12" cols="40" placeholder="필요에 따라 입력해주세요.\n어떤 활약을 펼쳤는지 간단하게 작성해주시면 도움이 됩니다." name=detail'+addCount+'></textarea>'
+							+'<textarea style="width:400px;height:200px;" placeholder="필요에 따라 입력해주세요.\n어떤 활약을 펼쳤는지 간단하게 작성해주시면 도움이 됩니다." name=detail'+addCount+'></textarea>'
 						+'</td>'
 						+'</tr>'
 					+'</table>'
@@ -229,6 +235,13 @@ function select(part){
 <body>
 <%@include file="/header.jsp" %>
 <%@include file="/mypage/aside.jsp" %>
+<%
+	String idEmail = (String)session.getAttribute("sidEmail");
+	int index=dao.getMemberIndex(idEmail); //이메일을 통해 테이블 인덱스 얻기.
+	MemberDTO dto=dao.myProfileInfo(index); //그 멤버의 기본정보 가져오는 dao메소드.
+	MemberDetailDTO ddto=ddao.myProfileDetailInfo(index); //그 멤버의 상세정보 가져오는 dao 메소드.
+%>
+
 <section>
 <article>
 	<form name="myProfile">
@@ -238,17 +251,17 @@ function select(part){
 		<table style="width: 800px;">
 			<tr>
 				<td rowspan="3"><img name="proimg" style="margin-left:60px;width:120px;height:120px;" src="/sp/img/profile_default.jpg"></td>
-				<td style="font-size:35px;font-weight: bold;">홍길동</td>
-				<td style="font-size:15px;color:gray;">1996년생</td>
-				<td colspan="2" style="font-size:16px;">컴퓨터공학전공</td>
+				<td style="font-size:35px;font-weight: bold;"><%=dto.getMName() %></td>
+				<td style="font-size:15px;color:gray;"><%=ddto.getBirthYear() %>년생</td>
+				<td colspan="2" style="font-size:16px;"><%=dto.getFieldMajor() %></td>
 			</tr>
 			<tr>	
-				<td colspan="4" style="font-size:16px">안드로이드</td>
+				<td colspan="4"></td>
 			</tr>
 			<tr>
-				<td colspan="2"><img src="/sp/img/mail.png" class="msgImg">hong@naver.com</td>
-				<td><img src="/sp/img/kakao.jpg" class="msgImg">dongkkk</td>
-				<td><img src="/sp/img/tell.jpg" class="msgImg">비공개</td>
+				<td colspan="2"><img src="/sp/img/mail.png" class="msgImg"><%=dto.getidEmail() %></td>
+				<td><img src="/sp/img/kakao.jpg" class="msgImg"><%=ddto.getKakaoId() %></td>
+				<td><img src="/sp/img/tell.jpg" class="msgImg"><%=ddto.getContact() %></td>
 			</tr>
 			<tr>
 				<td style="width:120px;">
@@ -263,13 +276,18 @@ function select(part){
 			<tr>
 				<th class="th1">분야/전공</th>
 				<td colspan="3">
-					<input style="width:170px;height:20px;" type="text" name="fieldMajor" readonly="readonly" required="required">
+					<input style="width:170px;height:20px;" type="text" name="fieldMajor" readonly="readonly" required="required" value="<%=dto.getFieldMajor() %>">
 					<input type="button" value="찾기"  onclick="fieldMajorPop()">
 				</td>
 			</tr>
 			<tr>
 				<th class="th1">수신동의</th>
 				<td colspan="3">이메일 수신을 허가하시겠습니까?
+					<%
+					if(dto.getEmailAgreement().equals("true")){
+						
+					}
+					%>
 					<input type="radio" name="emailAgreement" value="true" required="required">예
 					<input type="radio" name="emailAgreement" value="false" required="required">아니오
 				</td>
@@ -282,30 +300,41 @@ function select(part){
 	<table style="width: 800px;margin-top:20px;">
 	<tr>
 		<th class="th1">핸드폰번호</th>
+		<%
+		String number=ddto.getContact();
+		String num1 = number.substring(0,number.indexOf('-'));
+		String num2 = number.substring(number.indexOf('-')+1,number.lastIndexOf('-'));
+		String num3 = number.substring(number.lastIndexOf('-')+1);
+		
+		String gca = ddto.getContactAgreement();
+		%>
 		<td>
 			<select name="headtel" style="height:30px;">
-				<option>010</option>
-				<option>011</option>
-				<option>018</option>
+				<option value="010">010</option>
+				<option value="011">011</option>
+				<option value="018">018</option>
 			</select> -
-				<input style="width:70px;height:25px;" type="text" name="tel1" maxlength="4" onchange="checktel(this);"> -
-				<input style="width:70px;height:25px;" type="text" name="tel2" maxlength="4" onchange="checktel(this);">
+				<input style="width:70px;height:25px;" type="text" name="tel1" maxlength="4" onchange="checktel(this);" value="<%=num2%>"> -
+				<input style="width:70px;height:25px;" type="text" name="tel2" maxlength="4" onchange="checktel(this);" value="<%=num3%>">
 				<input style="text" hidden="" name="contact" value="">
 			핸드폰 번호 공개 동의
-			<input type="radio" id="r1" name="contactAgreement" value="true"/>
+			<input type="radio" id="r1" name="contactAgreement" value="true">
     		<label for="r1"><span></span>예</label>
-    		<input type="radio" id="r2" name="contactAgreement" value="false" checked="checked"/>
+    		<input type="radio" id="r2" name="contactAgreement" value="false">
     		<label for="r2"><span></span>아니오</label>
     	</td>	
 	</tr>
 	<tr>
 		<th class="th1">카카오톡ID</th>
+		<%
+		String gkia = ddto.getKakaoIdAgreement();
+		%>
 		<td>
-		<input style="width:170px;height:25px;" type="text" name="kakaoId" placeholder="내용을 입력해주세요" onkeyup="checkKakaoId(this);">
+		<input style="width:170px;height:25px;" type="text" name="kakaoId" placeholder="내용을 입력해주세요" onkeyup="checkKakaoId(this);" value="<%=ddto.getKakaoId()%>">
 		카카오톡ID 공개 동의
-			<input type="radio" id="r3" name="kakaoIdAgreement" value="true"/>
+			<input type="radio" id="r3" name="kakaoIdAgreement" value="true">
     		<label for="r3"><span></span>예</label>
-    		<input type="radio" id="r4" name="kakaoIdAgreement" value="false" checked="checked"/>
+    		<input type="radio" id="r4" name="kakaoIdAgreement" value="false">
     		<label for="r4"><span></span>아니오</label>
     	</td>		
 	</tr>
@@ -314,6 +343,7 @@ function select(part){
 	</tr>
 	<tr>
 		<th class="th1">출생년도</th>
+		<%int gbyear = Integer.parseInt(ddto.getBirthYear()); %>
 		<td>
 			<select name="birthYear" style="height:30px;">
 				<option value="">db에서 가져온값</option>
@@ -321,9 +351,15 @@ function select(part){
 				Calendar cal = Calendar.getInstance(); //서버시간기준으로 120세까지만 선택가능.
 				int y = cal.get(Calendar.YEAR);
 				for(int i=y;i>y-120;i--){
+					if(i==gbyear){
+					%>
+					<option value="<%=i %>" selected><%=i %></option>
+					<%
+					}else{
 					%>
 					<option value="<%=i%>"><%=i%></option>
 					<%
+					}
 				}
 				%>
 			</select>
@@ -331,26 +367,28 @@ function select(part){
 	</tr>
 	<tr>
 		<th class="th1">지역</th>
+		<%
+		String sd = ddto.getSido();
+		String sgg = ddto.getSigungu();
+		
+		%>
 		<td>
-			<select onchange="addOption(this)" name="sido"  style="height:30px;">
-				<option selected>선택해주세요</option>
-				<option>서울특별시</option>
-				<option>인천광역시</option>
-				<option>대구광역시</option>
-				<option>부산광역시</option>
-				<option>광주광역시</option>
-				<option>대전광역시</option>
-				<option>울산광역시</option>
-				<option>세종시</option>
-				<option>경기도</option>
-				<option>강원도</option>
-				<option>충청남도</option>
-				<option>충청북도</option>
-				<option>경상북도</option>
-				<option>경상남도</option>
-				<option>전라북도</option>
-				<option>전라남도</option>
-				<option>제주도</option>
+			<select onchange="addOption(this)" name="sido" style="height:30px;">
+				<%
+				String str[]={"서울특별시","인천광역시","대구광역시","부산광역시","광주광역시","대전광역시","울산광역시","세종시","경기도","강원도","충청남도","충청북도","경상북도","경상남도","전라북도","전라남도","제주도"};
+				for(int i=0;i<str.length;i++){
+					if(sd.equals(str[i])){
+						%>
+						<option selected><%=str[i] %></option>
+						<%
+						//if(sd.equals("서울특별시"))
+					}else{
+						%>
+						<option><%=str[i] %></option>
+						<%
+					}
+				}
+				%>
 			</select>
 			<select hidden="" name="sigungu" style="height:30px;"> <!-- 추가옵션 달릴 부분 -->
 				<option selected>선택해주세요</option>
@@ -369,7 +407,7 @@ function select(part){
 	<tr>
 		<th class="th1">자기소개</th>
 		<td>
-			<textarea name="mProfile" onkeyup="checkLength(this);" placeholder="자신이 현재 관심있는 분야 /프로젝트를 작성해주세요." style="width:600px;height:200px;"></textarea>
+			<textarea name="mProfile" onkeyup="checkLength(this);" placeholder="자신이 현재 관심있는 분야 /프로젝트를 작성해주세요." style="width:600px;height:200px;"><%=ddto.getmProfile() %></textarea>
 			<input type="text" readonly="readonly" name="lengthinfo" style="border: none;">
 		</td>	
 	</tr>

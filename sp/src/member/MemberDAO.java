@@ -203,4 +203,37 @@ public class MemberDAO {
 		}
 	}
 
+	//myProfile에서 자신의 프로필 정보 넘겨 받기 위한 메소드
+	public MemberDTO myProfileInfo(int idx) {
+		try {
+			conn=db.DB.getConn();
+			
+			String sql="SELECT * FROM MEMBER_TB WHERE MEMBER_IX=?";
+			ps=conn.prepareStatement(sql);
+			ps.setInt(1, idx);
+			
+			rs=ps.executeQuery();
+			
+			MemberDTO dtos=null;
+			if(rs.next()) {
+				String idEmail=rs.getString("ID_EMAIL");
+				String pwd=rs.getString("PWD");
+				String mName=rs.getString("M_NAME");
+				String emailAgreement=rs.getString("EMAIL_AGREEMENT");
+				String fieldMajor=rs.getString("FIELD_MAJOR");
+				
+				dtos=new MemberDTO(idEmail, pwd, mName, emailAgreement, fieldMajor);
+			}
+			return dtos;
+		}catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}finally {
+			try {
+				if(rs!=null)rs.close();
+				if(ps!=null)ps.close();
+				if(conn!=null)conn.close();
+			}catch(Exception e2) {}
+		}
+	}
 }

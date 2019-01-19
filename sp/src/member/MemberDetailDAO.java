@@ -48,5 +48,42 @@ public class MemberDetailDAO {
 			}
 		}
 	}
+	
+	//myProfile에서 자신의 프로필 정보 넘겨 받기 위한 메소드
+	public MemberDetailDTO myProfileDetailInfo(int idx) {
+		try {
+			conn=db.DB.getConn();
+			
+			String sql="SELECT * FROM MEMBER_DETAIL_TB WHERE MEMBER_IX=?";
+			ps=conn.prepareStatement(sql);
+			ps.setInt(1, idx);
+			
+			rs=ps.executeQuery();
+			
+			MemberDetailDTO dtos=null;
+			if(rs.next()) {
+				String contact=rs.getString("CONTACT");
+				String contactAgreement=rs.getString("CONTACT_AGREEMENT");
+				String kakaoId=rs.getString("KAKAO_ID");
+				String kakaoIdAgreement=rs.getString("KAKAO_ID_AGREEMENT");
+				String birthYear=rs.getString("BIRTH_YEAR");
+				String sido=rs.getString("SIDO");
+				String sigungu=rs.getString("SIGUNGU");
+				String mProfile=rs.getString("M_PROFILE");
+				
+				dtos=new MemberDetailDTO(contact, contactAgreement, kakaoId, kakaoIdAgreement, birthYear, sido, sigungu, mProfile);
+			}
+			return dtos;
+		}catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}finally {
+			try {
+				if(rs!=null)rs.close();
+				if(ps!=null)ps.close();
+				if(conn!=null)conn.close();
+			}catch(Exception e2) {}
+		}
+	}
 
 }
