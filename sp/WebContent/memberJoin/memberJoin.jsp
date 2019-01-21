@@ -98,7 +98,7 @@ function checkCorrectEmail(str) {
     	return true;
     }
 }
-//아이디(=이메일) 중복 확인 ------------> idEmail2가 com, net, etc...으로 끝나는지 확인하는 논리 추가해야함.
+//아이디(=이메일) 중복 확인 
 function checkEmailPop(){
 	idEmail=document.memberJoin.idEmail1.value;
 	idEmail2=document.memberJoin.idEmail2.value;
