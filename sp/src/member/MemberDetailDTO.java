@@ -33,15 +33,18 @@ public class MemberDetailDTO {
 	// 자기소개
 	private String mProfile;
 
+	// 회원 추가정보 공개 동의(사람등록동의)
+	public String searchAgreement;
+
 	// 기본 생성자
 	public MemberDetailDTO() {
 		System.out.println("MemberDetailDTO 생성");
 	}
-
+	
 	// 모든 필드를 가지는 생성자.
 	public MemberDetailDTO(Integer memberDetailIx, Integer memberIx, String contact, String contactAgreement, 
 			String kakaoId, String kakaoIdAgreement,String birthYear,
-			String sido, String sigungu, String mProfile) {
+			String sido, String sigungu, String mProfile, String searchAgreement) {
 		super();
 		this.memberDetailIx = memberDetailIx;
 		this.memberIx = memberIx;
@@ -53,8 +56,9 @@ public class MemberDetailDTO {
 		this.sido = sido;
 		this.sigungu = sigungu;
 		this.mProfile = mProfile;
+		this.searchAgreement = searchAgreement;
 	}
-	// 인덱스 2개를 제외한 생성자.
+	// 인덱스 2개를 제외하고 searchAgreement도 제외한 생성자. --회원가입할 때 사용.
 	public MemberDetailDTO(String contact, String contactAgreement, String kakaoId, String kakaoIdAgreement,
 			String birthYear, String sido, String sigungu, String mProfile) {
 		super();
@@ -66,6 +70,21 @@ public class MemberDetailDTO {
 		this.sido = sido;
 		this.sigungu = sigungu;
 		this.mProfile = mProfile;
+	}
+	
+	// 인덱스 2개만 제외한 생성자. -- 수정, 사람검색 사용.
+	public MemberDetailDTO(String contact, String contactAgreement, String kakaoId, String kakaoIdAgreement,
+			String birthYear, String sido, String sigungu, String mProfile, String searchAgreement) {
+		super();
+		this.contact = contact;
+		this.contactAgreement = contactAgreement;
+		this.kakaoId = kakaoId;
+		this.kakaoIdAgreement = kakaoIdAgreement;
+		this.birthYear = birthYear;
+		this.sido = sido;
+		this.sigungu = sigungu;
+		this.mProfile = mProfile;
+		this.searchAgreement = searchAgreement;
 	}
 	
 
@@ -148,5 +167,15 @@ public class MemberDetailDTO {
 	public void setmProfile(String mProfile) {
 		this.mProfile = mProfile;
 	}
+
+	public String getSearchAgreement() {
+		return searchAgreement;
+	}
+
+	public void setSearchAgreement(String searchAgreement) {
+		this.searchAgreement = searchAgreement;
+	}
+	
+	
 
 }
