@@ -86,13 +86,70 @@ public class MemberHistoryDAO {
 		}
 	}
 	
-	//공모전 삭제 구현되는 메소드
-	public int myProfileHistoryDelete(int idx) {
+	public int[] getAllidx(int idx) {
 		try {
 			conn=db.DB.getConn();
 			
-			String sql="DELETE FROM MEMBER_HISTORY_TB WHERE MEMBER_HISTORY_IX=?";
+			String sql="SELECT MEMBER_HISTORY_IX from member_history_tb WHERE MEMBER_IDX=?";
 			ps=conn.prepareStatement(sql);
+			ps.setInt(1, idx);
+			
+			rs=ps.executeQuery();
+			
+			Vector<Integer> v = new Vector<Integer>();
+			while(rs.next()) {
+				int index=rs.getInt("MEMBER_HISTORY_IX");
+				v.add(index);
+			}
+			
+			int dbIndex[]=new int[v.size()];
+			return dbIndex;
+		
+		}catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}finally {
+			try {
+				if(rs!=null)rs.close();
+				if(ps!=null)ps.close();
+				if(conn!=null)conn.close();
+			}catch(Exception e) {}
+		}
+	}
+	
+	//공모전 수정 또는 삭제 구현되는 메소드
+	public int myProfileHistoryUpdate(int idx, int[] idxs,MemberHistoryDTO mhdto) {
+		try {
+			conn=db.DB.getConn();
+			
+			//현재 db에 존재하는 idx 가져오고
+			int dbIdx[] = getAllidx(idx);
+			
+			//idxs랑 비교해서 같으면 update 다르면 delete 하자.
+			
+			Vector<Integer> update = new Vector<Integer>();
+			Vector<Integer> delete = new Vector<Integer>();
+			
+			for(int i=0;i<dbIdx.length;i++) {
+				
+			}
+			
+			String sql1="UPDATE Member_History_TB " + 
+					"SET " + 
+					"MEMBER_IX = ?," + 
+					"C_NAME = ?," + 
+					"PERIOD = ?," + 
+					"MAIN_ROLE = ?," + 
+					"DETAIL_ROLE = ?," + 
+					"AWARD = ?," + 
+					"DETAIL = ? " + 
+					"WHERE Member_History_IX = ?";
+			
+			ps=conn.prepareStatement(sql1);
+			
+			String sql2="DELETE FROM MEMBER_HISTORY_TB WHERE MEMBER_HISTORY_IX=?";
+			
+			ps=conn.prepareStatement(sql2);
 			ps.setInt(1, idx);
 
 			int count = ps.executeUpdate();
