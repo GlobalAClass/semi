@@ -23,28 +23,26 @@
 </style>
 <table id="card">
 	<tr>
-		<td class="t1" colspan="3" align="right">글 작성일</td>
+		<td class="t1" colspan="3" align="right"><%=mdto.getWriteDate()%></td>
 	</tr>
 	<tr>
 		<td rowspan="3" align="justify"><img src="/sp/img/profile.jpg" style="width:80px;height:80px;padding:2px;"></td>
-		<td class="t2" colspan="2">[아이디어/기획]</td>
+		<td class="t2" colspan="2">[<%=dto.getField()%>]</td>
 	</tr>
 	<tr>
-		<td colspan="2" style="width:400px;font-weight: bold; font-size:23px">공모전 이름</td>
+		<td colspan="2" style="width:400px;font-weight: bold; font-size:23px"><%=dto.getCName()%></td>
 	</tr>
 	<tr>
-		<td class="t2" colspan="2">모임명 | 모임 주최자</td>
+		<td class="t2" colspan="2"><%=mdto.getMatchName()%>&nbsp;|&nbsp;<%=dto.getAuspice()%></td>
 	</tr>
 	<tr>
 		<td></td>
 		<td class="t3">현재인원/총인원</td>
-		<td>1/5</td>
+		<td>1&nbsp;/&nbsp;<%=totalnumber%></td>
 	</tr>
 	<tr>
 		<td></td>
 		<td class="t3">모집 인원</td>
-		<td>안드로이드 1명</td>
-	</tr>
-	<tr>
+		<td><%=mwdto.getMainRole()%><%=mwdto.getWantedNumber()%></td>
 	</tr>
 </table>

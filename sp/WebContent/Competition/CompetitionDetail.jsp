@@ -1,26 +1,35 @@
+<%@ page import="match.MatchDTO" %>
+<%@ page import="competition.CompetitionInfoDTO" %>
+<%@ page import="match.MatchWantedDTO" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="competition.*" %>
-<jsp:useBean id="cdto" class="competition.CompetitionInfoDTO"/>
-<jsp:setProperty property="*" name="cdto"/>
+<jsp:useBean id="mdao" class="match.MatchDAO"/>
 <jsp:useBean id="cdao" class="competition.CompetitionInfoDAO"/>
-<% 
-// 공모전 제목 클릭시 공모전 정보인덱스로 값 받아오기
+<jsp:useBean id="mwdao" class="match.MatchWantedDAO"/>
+<%
+// 공모전 제목 클릭시 Competition_Info_IX인덱스로 값 받아오기
 String ix_s=request.getParameter("ix");
 if(ix_s==null||ix_s.equals("")){
 	ix_s="0";
 }
-Integer ix=Integer.parseInt(ix_s);
-//공모전 제목 클릭시 정보보기 DAO
+int ix=Integer.parseInt(ix_s);
+
+//공모전 제목 클릭시 정보보기 CompetitionInfoDAO
 CompetitionInfoDTO dto=cdao.CompetitionCNameInfo(ix);
-if(dto==null){
-	%>
-	<script>
-	window.alret('삭제된 공모전이거나 잘못된 접근입니다.');
-	location.href='Competition.jsp';
-	</script>
-	<%
-}
+
+//공모전 모임카드 관련  글작성일 /현재인원/총인원 정의 MatchDAO
+MatchDTO mdto=mdao.MoimCardList(ix);
+
+//공모전 모임카드 총 팀원 정의
+String OMN_s=mdto.getOriginalMemberNumber();
+int OMN=Integer.parseInt(OMN_s);
+String TWN_s=mdto.getTotalWantedNumber();
+int TWN=Integer.parseInt(TWN_s);
+int totalnumber=OMN+TWN;
+
+//공모전 모집인원 정의 MatchWantedDAO
+int Match_ix=mdto.getMatchIx();
+MatchWantedDTO mwdto=mwdao.MatchAddPeople(Match_ix);
 %>
 <!DOCTYPE html>
 <html>
@@ -90,7 +99,6 @@ article{
 				</tr>
 			</table>
 		</div>
-		
 		<!-- 현재 생성된 모임 | 공모전 상세보기 -->
 		<div>
 			<table id="Competition_title">
@@ -103,7 +111,7 @@ article{
 		<div align="center">
 		<!-- 현재 생성된 모임 클릭 시 -->
 		<p align="right"><a href="/sp/Competition/CompetitionMoimMake.jsp"><input type="button" value="모임 생성하기"></a></p>
-		<%@include file="CompetitionMoimCard.jsp" %>
+		<%@include file="/Competition/CompetitionMoimCard.jsp" %>
 		<!-- 공모전 상세보기 클릭 시 -->
 		</div>
 	</article>
