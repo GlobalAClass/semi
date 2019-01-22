@@ -50,7 +50,7 @@ public class MemberDetailDAO {
 		try {
 			System.out.println("memberDetailJoin() 호출");
 			conn = db.DB.getConn();
-			String sql = "Insert into Member_Detail_TB values(Member_Detail_TB_SEQ.nextval, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			String sql = "Insert into Member_Detail_TB values(Member_Detail_TB_SEQ.nextval, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'false')";
 			ps = conn.prepareStatement(sql);
 			ps.setInt(1, member_ix);
 			ps.setString(2, mddto.getContact());
@@ -61,7 +61,6 @@ public class MemberDetailDAO {
 			ps.setString(7, mddto.getSido());
 			ps.setString(8, mddto.getSigungu());
 			ps.setString(9, mddto.getmProfile());
-			ps.setString(10, mddto.getSearchAgreement());
 
 			int count = ps.executeUpdate();
 			return count;
