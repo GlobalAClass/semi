@@ -7,6 +7,21 @@
 <%@page import="hsearch.*" %>
 <%@page import="java.io.File"%>
 
+<%
+	//로그인해야 해당 페이지를 이용할 수 있음.
+	String uname = (String)session.getAttribute("smname");
+	String uid = (String)session.getAttribute("sidEmail");
+	
+	if(uname == null || uname.equals("") || uid==null || uid.equals("")){
+		%>
+		<script>
+			alert("로그인하셔야 이용하실 수 있습니다.");
+			location.href="/sp/login.jsp";
+		</script>
+		<%
+	}
+%>
+
 
 <!DOCTYPE html>
 <html>
@@ -72,6 +87,14 @@ function search(){
 	var sigungu = humanSearch.sigungu.value;
 	var fieldMajor = humanSearch.fieldMajor.value;
 	location.href = '/sp/humansearch/humanSearch.jsp?sido='+sido+'&sigungu='+sigungu+'&fieldMajor='+fieldMajor;
+}
+function scrap(obj){
+	var displaystate = obj.style.display;
+	if(displaystate == "block"){
+		displaystate = "none";
+	}else{
+		displaystate = "block";
+	}
 }
 </script>
 <%
@@ -140,13 +163,17 @@ function search(){
 	<section>
 	<article style="margin:20px;">
 	<%
+	MemberDAO mdao = new MemberDAO();
+	int u_ix = mdao.getMemberIndex(uid);
+	
 	if(searchlist!=null){
 		int len = searchlist.size();
 		for(int i=0; i<len; i++){
 	%>
 			<jsp:include page="humanCard.jsp" flush="false">
-				<jsp:param value="<%=i %>" name="i"/>
-				<jsp:param value="<%=searchlist.get(i).getLeft().getMemberIx() %>" name="member_ix"/>
+				<jsp:param value="<%=i %>" name="i" />
+				<jsp:param value="<%=u_ix %>" name="user_ix" /> 
+				<jsp:param value="<%=searchlist.get(i).getLeft().getMemberIx() %>" name="member_ix"/> 
 				<jsp:param value="<%=searchlist.get(i).getLeft().getMName() %>" name="mName"/>
 				<jsp:param value="<%=searchlist.get(i).getRight().getBirthYear() %>" name="birth"/>
 				<jsp:param value="<%=searchlist.get(i).getLeft().getFieldMajor() %>" name="fieldMajor"/>
