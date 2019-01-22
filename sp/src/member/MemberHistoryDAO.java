@@ -61,6 +61,8 @@ public class MemberHistoryDAO {
 			
 			ArrayList<MemberHistoryDTO> arr=new ArrayList<MemberHistoryDTO>();
 			while(rs.next()) {
+				Integer memberHistoryIx = rs.getInt("MEMBER_HISTORY_IX");
+				Integer memberIx = rs.getInt("MEMBER_IX");
 				String cName=rs.getString("C_NAME");
 				String period=rs.getString("PERIOD");
 				String mainRole=rs.getString("MAIN_ROLE");
@@ -68,7 +70,7 @@ public class MemberHistoryDAO {
 				String award=rs.getString("AWARD");
 				String detail=rs.getString("DETAIL");
 				
-				MemberHistoryDTO dto=new MemberHistoryDTO(cName, period, mainRole, detailRole, award, detail);
+				MemberHistoryDTO dto=new MemberHistoryDTO(memberHistoryIx, memberIx, cName, period, mainRole, detailRole, award, detail);
 				arr.add(dto);
 			}
 			return arr;
@@ -83,5 +85,27 @@ public class MemberHistoryDAO {
 			}catch(Exception e2) {}
 		}
 	}
+	
+	//공모전 삭제 구현되는 메소드
+	public int myProfileHistoryDelete(int idx) {
+		try {
+			conn=db.DB.getConn();
+			
+			String sql="DELETE FROM MEMBER_HISTORY_TB WHERE MEMBER_HISTORY_IX=?";
+			ps=conn.prepareStatement(sql);
+			ps.setInt(1, idx);
 
+			int count = ps.executeUpdate();
+			return count;
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+			return -1;
+		}finally {
+			try {
+				if(ps!=null)ps.close();
+				if(conn!=null)conn.close();
+			}catch(Exception e) {}
+		}
+	}
 }

@@ -19,7 +19,7 @@ public class MemberDetailDAO {
 		try {
 			System.out.println("memberDetailJoin() 호출");
 			conn = db.DB.getConn();
-			String sql = "Insert into Member_Detail_TB values(Member_Detail_TB_SEQ.nextval, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			String sql = "Insert into Member_Detail_TB values(Member_Detail_TB_SEQ.nextval, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			ps = conn.prepareStatement(sql);
 			ps.setInt(1, member_ix);
 			ps.setString(2, mddto.getContact());
@@ -30,6 +30,7 @@ public class MemberDetailDAO {
 			ps.setString(7, mddto.getSido());
 			ps.setString(8, mddto.getSigungu());
 			ps.setString(9, mddto.getmProfile());
+			ps.setString(10, mddto.getSearchAgreement());
 
 			int count = ps.executeUpdate();
 			return count;
@@ -49,7 +50,7 @@ public class MemberDetailDAO {
 		}
 	}
 	
-	//myProfile에서 자신의 프로필 정보 넘겨 받기 위한 메소드
+	//idx에 따라 세부 정보 넘겨 받기 위한 메소드 - myProfile 사용
 	public MemberDetailDTO myProfileDetailInfo(int idx) {
 		try {
 			conn=db.DB.getConn();
@@ -85,5 +86,49 @@ public class MemberDetailDAO {
 			}catch(Exception e2) {}
 		}
 	}
+	
+	//수정된 정보 DB 업데이트
+		public int memberDetailUpdate(MemberDetailDTO mddto, int idx) {
+			try {
+				conn = db.DB.getConn();
+				String sql = "UPDATE MEMBER_DETAIL_TB SET " + 
+						"CONTACT = ?,"+ 
+						"CONTACT_AGREEMENT = ?," + 
+						"KAKAO_ID = ?," + 
+						"KAKAO_ID_AGREEMENT = ?," + 
+						"BIRTH_YEAR = ?," + 
+						"SIDO = ?," + 
+						"SIGUNGU = ?," + 
+						"M_PROFILE = ? " + 
+						//"SEARCH_AGREEMENT = ? " + 
+						"WHERE Member_Detail_IX = ?";
+				ps = conn.prepareStatement(sql);
+				ps.setString(1, mddto.getContact());
+				ps.setString(2, mddto.getContactAgreement());
+				ps.setString(3, mddto.getKakaoId());
+				ps.setString(4, mddto.getKakaoIdAgreement());
+				ps.setString(5,mddto.getBirthYear());
+				ps.setString(6, mddto.getSido());
+				ps.setString(7, mddto.getSigungu());
+				ps.setString(8, mddto.getmProfile());
+				ps.setInt(9, idx);
+
+				int count = ps.executeUpdate();
+				return count;
+
+			} catch (Exception e) {
+				e.printStackTrace();
+				return ERROR; // error = -1
+			} finally {
+				try {
+					if (ps != null)
+						ps.close();
+					if (conn != null)
+						conn.close();
+				} catch (Exception e2) {
+
+				}
+			}
+		}
 
 }

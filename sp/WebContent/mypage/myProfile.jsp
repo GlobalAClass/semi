@@ -7,9 +7,9 @@
 <%@ page import="java.util.Date" %>
 <%@ page import="java.util.*" %>
 
-<jsp:useBean id="dao" class="member.MemberDAO"></jsp:useBean>
-<jsp:useBean id="ddao" class="member.MemberDetailDAO"></jsp:useBean>
-<jsp:useBean id="hdao" class="member.MemberHistoryDAO"></jsp:useBean>
+<jsp:useBean id="dao" class="member.MemberDAO"/>
+<jsp:useBean id="ddao" class="member.MemberDetailDAO"/>
+<jsp:useBean id="hdao" class="member.MemberHistoryDAO"/>
 
 <%
 String idEmail = (String)session.getAttribute("sidEmail");
@@ -85,7 +85,7 @@ function fieldMajorPop(){
 	var popwidth = 500; //팝업창 가로 길이 설정
 	var popheight = 500; //팝업창 가로 길이 설정
 	//윈도우창의 크기 절반, 팝업창의 크기 절반 수치
-	var popupX = (window.screen.availWidth-popwidth)/2; 
+	var popupX = (window.screen.availWidth-popwidth)/2;
 	var popupY = (window.screen.availHeight-popheight)/2; 
 	window.open('fieldMajorPop.jsp', 'fieldMajorPop', 'width='+popwidth+', height='+popheight
 				+',left='+popupX + ', top='+ popupY );
@@ -137,18 +137,22 @@ function addOption(obj){
 	}
 }
 //공모전 상세이력 추가.
-var addCount = <%=cnt%>; //만약 공모전 이력 받은것이 있으면 여기 몇 개 있는지 넣어주고 추가할 수 있도록 나타내주자.
+var addCount = <%=cnt%>;
 function pageAdd(){
 	var tb = document.getElementById('tb');
 	var row = tb.insertRow(tb.rows.length);
-	var cell1 = row.insertCell(0);
-	var cell2 = row.insertCell(1);
-	cell1.innerHTML='공모전 이력 '+(addCount+1);
-	cell2.innerHTML ='<table id="table_design">'
+	var cell = row.insertCell(0);
+	
+	cell.innerHTML ='<tr>'
+					+'<td>'	
+						+'<table style="border:0.5px dotted black;width:800px;">'
 						+'<tr>'
 							+'<th class="th2">공모전 이름</th>'
 							+'<td class="td_line">'
 							+'<input type="text"style="width: 170px; height: 20px;" name="cName'+addCount+'" required="required">'
+							+'</td>'
+							+'<td rowspan="5">'
+							+'<input type="button" value="-" onclick="pageDelPopup(this);" style="margin-left:20px"> 삭제하기' 
 							+'</td>'
 						+'</tr>'
 						+'<tr>'
@@ -185,26 +189,27 @@ function pageAdd(){
 						+'</td>'
 						+'</tr>'
 					+'</table>'
-	cell1.style.borderBottom="1px dotted black";
-	cell1.style.textAlign="center";
-	cell1.style.fontWeight="bold";
-	cell2.style.borderBottom="1px dotted black";
+					+'</td>'
+					+'</tr>'
+	cell.style.borderTop="1px dotted green;"
 	addCount++;
 }
-function pageDelPopup(){
+function pageDelPopup(row, index){
+	
 	var result = confirm('삭제되면 데이터 복구가 불가능합니다.\n그래도 삭제하시겠습니까?');
     if(result==true){
-    	pageDel();
+    	row.nextSibling.nextSibling.value=index;
+    	row.parentNode.parentNode.parentNode.parentNode.remove();
+    	addCount--;
     }
 }
-//공모전 상세이력 삭제.
-function pageDel(){
-	var tb = document.getElementById('tb');
-	var row_index = tb.rows.length-1; // row 인덱스 구함.
-	if(row_index > -1){ //인덱스 0이 처음에 추가된 행(상세이력)임.
-		tb.deleteRow(row_index);
-		addCount--;
-	}
+function pageDel(row){
+	
+	var result = confirm('삭제되면 데이터 복구가 불가능합니다.\n그래도 삭제하시겠습니까?');
+    if(result==true){
+    	row.parentNode.parentNode.parentNode.parentNode.remove();
+    	addCount--;
+    }
 }
 //공모전 상세이력 안에 역할 선택.
 function select(part){
@@ -248,6 +253,33 @@ function select(part){
 		role.appendChild(bu);
 	}
 }
+function formCheck(){
+	
+	myProfile.addCount.value = addCount; // 공모전 상세이력 한개도 추가 안했을 때, db에있던 이력 갯수 전송됨.
+	//전화번호 조합
+	myProfile.contact.value = myProfile.headtel.value +"-"+ myProfile.tel1.value +"-"+ myProfile.tel2.value;
+	//전화번호 입력 안했을 때, 빈문자열 저장.
+	if(myProfile.contact.value == "010--")
+		myProfile.contact.value = "";
+	//생년월일 선택 안했을 때, 빈 문자열 저장.
+	if(myProfile.birthYear.value == "선택해주세요"){
+		myProfile.birthYear.value = "";
+	}
+	//시도 선택 안했을 때, 빈 문자열 저장.
+	if(myProfile.sido.value == "선택해주세요"){
+		myProfile.sido.value = "";
+	}
+	//시군구 선택 안했을 때, 빈 문자열 저장.
+	if(myProfile.sigungu.value == "선택해주세요"){
+		myProfile.sigungu.value = "";
+	}
+	//공모전 상세이력의 기간 조합
+	for(i=0; i<addCount; i++){
+		document.getElementById("period"+i).value = document.getElementById('period'+i+'_1').value
+													+'~'+document.getElementById('period'+i+'_2').value;
+	}
+	return true;
+}
 
 </script>
 </head>
@@ -257,7 +289,7 @@ function select(part){
 
 <section>
 <article>
-	<form name="myProfile" action="myProfile_ok.jsp" method="post" onsubmit="return formCheck()">
+	<form name="myProfile" action="myProfile_ok.jsp" method="post" onsubmit="return formCheck()" enctype="multipart/form-data">
 	<div align="center" style="font-size:40px;font-weight:bold;">프로필 수정하기</div>
 	<div class="p_div" align="center">
 	<div align="left" style="margin-botton:15px;font-size:30px;font-weight:bold;">기본 인적사항</div>
@@ -297,8 +329,8 @@ function select(part){
 				<th class="th1">수신동의</th>
 				<%String email=dto.getEmailAgreement(); %>
 				<td colspan="3">이메일 수신을 허가하시겠습니까?
-					<input type="radio" id="emailyes" name="emailAgreement" value="true" required="required" <%=(email.equals("true"))?"checked":""%>>예
-					<input type="radio" id="emailno" name="emailAgreement" value="false" required="required" <%=(email.equals("false"))?"checked":""%>>아니오
+					<input type="radio" name="emailAgreement" value="true" required="required" <%=(email.equals("true"))?"checked":""%>>예
+					<input type="radio" name="emailAgreement" value="false" required="required" <%=(email.equals("false"))?"checked":""%>>아니오
 				</td>
 			</tr>
 			</table>
@@ -363,6 +395,7 @@ function select(part){
 		<%int gbyear = Integer.parseInt(ddto.getBirthYear()); %>
 		<td>
 			<select name="birthYear" style="height:30px;">
+				<option value="">선택해주세요</option>
 				<%
 				Calendar cal = Calendar.getInstance(); //서버시간기준으로 120세까지만 선택가능.
 				int y = cal.get(Calendar.YEAR);
@@ -391,13 +424,12 @@ function select(part){
 		<td>
 			<select onchange="addOption(this)" name="sido" style="height:30px;">
 				<%
-				String str[]={"서울특별시","인천광역시","대구광역시","부산광역시","광주광역시","대전광역시","울산광역시","세종시","경기도","강원도","충청남도","충청북도","경상북도","경상남도","전라북도","전라남도","제주도"};
+				String str[]={"선택해주세요","서울특별시","인천광역시","대구광역시","부산광역시","광주광역시","대전광역시","울산광역시","세종시","경기도","강원도","충청남도","충청북도","경상북도","경상남도","전라북도","전라남도","제주도"};
 				for(int i=0;i<str.length;i++){
 					if(sd.equals(str[i])){
 						%>
 						<option selected><%=str[i] %></option>
 						<%
-						//if(sd.equals("서울특별시"))
 					}else{
 						%>
 						<option><%=str[i] %></option>
@@ -406,30 +438,48 @@ function select(part){
 				}
 				%>
 			</select>
-			<select hidden="" name="sigungu" style="height:30px;"> <!-- 추가옵션 달릴 부분 -->
-				<option selected>선택해주세요</option>
+			<select name="sigungu" style="height:30px;"> <!-- 추가옵션 달릴 부분 -->
+				<option>선택해주세요</option>
 			</select>
+			<script>
+			addOption(myProfile.sido);
+			
+			for(var i=0	;i<document.myProfile.sigungu.length;i++){
+				if(document.myProfile.sigungu.options[i].value=="<%=sgg%>"){
+					document.myProfile.sigungu.options[i].selected=true;
+				}
+			}
+			</script>
 		</td>
 	</tr>
 	<tr>
 		<th class="th1">공모전 이력&nbsp;</th>
 		<td>
-			<input type="button" value="+" onclick="pageAdd();">&nbsp;
-			<input type="button" value="-" onclick="pageDelPopup();">
+			<input type="button" value="+" onclick="pageAdd();"> 추가하기
 		</td>
 	</tr>
+	</table>
+	<table>
 		<tbody id="tb">
 		<%
-		for(int i=0;i<cnt;i++){
+		
+		for(int i=0;i<arr.size();i++){
+			
+			int idx=arr.get(i).getMemberHistroyIx();
 		%>
+		
 			<tr>
-			<td>공모전 이력 <%=i+1 %> </td>
 			<td>
-				<table id="table_design">
+			<input type="hidden" name="deleteIdx<%=i %>" value="">
+				<table style="border:0.5px dotted black;width:800px;">
 					<tr>
 						<th class="th2">공모전 이름</th>
 						<td class="td_line">
-						<input type="text"style="width: 170px; height: 20px;" name="cName+'addCount'+" required="required" value="<%=arr.get(i).getCName() %>">
+						<input type="text"style="width: 170px; height: 20px;" name="cName<%=i %>" required="required" value="<%=arr.get(i).getCName() %>">
+						</td>
+						<td rowspan="5">
+							<input type="button" value="-" onclick="pageDelPopup(this,<%=idx %>);" style="margin-left:20px"> 삭제하기
+							<input type="hidden" name="updateIdx<%=i %>" value="<%=idx%>">
 						</td>
 					</tr>
 					<tr>
@@ -439,43 +489,45 @@ function select(part){
 						String p1=period.substring(0,period.indexOf('~'));
 						String p2=period.substring(period.lastIndexOf('~')+1);
 						%>
-						<td class="td_line"><input style="width: 170px; height: 20px;" type="text" id="period'+addCount+'_1" name="period'+addCount+'_1" onchange="checkPeriod(this);" required="required" placeholder=" ex) 2018-01-01" value="<%=p1%>">
+						<td class="td_line"><input style="width: 170px; height: 20px;" type="text" id="period<%=i %>_1" name="period<%=i %>_1" onchange="checkPeriod(this);" required="required" placeholder=" ex) 2018-01-01" value="<%=p1%>">
 						&nbsp;~&nbsp;
-						<input style="width: 170px; height: 20px;" type="text" id="period'+addCount+'_2" name="period'+addCount+'_2" onchange="checkPeriod(this);" required="required" placeholder=" ex) 2018-06-30" value="<%=p2%>">
-						<input type="text" hidden="" id="period'+addCount+'" name="period'+addCount+'" value="">
+						<input style="width: 170px; height: 20px;" type="text" id="period<%=i %>_2" name="period<%=i %>_2" onchange="checkPeriod(this);" required="required" placeholder=" ex) 2018-06-30" value="<%=p2%>">
+						<input type="text" hidden="" id="period<%=i %>" name="period<%=i %>" value="">
 					</td>
 					</tr>
 					<tr>
 						<th class="th2">담당역할</th>
 						<% String role=arr.get(i).getDetailRole(); %>
 						<td class="td_line">
-						<select id="part" onchange="select(this)" name="mainRole'+addCount+'">
+						<select id="part" onchange="select(this)" name="mainRole<%=i %>">
 							<option selected>담당 역할</option>
 							<option value="developer">개발자</option>
 							<option value="desiner">디자이너</option>
 							<option value="planner">기획자</option>
 							<option value="etc">etc</option>
 						</select>
-						<div id="roleaddCount"></div>
-						<input style="width: 170px; height: 20px;" type="text" id="detailRolea'+addCount+'" name="detailRole'+addCount+'" value="<%=role %>">
+						<div id="role<%=i %>"></div>
+						<input style="width: 170px; height: 20px;" type="text" id="detailRolea<%=i %>" name="detailRole<%=i %>" value="<%=role %>">
 						</td>
 					</tr>
 					<tr>
 						<th class="th2">수상내역</th>
-						<td class="td_line"><input style="width: 170px; height: 20px;" type="text" placeholder="ex)입선" name="award'+addCount+'" value="<%=arr.get(i).getAward()%>">
+						<td class="td_line"><input style="width: 170px; height: 20px;" type="text" placeholder="ex)입선" name="award<%=i %>" value="<%=arr.get(i).getAward()%>">
 					</td>
 					</tr>
 					<tr>
 						<th class="th2">상세내용</th>
 						<td class="td_line">
-						<textarea style="width:400px;height:200px;" placeholder="필요에 따라 입력해주세요.\n어떤 활약을 펼쳤는지 간단하게 작성해주시면 도움이 됩니다." name="detail'+addCount+'"><%=arr.get(i).getDetail() %></textarea>
+						<textarea style="width:400px;height:200px;" placeholder="필요에 따라 입력해주세요.\n어떤 활약을 펼쳤는지 간단하게 작성해주시면 도움이 됩니다." name="detail<%=i %>"><%=arr.get(i).getDetail() %></textarea>
 					</td>
 					</tr>
 				</table>
-			</td>
-			</tr>
+				</td>
+				</tr>
 		<%} %>
 		</tbody>
+	</table>
+	<table>
 	<tr>
 		<th class="th1">자기소개</th>
 		<td>

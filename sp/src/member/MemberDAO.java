@@ -203,7 +203,7 @@ public class MemberDAO {
 		}
 	}
 
-	//myProfile에서 자신의 프로필 정보 넘겨 받기 위한 메소드
+	//idx에 따라 기본 정보 넘겨 받기 위한 메소드 - myProfile 사용
 	public MemberDTO myProfileInfo(int idx) {
 		try {
 			conn=db.DB.getConn();
@@ -234,6 +234,35 @@ public class MemberDAO {
 				if(ps!=null)ps.close();
 				if(conn!=null)conn.close();
 			}catch(Exception e2) {}
+		}
+	}
+	
+	//기본정보 수정하는 메소드
+	// DB에 회원 필수 정보 입력
+	public int memberUpdate(String fm,String ea, int idx) {
+		try {
+			conn = db.DB.getConn();
+			String sql = "UPDATE MEMBER_TB SET FIELD_MAJOR=?,EMAIL_AGREEMENT=? WHERE MEMBER_IX=?";
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, fm);
+			ps.setString(2, ea);
+			ps.setInt(3, idx);
+
+			int count = ps.executeUpdate();
+			return count;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ERROR; // error = -1
+		} finally {
+			try {
+				if (ps != null)
+					ps.close();
+				if (conn != null)
+					conn.close();
+			} catch (Exception e2) {
+
+			}
 		}
 	}
 }
