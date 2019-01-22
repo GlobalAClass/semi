@@ -15,6 +15,39 @@ public class MemberHistoryDAO {
 		System.out.println("MemberHIstoryDAO 생성");
 	}
 	
+	// member_ix로 회원 공모전이력  조회
+	public ArrayList<MemberHistoryDTO> getMemberHistoryInfo(int member_ix) {
+		try {
+			conn = db.DB.getConn();
+			String sql = "select * from Member_History_TB where MEMBER_IX = '" + member_ix + "'";
+			ps = conn.prepareStatement(sql);
+			rs = ps.executeQuery();
+
+			ArrayList<MemberHistoryDTO> list = new ArrayList<MemberHistoryDTO>();
+			if (rs.next()) {
+				MemberHistoryDTO mhdto = new MemberHistoryDTO(rs.getInt("Member_History_IX"), rs.getInt("MEMBER_IX"),
+						rs.getString("C_NAME"), rs.getString("PERIOD"), rs.getString("MAIN_ROLE"),
+						rs.getString("DETAIL_ROLE"), rs.getString("AWARD"), rs.getString("DETAIL"));
+				list.add(mhdto);
+			}
+			return list;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (ps != null)
+					ps.close();
+				if (conn != null)
+					conn.close();
+			} catch (Exception e2) {
+
+			}
+		}
+	}
+
 	public int memberHistoryJoin(MemberHistoryDTO mhdto, int member_ix) {
 		try {
 			System.out.println("memberHistoryDTO() 호출");
