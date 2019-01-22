@@ -8,7 +8,10 @@ public class MatchDTO {
 
 	// 글 쓴 회원 인덱스
 	private Integer memberIx;
-
+	
+	// 공모전 정보 인덱스
+	private Integer competitionInfoIx;
+	
 	// 모임명
 	private String matchName;
 	
@@ -54,12 +57,13 @@ public class MatchDTO {
 	}
 	
 	// 모든 필드 생성자
-	public MatchDTO(Integer matchIx, Integer memberIx, String matchName, String mainRole, String detailRole,
-			String originalMemberNumber, String sido, String sigungu, String timesAWeek, String day,
+	public MatchDTO(Integer matchIx, Integer memberIx, Integer competitionInfoIx, String matchName, String mainRole,
+			String detailRole, String originalMemberNumber, String sido, String sigungu, String timesAWeek, String day,
 			String totalWantedNumber, String ageRestriction, String detail, String completedState, String writeDate) {
 		super();
 		this.matchIx = matchIx;
 		this.memberIx = memberIx;
+		this.competitionInfoIx = competitionInfoIx;
 		this.matchName = matchName;
 		this.mainRole = mainRole;
 		this.detailRole = detailRole;
@@ -74,6 +78,8 @@ public class MatchDTO {
 		this.completedState = completedState;
 		this.writeDate = writeDate;
 	}
+	//인덱스 제외한 생성자
+	
 	
 	public Integer getMatchIx() {
 		return matchIx;
@@ -195,4 +201,12 @@ public class MatchDTO {
 		this.writeDate = writeDate;
 	}
 
+	public Integer getCompetitionInfoIx() {
+		return competitionInfoIx;
+	}
+
+	public void setCompetitionInfoIx(Integer competitionInfoIx) {
+		this.competitionInfoIx = competitionInfoIx;
+	}
+	
 }

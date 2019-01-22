@@ -83,6 +83,28 @@ tbody a:hover{
 							<th style="width:70px;">조회수</th>
 						</tr>
 					</thead>
+					<tbody>
+						<%
+						ArrayList<CompetitionInfoDTO> arr2=cdao.CompetitonRecent();
+						if(arr2==null||arr2.size()==0){
+							%>
+							<tr>
+								<td colspan="3"><h2>공모전이 등록되지 않았습니다.</h2></td>
+							</tr>
+							<%
+						}else{
+							for(int i=0;i<arr2.size();i++){
+								%>
+								<tr>
+									<td><%=arr2.get(i).getField()%></td>
+									<td style="width:300px;"><a href="/sp/Competition/CompetitionDetail.jsp?ix=<%=arr2.get(i).getCompetitionInfoIx()%>"><%=arr2.get(i).getCName()%></a></td>
+									<td><%=arr2.get(i).getReadnum()%></td>
+								</tr>
+								<%
+							}
+						}
+						%>
+					</tbody>
 				</table>
 			</div>
 			<div class="main_table_2">

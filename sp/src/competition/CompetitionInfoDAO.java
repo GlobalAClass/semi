@@ -56,6 +56,40 @@ public class CompetitionInfoDAO{
 			}catch(Exception e2) {}
 		}
 	}
+	
+	//최근 올라온 공모전 5개 목록보기
+	public ArrayList<CompetitionInfoDTO> CompetitonRecent(){
+		try {
+			conn=db.DB.getConn();
+			String sql="select * from Competition_Info_TB where rownum<=5 order by Competition_Info_IX desc";
+			ps=conn.prepareStatement(sql);
+			rs=ps.executeQuery();
+			ArrayList<CompetitionInfoDTO> arr=new ArrayList<CompetitionInfoDTO>();
+			while(rs.next()) {
+				//공모전 정보 인덱스
+				Integer competitionInfoIx=rs.getInt("Competition_Info_IX");
+				//공모전 제목
+				String CName=rs.getString("C_NAME");
+				//분야
+				String field=rs.getString("FIELD");
+				//공모전 조회수
+				Integer readnum=rs.getInt("READNUM");
+				CompetitionInfoDTO dto=new CompetitionInfoDTO(competitionInfoIx, CName, field, readnum);
+				arr.add(dto);
+			}
+			return arr;
+		}catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}finally {
+			try {
+				if(rs!=null)rs.close();
+				if(ps!=null)ps.close();
+				if(conn!=null)conn.close();
+			}catch(Exception e2){}
+		}
+	}
+	
 	//조회수 많은 공모전 5개 목록보기
 	public ArrayList<CompetitionInfoDTO> CompetitionManyReadnum(){
 		try {
