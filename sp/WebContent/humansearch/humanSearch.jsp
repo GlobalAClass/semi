@@ -19,6 +19,7 @@
 			location.href="/sp/login.jsp";
 		</script>
 		<%
+		return ;
 	}
 %>
 
@@ -165,7 +166,7 @@ function scrap(obj){
 	<%
 	MemberDAO mdao = new MemberDAO();
 	int u_ix = mdao.getMemberIndex(uid);
-	
+		
 	if(searchlist!=null){
 		int len = searchlist.size();
 		for(int i=0; i<len; i++){
@@ -182,8 +183,9 @@ function scrap(obj){
 				<jsp:param value="<%=searchlist.get(i).getLeft().getidEmail()%>" name="idEmail"/>
 			</jsp:include>
 	<%
+			
 		}
-	} 
+	}
 	%>
 	</article>
 	</section>
