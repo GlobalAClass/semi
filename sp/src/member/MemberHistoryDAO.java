@@ -19,16 +19,18 @@ public class MemberHistoryDAO {
 	public ArrayList<MemberHistoryDTO> getMemberHistoryInfo(int member_ix) {
 		try {
 			conn = db.DB.getConn();
-			String sql = "select * from Member_History_TB where MEMBER_IX = '" + member_ix + "'";
+			String sql = "select * from Member_History_TB where MEMBER_IX = " + member_ix;
 			ps = conn.prepareStatement(sql);
 			rs = ps.executeQuery();
 
 			ArrayList<MemberHistoryDTO> list = new ArrayList<MemberHistoryDTO>();
 			if (rs.next()) {
-				MemberHistoryDTO mhdto = new MemberHistoryDTO(rs.getInt("Member_History_IX"), rs.getInt("MEMBER_IX"),
-						rs.getString("C_NAME"), rs.getString("PERIOD"), rs.getString("MAIN_ROLE"),
-						rs.getString("DETAIL_ROLE"), rs.getString("AWARD"), rs.getString("DETAIL"));
-				list.add(mhdto);
+				do {
+					MemberHistoryDTO mhdto = new MemberHistoryDTO(rs.getInt(1), rs.getInt(2), rs.getString(3),
+																  rs.getString(4), rs.getString(5), rs.getString(6),
+																  rs.getString(7), rs.getString(8));
+					list.add(mhdto);
+				}while(rs.next());
 			}
 			return list;
 		} catch (Exception e) {

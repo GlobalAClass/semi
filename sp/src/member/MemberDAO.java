@@ -15,6 +15,35 @@ public class MemberDAO {
 	public MemberDAO() {
 		System.out.println("MemeberDAO 생성");
 	}
+	
+	// member_ix로 회원 정보 조회
+	public MemberDTO getMemberInfo(int member_ix) {
+		try {
+			conn = db.DB.getConn();
+			String sql = "select * from Member_TB where MEMBER_IX = " + member_ix;
+			ps = conn.prepareStatement(sql);
+			rs = ps.executeQuery();
+
+			rs.next();
+			MemberDTO mdto = new MemberDTO(rs.getInt("MEMBER_IX"),rs.getString("ID_EMAIL"),rs.getString("PWD"),
+											rs.getString("M_NAME"),rs.getString("EMAIL_AGREEMENT"),rs.getString("FIELD_MAJOR"));
+			return mdto;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null; 
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (ps != null)
+					ps.close();
+				if (conn != null)
+					conn.close();
+			} catch (Exception e2) {
+
+			}
+		}
+	}
 
 	// idEmail 중복 확인
 	public boolean checkEmail(String idEmail) {
