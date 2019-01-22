@@ -46,6 +46,9 @@ function scrap(obj){
 	}
 	//window.location.reload();
 }
+function goDetail(){
+	location.href='/sp';
+}
 </script>
 <style>
 span {
@@ -56,20 +59,27 @@ table{
 	height: 130px;
 	border: gray solid 0.5px;
 	padding: 2px;
+	border-collapse: collapse; 
+	border-spacing: 0;
+}
+table :hover{
+	background: #E9F0FD;
+	font-weight: bold;
+	cursor:pointer;
 }
 </style>
 <span style="<% if(i%2==0){out.print("float: left;");} else{out.print("float: right;");}%>">
-<table>
+<table onclick="goDetail()">
 	<tr>
-		<td rowspan="3" style="width:100px"><img src="" style="width:80px;height:80px;padding:2px;"></td>
+		<td rowspan="3" style="width:100px"><img src="<%=imagpath %>" style="width:80px;height:80px;margin:10px;"></td>
 		<td style="font-weight: bold; font-size:30px; width : 200px;"><%=mname %></td>
 		<td style="width:80px;font-size:15px; color:gray;"><%=age %></td>
-		<td align="right"><%=fieldMajor %></td>
+		<td style="margin-right: 10px;"><%=fieldMajor %></td>
 	</tr>
 	<tr>
 		<td colspan="2"><img src="/sp/img/location.png" style="width:20px;height:20px;padding-right:5px;"><%=sido %> <%=sigungu %></td>
 		<td align="right" rowspan="2">
-			<form name="humanCard" action="humanCard_ok.jsp">
+			<form name="humanCard" action="humanCard_ok.jsp" method="post">
 				<input type="image" src="<%if(scrapcheck){out.print("/sp/img/heart.jpg");}else{out.print("/sp/img/unheart.jpg");} %>" 
 					 style="width:30px;height:30px;padding:5px;" onclick="scrap(this)" name="submit">
 				 	<input type="text" hidden="" value="<%=user_ix %>" name="user_ix">
@@ -79,10 +89,8 @@ table{
 		</td>
 	</tr>
 	<tr>
-		<td colspan="3"><img src="/sp/img/mail.png"  style="width:20px;height:15px;padding-right:5px;"><%=idemail %></td>
+		<td colspan="2"><img src="/sp/img/mail.png"  style="width:20px;height:15px;padding-right:5px;"><%=idemail %></td>
 	</tr>
 </table>
-
-
 </span>
 </html>

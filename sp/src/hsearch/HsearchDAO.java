@@ -27,7 +27,7 @@ public class HsearchDAO {
 		else
 			return false;
 	}
-	
+	//Pair클래스 따로 정의해둠. hsearch패키지안에 있음.
 	public Pair<MemberDTO, MemberDetailDTO> Pair(MemberDTO mdto, MemberDetailDTO mddto) {
 		Pair<MemberDTO, MemberDetailDTO> pair = new Pair<MemberDTO, MemberDetailDTO>(mdto, mddto);
 		return pair;
@@ -40,7 +40,7 @@ public class HsearchDAO {
 			//+SEARCH_AGREEMENT = 'TRUE' 추가해야함 테스트를 위해 빼고 진행
 			String sql = "SELECT * FROM MEMBER_TB M, MEMBER_DETAIL_TB MD WHERE M.MEMBER_IX = MD.MEMBER_IX";
 			if(!isNull(fieldMajor)) {
-				sql += " AND FIELD_MAJOR ='"+fieldMajor+"'";
+				sql += " AND FIELD_MAJOR LIKE '%"+fieldMajor+"%'";
 			}
 			if(!isNull(sido)) {
 				sql += " AND SIDO ='"+sido+"'";

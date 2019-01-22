@@ -138,7 +138,7 @@ function scrap(obj){
 					<option selected value="">전체 지역</option>
 				</select>
 				<input <%if(fieldMajor_str!=null && !fieldMajor_str.equals("")){out.print("value='"+fieldMajor_str+"'");} %> 
-						type="text" placeholder="분야/전공 검색" readonly="readonly"  name="fieldMajor" >&nbsp;
+						type="text" placeholder="분야/전공 검색"  name="fieldMajor" >&nbsp;
 				<input type="button" value="분야/전공 찾기" onclick="fieldMajorPop()">
 				<input type="button" value="사람 찾기" style="float: right" onclick="search()">
 				<input type="button" value="나도 등록하기!" style="float: right; margin-right: 20px;" >

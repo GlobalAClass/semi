@@ -9,6 +9,8 @@
 <jsp:useBean id="hsdao" class="hsearch.HumanScrapDAO"/>
 
 <%
+	request.setCharacterEncoding("UTF-8");
+
 	int uix = Integer.parseInt(request.getParameter("user_ix"));
 	int mix = Integer.parseInt(request.getParameter("member_ix"));
 	String scrapcheck = request.getParameter("scrapcheck");
