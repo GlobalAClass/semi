@@ -15,9 +15,10 @@
 String idEmail = (String)session.getAttribute("sidEmail");
 int index=dao.getMemberIndex(idEmail); //이메일을 통해 테이블 인덱스 얻기.
 MemberDTO dto=dao.myProfileInfo(index); //그 멤버의 기본정보 가져오는 dao메소드.
-MemberDetailDTO ddto=ddao.myProfileDetailInfo(index);
+MemberDetailDTO ddto=ddao.getMemberDetailInfo(index);
 ArrayList<MemberHistoryDTO> arr = hdao.myProfileHistoryInfo(index); //그 멤버의 상세정보 가져오는 dao 메소드.
-int cnt=arr.size();
+int cnt=arr.size(); //공모전 상세 내역을 기존에 존재하는 것 보다 큰 값으로 만들어야 속성값 겹치지 않음
+
 %>
 
 <!DOCTYPE html>
@@ -57,6 +58,12 @@ article{
 .td_line{
 	padding: 10px;
 	border-bottom: 0.5px gray dotted;
+}
+#toggle{
+	width: 70px;
+	height: 44px;
+	border: none;
+	margin: 10px;
 }
 </style>
 <script>
@@ -152,7 +159,7 @@ function pageAdd(){
 							+'<input type="text"style="width: 170px; height: 20px;" name="cName'+addCount+'" required="required">'
 							+'</td>'
 							+'<td rowspan="5">'
-							+'<input type="button" value="-" onclick="pageDelPopup(this);" style="margin-left:20px"> 삭제하기' 
+							+'<input type="button" value="-" onclick="pageAddDelPopup(this);" style="margin-left:20px"> 삭제하기' 
 							+'</td>'
 						+'</tr>'
 						+'<tr>'
@@ -194,19 +201,14 @@ function pageAdd(){
 	cell.style.borderTop="1px dotted green;"
 	addCount++;
 }
-function pageDelPopup(row, index){
+var length = <%=arr.size()%>; //갯수를 가져와서 넘겨받는 배열 크기를 지정해야함
+
+//삭제 버튼 클릭시 부모 객체(table) remove
+function pageDelPopup(row){
 	
 	var result = confirm('삭제되면 데이터 복구가 불가능합니다.\n그래도 삭제하시겠습니까?');
     if(result==true){
-    	row.nextSibling.nextSibling.value=index;
-    	row.parentNode.parentNode.parentNode.parentNode.remove();
-    	addCount--;
-    }
-}
-function pageDel(row){
-	
-	var result = confirm('삭제되면 데이터 복구가 불가능합니다.\n그래도 삭제하시겠습니까?');
-    if(result==true){
+    	length--;
     	row.parentNode.parentNode.parentNode.parentNode.remove();
     	addCount--;
     }
@@ -253,11 +255,33 @@ function select(part){
 		role.appendChild(bu);
 	}
 }
-function formCheck(){
+
+var flag=true
+function toggleClick(){
 	
-	myProfile.addCount.value = addCount; // 공모전 상세이력 한개도 추가 안했을 때, db에있던 이력 갯수 전송됨.
+	btn=document.getElementById('toggle');
+	
+	if(flag){
+		btn.style.background='url("/sp/img/toggle_on.jpg")';
+		myProfile.toggleTyping.value='네. 프로필을 등록합니다.';
+		myProfile.searchAgreement.value='true';
+		flag=false;
+	}else{
+		btn.style.background='url("/sp/img/toggle_off.jpg")';
+		myProfile.toggleTyping.value='아니오. 프로필을 등록하지 않습니다.';
+		myProfile.searchAgreement.value='false';
+		flag=true;
+	}
+}
+
+function formCheck(){
+	myProfile.addCount.value = addCount; // default = 여태 생성되어잇던 공모전 갯수  > 추가할 때 마다 증가함
 	//전화번호 조합
 	myProfile.contact.value = myProfile.headtel.value +"-"+ myProfile.tel1.value +"-"+ myProfile.tel2.value;
+	
+	//update 위해서 length값 알아야함
+	myProfile.uIdxlength.value=length;
+	
 	//전화번호 입력 안했을 때, 빈문자열 저장.
 	if(myProfile.contact.value == "010--")
 		myProfile.contact.value = "";
@@ -290,6 +314,9 @@ function formCheck(){
 <section>
 <article>
 	<form name="myProfile" action="myProfile_ok.jsp" method="post" onsubmit="return formCheck()" enctype="multipart/form-data">
+	<!-- 최종 추가된 addCount 수 와 맨 처음 comp 갯수를 전송하여 공모전 상세이력 추가 , 삭제 및 수정 -->
+	<input type="hidden" name="addCount" value="q">
+	<input type="hidden" name="crtCompSize" value="<%=cnt%>">
 	<div align="center" style="font-size:40px;font-weight:bold;">프로필 수정하기</div>
 	<div class="p_div" align="center">
 	<div align="left" style="margin-botton:15px;font-size:30px;font-weight:bold;">기본 인적사항</div>
@@ -355,12 +382,11 @@ function formCheck(){
 				String tel[]={"010","011","018"};
 				for(int i=0;i<tel.length;i++){
 					if(tel[i].equals(num1)){
-						%><option selected><%=tel[i] %></option><%
+						%><option value="<%=tel[i] %>" selected><%=tel[i] %></option><%
 					}else{
-						%><option><%=tel[i] %><option><%
+						%><option value="<%=tel[i] %>"><%=tel[i] %></option><%
 					}
 				}
-				
 				%>
 			</select> -
 				<input style="width:70px;height:25px;" type="text" name="tel1" maxlength="4" onchange="checktel(this);" value="<%=num2%>"> -
@@ -459,6 +485,7 @@ function formCheck(){
 		</td>
 	</tr>
 	</table>
+	<input type="hidden" name="uIdxlength" value="">
 	<table>
 		<tbody id="tb">
 		<%
@@ -470,16 +497,18 @@ function formCheck(){
 		
 			<tr>
 			<td>
-			<input type="hidden" name="deleteIdx<%=i %>" value="">
 				<table style="border:0.5px dotted black;width:800px;">
 					<tr>
 						<th class="th2">공모전 이름</th>
 						<td class="td_line">
-						<input type="text"style="width: 170px; height: 20px;" name="cName<%=i %>" required="required" value="<%=arr.get(i).getCName() %>">
+						
+						<input type="text"style="width: 170px; height: 20px;" name="cName" required="required" value="<%=arr.get(i).getCName() %>">
 						</td>
 						<td rowspan="5">
-							<input type="button" value="-" onclick="pageDelPopup(this,<%=idx %>);" style="margin-left:20px"> 삭제하기
-							<input type="hidden" name="updateIdx<%=i %>" value="<%=idx%>">
+							<input type="button" value="-" onclick="pageDelPopup(this);" style="margin-left:20px"> 삭제하기
+							<!-- update되는 idx만 넘어가는 value -->
+							
+							<input type="hidden" name="updateIdx" value="<%=idx%>">
 						</td>
 					</tr>
 					<tr>
@@ -489,17 +518,18 @@ function formCheck(){
 						String p1=period.substring(0,period.indexOf('~'));
 						String p2=period.substring(period.lastIndexOf('~')+1);
 						%>
-						<td class="td_line"><input style="width: 170px; height: 20px;" type="text" id="period<%=i %>_1" name="period<%=i %>_1" onchange="checkPeriod(this);" required="required" placeholder=" ex) 2018-01-01" value="<%=p1%>">
+						<td class="td_line"><input style="width: 170px; height: 20px;" type="text" id="period<%=i %>_1" name="period_1" onchange="checkPeriod(this);" required="required" placeholder=" ex) 2018-01-01" value="<%=p1%>">
 						&nbsp;~&nbsp;
-						<input style="width: 170px; height: 20px;" type="text" id="period<%=i %>_2" name="period<%=i %>_2" onchange="checkPeriod(this);" required="required" placeholder=" ex) 2018-06-30" value="<%=p2%>">
-						<input type="text" hidden="" id="period<%=i %>" name="period<%=i %>" value="">
+						<input style="width: 170px; height: 20px;" type="text" id="period<%=i %>_2" name="period
+						_2" onchange="checkPeriod(this);" required="required" placeholder=" ex) 2018-06-30" value="<%=p2%>">
+						<input type="text" hidden="" id="period<%=i %>" name="period" value="">
 					</td>
 					</tr>
 					<tr>
 						<th class="th2">담당역할</th>
 						<% String role=arr.get(i).getDetailRole(); %>
 						<td class="td_line">
-						<select id="part" onchange="select(this)" name="mainRole<%=i %>">
+						<select id="part" onchange="select(this)" name="mainRole">
 							<option selected>담당 역할</option>
 							<option value="developer">개발자</option>
 							<option value="desiner">디자이너</option>
@@ -507,18 +537,18 @@ function formCheck(){
 							<option value="etc">etc</option>
 						</select>
 						<div id="role<%=i %>"></div>
-						<input style="width: 170px; height: 20px;" type="text" id="detailRolea<%=i %>" name="detailRole<%=i %>" value="<%=role %>">
+						<input style="width: 170px; height: 20px;" type="text" id="detailRole<%=i %>" name="detailRole" value="<%=role %>">
 						</td>
 					</tr>
 					<tr>
 						<th class="th2">수상내역</th>
-						<td class="td_line"><input style="width: 170px; height: 20px;" type="text" placeholder="ex)입선" name="award<%=i %>" value="<%=arr.get(i).getAward()%>">
+						<td class="td_line"><input style="width: 170px; height: 20px;" type="text" placeholder="ex)입선" name="award" value="<%=arr.get(i).getAward()%>">
 					</td>
 					</tr>
 					<tr>
 						<th class="th2">상세내용</th>
 						<td class="td_line">
-						<textarea style="width:400px;height:200px;" placeholder="필요에 따라 입력해주세요.\n어떤 활약을 펼쳤는지 간단하게 작성해주시면 도움이 됩니다." name="detail<%=i %>"><%=arr.get(i).getDetail() %></textarea>
+						<textarea style="width:400px;height:200px;" placeholder="필요에 따라 입력해주세요.\n어떤 활약을 펼쳤는지 간단하게 작성해주시면 도움이 됩니다." name="detail"><%=arr.get(i).getDetail() %></textarea>
 					</td>
 					</tr>
 				</table>
@@ -536,6 +566,26 @@ function formCheck(){
 		</td>	
 	</tr>
 	</table>
+	<br>
+	<div>
+	<div align="center" style="font-size:30px;">현재 프로필을 <b>사람검색</b>에 등록하시겠습니까?</div>
+	<div style="margin-left:250px;">
+		<table>
+		<tr>
+		<%
+		String ga = ddto.getSearchAgreement();
+		%>
+			<td>
+			<input type="button" id="toggle" onclick="toggleClick();" style="background: '<%=(ga.equals("true"))?"url('/sp/img/toggle_on.jpg')":"url('/sp/img/toggle_off.jpg')" %>'">
+			<input type="hidden" id="searchAgreement" name="searchAgreement" value="false">
+			</td>
+			<td>
+			<input type="text" id="toggleTyping" disabled="disabled" style="background: none;border:none; width:300px;color: black;" value="<%=(ga.equals("true"))?"네. 프로필을 등록합니다.":"아니오. 프로필을 등록하지 않습니다." %>">
+			</td>
+		</tr>
+		</table>
+	</div>
+	</div>
 	<div align="center"><input type="submit" value="정보 수정하기" style="width:150px;height:50px;"></div>
 	</div>
 	</form>

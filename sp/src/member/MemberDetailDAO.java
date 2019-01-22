@@ -3,6 +3,8 @@ package member;
 import java.sql.*;
 import java.util.*;
 
+import org.apache.tomcat.jni.Mmap;
+
 public class MemberDetailDAO {
 	private static final int ERROR = -1;
 
@@ -80,56 +82,15 @@ public class MemberDetailDAO {
 		}
 	}
 
-	// idx에 따라 세부 정보 넘겨 받기 위한 메소드 - myProfile 사용
-	public MemberDetailDTO myProfileDetailInfo(int idx) {
-		try {
-			conn = db.DB.getConn();
-
-			String sql = "SELECT * FROM MEMBER_DETAIL_TB WHERE MEMBER_IX=?";
-			ps = conn.prepareStatement(sql);
-			ps.setInt(1, idx);
-
-			rs = ps.executeQuery();
-
-			MemberDetailDTO dtos = null;
-			if (rs.next()) {
-				String contact = rs.getString("CONTACT");
-				String contactAgreement = rs.getString("CONTACT_AGREEMENT");
-				String kakaoId = rs.getString("KAKAO_ID");
-				String kakaoIdAgreement = rs.getString("KAKAO_ID_AGREEMENT");
-				String birthYear = rs.getString("BIRTH_YEAR");
-				String sido = rs.getString("SIDO");
-				String sigungu = rs.getString("SIGUNGU");
-				String mProfile = rs.getString("M_PROFILE");
-
-				dtos = new MemberDetailDTO(contact, contactAgreement, kakaoId, kakaoIdAgreement, birthYear, sido,
-						sigungu, mProfile);
-			}
-			return dtos;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		} finally {
-			try {
-				if (rs != null)
-					rs.close();
-				if (ps != null)
-					ps.close();
-				if (conn != null)
-					conn.close();
-			} catch (Exception e2) {
-			}
-		}
-	}
 
 	// 수정된 정보 DB 업데이트
 	public int memberDetailUpdate(MemberDetailDTO mddto, int idx) {
 		try {
 			conn = db.DB.getConn();
 			String sql = "UPDATE MEMBER_DETAIL_TB SET " + "CONTACT = ?," + "CONTACT_AGREEMENT = ?," + "KAKAO_ID = ?,"
-					+ "KAKAO_ID_AGREEMENT = ?," + "BIRTH_YEAR = ?," + "SIDO = ?," + "SIGUNGU = ?," + "M_PROFILE = ? " +
-					// "SEARCH_AGREEMENT = ? " +
-					"WHERE Member_Detail_IX = ?";
+					+ "KAKAO_ID_AGREEMENT = ?," + "BIRTH_YEAR = ?," + "SIDO = ?," + "SIGUNGU = ?," + "M_PROFILE = ?,"
+					+ "SEARCH_AGREEMENT = ? " +
+					"WHERE Member_Detail_IX = "+idx;
 			ps = conn.prepareStatement(sql);
 			ps.setString(1, mddto.getContact());
 			ps.setString(2, mddto.getContactAgreement());
@@ -139,7 +100,7 @@ public class MemberDetailDAO {
 			ps.setString(6, mddto.getSido());
 			ps.setString(7, mddto.getSigungu());
 			ps.setString(8, mddto.getmProfile());
-			ps.setInt(9, idx);
+			ps.setString(9, mddto.getSearchAgreement());
 
 			int count = ps.executeUpdate();
 			return count;

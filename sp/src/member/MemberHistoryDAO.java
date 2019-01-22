@@ -121,6 +121,7 @@ public class MemberHistoryDAO {
 		}
 	}
 	
+	//현재 db에 존재하는 idx 추출하는 메소드
 	public int[] getAllidx(int idx) {
 		try {
 			conn=db.DB.getConn();
@@ -152,24 +153,62 @@ public class MemberHistoryDAO {
 		}
 	}
 	
-	//공모전 수정 또는 삭제 구현되는 메소드
-	public int myProfileHistoryUpdate(int idx, int[] idxs,MemberHistoryDTO mhdto) {
+	//공모전 상세내역 삭제하는 메소드
+	public int myProfileHistoryDelete(int idx, int[] idxs) {
+		
 		try {
 			conn=db.DB.getConn();
 			
 			//현재 db에 존재하는 idx 가져오고
 			int dbIdx[] = getAllidx(idx);
 			
-			//idxs랑 비교해서 같으면 update 다르면 delete 하자.
-			
-			Vector<Integer> update = new Vector<Integer>();
-			Vector<Integer> delete = new Vector<Integer>();
+			//delete 해야할 idx값 vector에 넣기 (db전체 idx에서 update idx 제외한 값)
+			Vector<Integer> v =	new Vector<Integer>();
 			
 			for(int i=0;i<dbIdx.length;i++) {
-				
+				boolean flag=true;
+				for(int j=0;j<idxs.length;j++) {
+					if(dbIdx[i]==idxs[j])
+						flag=false;
+				}
+				if(flag) {
+					v.add(dbIdx[i]);
+				}
 			}
 			
-			String sql1="UPDATE Member_History_TB " + 
+			int count=0;
+			
+			for(int i=0;i<v.size();i++) {
+			String sql="DELETE FROM MEMBER_HISTORY_TB WHERE MEMBER_HISTORY_IX=?";
+			
+			ps=conn.prepareStatement(sql);
+			ps.setInt(1, v.get(i));
+			
+			count = ps.executeUpdate();
+			}
+			
+			return count;
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+			return -1;
+		}finally {
+			try {
+				if(ps!=null)ps.close();
+				if(conn!=null)conn.close();
+			}catch(Exception e) {}
+		}
+		
+		
+	}
+	
+	
+	//공모전 상세내역 수정하는 메소드
+	public int myProfileHistoryUpdate(int idx, MemberHistoryDTO mhdto) {
+		try {
+			conn=db.DB.getConn();
+			
+			String sql="UPDATE Member_History_TB " + 
 					"SET " + 
 					"MEMBER_IX = ?," + 
 					"C_NAME = ?," + 
@@ -180,12 +219,7 @@ public class MemberHistoryDAO {
 					"DETAIL = ? " + 
 					"WHERE Member_History_IX = ?";
 			
-			ps=conn.prepareStatement(sql1);
-			
-			String sql2="DELETE FROM MEMBER_HISTORY_TB WHERE MEMBER_HISTORY_IX=?";
-			
-			ps=conn.prepareStatement(sql2);
-			ps.setInt(1, idx);
+			ps=conn.prepareStatement(sql);
 
 			int count = ps.executeUpdate();
 			return count;
