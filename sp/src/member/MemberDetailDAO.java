@@ -87,10 +87,7 @@ public class MemberDetailDAO {
 	public int memberDetailUpdate(MemberDetailDTO mddto, int idx) {
 		try {
 			conn = db.DB.getConn();
-			String sql = "UPDATE MEMBER_DETAIL_TB SET " + "CONTACT = ?," + "CONTACT_AGREEMENT = ?," + "KAKAO_ID = ?,"
-					+ "KAKAO_ID_AGREEMENT = ?," + "BIRTH_YEAR = ?," + "SIDO = ?," + "SIGUNGU = ?," + "M_PROFILE = ?,"
-					+ "SEARCH_AGREEMENT = ? " +
-					"WHERE Member_Detail_IX = "+idx;
+			String sql = "UPDATE MEMBER_DETAIL_TB SET CONTACT=?,CONTACT_AGREEMENT=?,KAKAO_ID=?,KAKAO_ID_AGREEMENT=?,BIRTH_YEAR=?,SIDO=?,SIGUNGU=?,M_PROFILE=?,SEARCH_AGREEMENT=? WHERE MEMBER_IX=?";
 			ps = conn.prepareStatement(sql);
 			ps.setString(1, mddto.getContact());
 			ps.setString(2, mddto.getContactAgreement());
@@ -101,6 +98,7 @@ public class MemberDetailDAO {
 			ps.setString(7, mddto.getSigungu());
 			ps.setString(8, mddto.getmProfile());
 			ps.setString(9, mddto.getSearchAgreement());
+			ps.setInt(10, idx);
 
 			int count = ps.executeUpdate();
 			return count;

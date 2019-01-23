@@ -21,6 +21,16 @@ int cnt=arr.size(); //공모전 상세 내역을 기존에 존재하는 것 보�
 
 %>
 
+<%!
+public String manageNull(String str) {
+	if (str == null || str.equals("")) {
+		return "";
+	} else {
+		return str;
+	}
+}
+%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -143,6 +153,15 @@ function addOption(obj){
 		myProfile.sigungu.hidden=true;
 	}
 }
+//공모전 기간 형식 지정 함수
+function checkPeriod(obj) {
+    var pattern = /^(19|20)\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[0-1])$/;  // 숫자랑 -만 입력 가능, ^시작, $끝
+    				//19나 20으로 시작하고 두개의 숫자가 옮. - 이후 0으로 시작하는 1~9월 또는 1로시작하는 10~12월.
+   	if(!pattern.exec(obj.value)) { //공백 체크, exec는 정규표현식 패턴에 맞는 문자열 탐색
+       	alert("\n정확한 년,월,일을 입력하세요.\n해당 항목에는 0000-00-00형식만 사용 할 수 있습니다.\n자동적으로 제거 됩니다.");
+       	obj.value = obj.value.replace(/.*/,''); //제거
+	}
+}
 //공모전 상세이력 추가.
 var addCount = <%=cnt%>;
 function pageAdd(){
@@ -152,28 +171,28 @@ function pageAdd(){
 	
 	cell.innerHTML ='<tr>'
 					+'<td>'	
-						+'<table style="border:0.5px dotted black;width:800px;">'
+						+'<table style="border:0.5px dotted black;width:700px;">'
 						+'<tr>'
 							+'<th class="th2">공모전 이름</th>'
 							+'<td class="td_line">'
-							+'<input type="text"style="width: 170px; height: 20px;" name="cName'+addCount+'" required="required">'
+							+'<input type="text"style="width: 170px; height: 20px;" name="cNameUpdate" required="required">'
 							+'</td>'
 							+'<td rowspan="5">'
-							+'<input type="button" value="-" onclick="pageAddDelPopup(this);" style="margin-left:20px"> 삭제하기' 
+							+'<input type="button" value="-" onclick="pageDelPopup(this);" style="margin-left:20px"> 삭제하기' 
 							+'</td>'
 						+'</tr>'
 						+'<tr>'
 							+'<th class="th2">공모전 기간</th>'
-							+'<td class="td_line"><input style="width: 170px; height: 20px;" type="text" id="period'+addCount+'_1" name="period'+addCount+'_1" onchange="checkPeriod(this);" required="required" placeholder=" ex) 2018-01-01">'
+							+'<td class="td_line"><input style="width: 170px; height: 20px;" type="text" id="periodUpdate_1" name="periodUpdate_1" onchange="checkPeriod(this);" required="required" placeholder=" ex) 2018-01-01">'
 							+'&nbsp;~&nbsp;'
-							+'<input style="width: 170px; height: 20px;" type="text" id="period'+addCount+'_2" name="period'+addCount+'_2" onchange="checkPeriod(this);" required="required" placeholder=" ex) 2018-06-30">'
-							+'<input type="text" hidden="" id="period'+addCount+'" name="period'+addCount+'" value="">'
+							+'<input style="width: 170px; height: 20px;" type="text" id="periodUpdate_2" name="periodUpdate_2" onchange="checkPeriod(this);" required="required" placeholder=" ex) 2018-06-30">'
+							+'<input type="text" hidden="" id="periodUpdate" name="periodUpdate" value="">'
 						+'</td>'
 						+'</tr>'
 						+'<tr>'
 							+'<th class="th2">담당역할</th>'
 							+'<td class="td_line">'
-							+'<select id="part" onchange="select(this)" name="mainRole'+addCount+'">'
+							+'<select id="part" onchange="select(this,\'inner\')" name="mainRoleUpdate">'
 								+'<option selected>담당 역할</option>'
 								+'<option value="developer">개발자</option>'
 								+'<option value="desiner">디자이너</option>'
@@ -181,18 +200,18 @@ function pageAdd(){
 								+'<option value="etc">etc</option>'
 							+'</select>'
 							+'<div id="roleaddCount"></div>'
-							+'<input style="width: 170px; height: 20px;" type="text" id="detailRolea'+addCount+'" name="detailRole'+addCount+'">'
+							+'<input style="width: 170px; height: 20px;" type="text" id="detailRoleaUpdate" name="detailRoleUpdate">'
 							+'</td>'
 						+'</tr>'
 						+'<tr>'
 							+'<th class="th2">수상내역</th>'
-							+'<td class="td_line"><input style="width: 170px; height: 20px;" type="text" placeholder="ex)입선" name="award'+addCount+'">'
+							+'<td class="td_line"><input style="width: 170px; height: 20px;" type="text" placeholder="ex)입선" name="awardUpdate">'
 						+'</td>'
 						+'</tr>'
 						+'<tr>'
 							+'<th class="th2">상세내용</th>'
 							+'<td class="td_line">'
-							+'<textarea style="width:400px;height:200px;" placeholder="필요에 따라 입력해주세요.\n어떤 활약을 펼쳤는지 간단하게 작성해주시면 도움이 됩니다." name="detail'+addCount+'"></textarea>'
+							+'<textarea style="width:400px;height:200px;" placeholder="필요에 따라 입력해주세요.\n어떤 활약을 펼쳤는지 간단하게 작성해주시면 도움이 됩니다." name="detailUpdate"></textarea>'
 						+'</td>'
 						+'</tr>'
 					+'</table>'
@@ -213,17 +232,27 @@ function pageDelPopup(row){
     	addCount--;
     }
 }
+
 //공모전 상세이력 안에 역할 선택.
-function select(part){
+function select(part,temp){
 	var partname=part.value; //선택한 역할 값.
-	var role = part.nextSibling; //현재 part 기준으로 다음 태그인 <div>태그 가리킴. 이 안에 세부역할 버튼들을 생성함.
+	var role;
+	var inputRes;
+	
+	if(temp=='inner'){
+		role = part.nextSibling; //현재 part 기준으로 다음 태그인 <div>태그 가리킴. 이 안에 세부역할 버튼들을 생성함.
+		inputRes = role.nextSibling; // <div> 다음 태그인 <input> 태그 가리킴. 이 안에 세부역할 대입
+	}else if(temp=='outer'){
+		role = part.nextSibling.nextSibling; 
+		inputRes = role.nextSibling.nextSibling;
+	}
 	
 	//담당역할 선택 -> 세부사항 기입 불가, 세부사항 빈문자열.
 	if(partname=="담당 역할"){
-		role.nextSibling.value = ''; //<div>태그의 다음 태그이므로 세부사항을 입력하는 <input>태그를 가리킴.
-		role.nextSibling.readOnly=true;
+		inputRes.value = '';
+		inputRes.readOnly=true;
 	}else{
-		role.nextSibling.readOnly=false;
+		inputRes.readOnly=false;
 	}
 	//div안에 있는 버튼 삭제
 	while(role.firstChild) {
@@ -251,7 +280,7 @@ function select(part){
 		bu.type = "button";
 		bu.value = ary[i];
 		bu.style.marginRight = "4px";
-		bu.onclick = function(){role.nextSibling.value = this.value;}; //기능 : 버튼 클릭시에 버튼 값이 자동으로 text에 입력
+		bu.onclick = function(){inputRes.value = this.value;}; //기능 : 버튼 클릭시에 버튼 값이 자동으로 text에 입력
 		role.appendChild(bu);
 	}
 }
@@ -262,12 +291,12 @@ function toggleClick(){
 	btn=document.getElementById('toggle');
 	
 	if(flag){
-		btn.style.background='url("/sp/img/toggle_on.jpg")';
+		btn.src='/sp/img/toggle_on.jpg';
 		myProfile.toggleTyping.value='네. 프로필을 등록합니다.';
 		myProfile.searchAgreement.value='true';
 		flag=false;
 	}else{
-		btn.style.background='url("/sp/img/toggle_off.jpg")';
+		btn.src='/sp/img/toggle_off.jpg';
 		myProfile.toggleTyping.value='아니오. 프로필을 등록하지 않습니다.';
 		myProfile.searchAgreement.value='false';
 		flag=true;
@@ -275,6 +304,7 @@ function toggleClick(){
 }
 
 function formCheck(){
+	
 	myProfile.addCount.value = addCount; // default = 여태 생성되어잇던 공모전 갯수  > 추가할 때 마다 증가함
 	//전화번호 조합
 	myProfile.contact.value = myProfile.headtel.value +"-"+ myProfile.tel1.value +"-"+ myProfile.tel2.value;
@@ -297,11 +327,19 @@ function formCheck(){
 	if(myProfile.sigungu.value == "선택해주세요"){
 		myProfile.sigungu.value = "";
 	}
-	//공모전 상세이력의 기간 조합
-	for(i=0; i<addCount; i++){
-		document.getElementById("period"+i).value = document.getElementById('period'+i+'_1').value
-													+'~'+document.getElementById('period'+i+'_2').value;
+	
+	//공모전 상세이력 기간 조합 - 기존에 존재하던 상세이력
+	var size = document.getElementsByName('period').length;
+	for(var i=0;i<size;i++){
+		document.getElementsByName('period')[i].value = document.getElementsByName('period_1')[i].value+'~'+document.getElementsByName('period_2')[i].value
 	}
+	
+	//새로 추가된 상세이력 기간 조합
+	var size = document.getElementsByName('periodUpdate').length;
+	for(var i=0;i<size;i++){
+		document.getElementsByName('periodUpdate')[i].value = document.getElementsByName('periodUpdate_1')[i].value+'~'+document.getElementsByName('periodUpdate_2')[i].value
+	}
+	
 	return true;
 }
 
@@ -324,7 +362,7 @@ function formCheck(){
 			<tr>
 				<td rowspan="3"><img name="proimg" style="margin-left:60px;width:120px;height:120px;" src="/sp/img/profile_default.jpg"></td>
 				<td style="font-size:35px;font-weight: bold;"><%=dto.getMName() %></td>
-				<td style="font-size:15px;color:gray;"><%=ddto.getBirthYear() %>년생</td>
+				<td style="font-size:15px;color:gray;"><%=manageNull(ddto.getBirthYear()).equals("")?"":manageNull(ddto.getBirthYear())+"년생" %></td>
 				<td colspan="2" style="font-size:16px;"><%=dto.getFieldMajor() %></td>
 			</tr>
 			<tr>	
@@ -348,13 +386,13 @@ function formCheck(){
 			<tr>
 				<th class="th1">분야/전공</th>
 				<td colspan="3">
-					<input style="width:170px;height:20px;" type="text" name="fieldMajor" readonly="readonly" required="required" value="<%=dto.getFieldMajor() %>">
+					<input style="width:170px;height:20px;" type="text" name="fieldMajor" readonly="readonly" required="required" value="<%=manageNull(dto.getFieldMajor()) %>">
 					<input type="button" value="찾기"  onclick="fieldMajorPop()">
 				</td>
 			</tr>
 			<tr>
 				<th class="th1">수신동의</th>
-				<%String email=dto.getEmailAgreement(); %>
+				<%String email=manageNull(dto.getEmailAgreement()); %>
 				<td colspan="3">이메일 수신을 허가하시겠습니까?
 					<input type="radio" name="emailAgreement" value="true" required="required" <%=(email.equals("true"))?"checked":""%>>예
 					<input type="radio" name="emailAgreement" value="false" required="required" <%=(email.equals("false"))?"checked":""%>>아니오
@@ -369,12 +407,19 @@ function formCheck(){
 	<tr>
 		<th class="th1">핸드폰번호</th>
 		<%
-		String number=ddto.getContact();
-		String num1 = number.substring(0,number.indexOf('-'));
-		String num2 = number.substring(number.indexOf('-')+1,number.lastIndexOf('-'));
-		String num3 = number.substring(number.lastIndexOf('-')+1);
+		String number = manageNull(ddto.getContact());
+		String num1=null,num2=null,num3=null;
+		if(number.equals("")){
+			num1 = "010";
+			num2 = "";
+			num3 = "";
+		}else{
+		 num1 = number.substring(0,number.indexOf('-'));
+		 num2 = number.substring(number.indexOf('-')+1,number.lastIndexOf('-'));
+		 num3 = number.substring(number.lastIndexOf('-')+1);
+		}
 		
-		String gca = ddto.getContactAgreement();
+		String gca = manageNull(ddto.getContactAgreement());
 		%>
 		<td>
 			<select name="headtel" style="height:30px;">
@@ -402,10 +447,10 @@ function formCheck(){
 	<tr>
 		<th class="th1">카카오톡ID</th>
 		<%
-		String gkia = ddto.getKakaoIdAgreement();
+		String gkia = manageNull(ddto.getKakaoIdAgreement());
 		%>
 		<td>
-		<input style="width:170px;height:25px;" type="text" name="kakaoId" placeholder="내용을 입력해주세요" onkeyup="checkKakaoId(this);" value="<%=ddto.getKakaoId()%>">
+		<input style="width:170px;height:25px;" type="text" name="kakaoId" placeholder="내용을 입력해주세요" onkeyup="checkKakaoId(this);" value="<%=manageNull(ddto.getKakaoId())%>">
 		카카오톡ID 공개 동의
 			<input type="radio" id="r3" name="kakaoIdAgreement" value="true" <%=(gkia.equals("true"))?"checked":""%>>
     		<label for="r3"><span></span>예</label>
@@ -418,7 +463,15 @@ function formCheck(){
 	</tr>
 	<tr>
 		<th class="th1">출생년도</th>
-		<%int gbyear = Integer.parseInt(ddto.getBirthYear()); %>
+		<%
+		String gb_year_s = manageNull(ddto.getBirthYear());
+		int gbyear = 0;
+		if(gb_year_s.equals("")){
+			gbyear = 0;
+		}else{
+			gbyear = Integer.parseInt(gb_year_s); 
+		}
+		%>
 		<td>
 			<select name="birthYear" style="height:30px;">
 				<option value="">선택해주세요</option>
@@ -443,8 +496,8 @@ function formCheck(){
 	<tr>
 		<th class="th1">지역</th>
 		<%
-		String sd = ddto.getSido();
-		String sgg = ddto.getSigungu();
+		String sd = manageNull(ddto.getSido());
+		String sgg = manageNull(ddto.getSigungu());
 		
 		%>
 		<td>
@@ -507,7 +560,6 @@ function formCheck(){
 						<td rowspan="5">
 							<input type="button" value="-" onclick="pageDelPopup(this);" style="margin-left:20px"> 삭제하기
 							<!-- update되는 idx만 넘어가는 value -->
-							
 							<input type="hidden" name="updateIdx" value="<%=idx%>">
 						</td>
 					</tr>
@@ -520,8 +572,7 @@ function formCheck(){
 						%>
 						<td class="td_line"><input style="width: 170px; height: 20px;" type="text" id="period<%=i %>_1" name="period_1" onchange="checkPeriod(this);" required="required" placeholder=" ex) 2018-01-01" value="<%=p1%>">
 						&nbsp;~&nbsp;
-						<input style="width: 170px; height: 20px;" type="text" id="period<%=i %>_2" name="period
-						_2" onchange="checkPeriod(this);" required="required" placeholder=" ex) 2018-06-30" value="<%=p2%>">
+						<input style="width: 170px; height: 20px;" type="text" id="period<%=i %>_2" name="period_2" onchange="checkPeriod(this);" required="required" placeholder=" ex) 2018-06-30" value="<%=p2%>">
 						<input type="text" hidden="" id="period<%=i %>" name="period" value="">
 					</td>
 					</tr>
@@ -529,7 +580,7 @@ function formCheck(){
 						<th class="th2">담당역할</th>
 						<% String role=arr.get(i).getDetailRole(); %>
 						<td class="td_line">
-						<select id="part" onchange="select(this)" name="mainRole">
+						<select id="part" onchange="select(this,'outer')" name="mainRole">
 							<option selected>담당 역할</option>
 							<option value="developer">개발자</option>
 							<option value="desiner">디자이너</option>
@@ -561,7 +612,7 @@ function formCheck(){
 	<tr>
 		<th class="th1">자기소개</th>
 		<td>
-			<textarea name="mProfile" onkeyup="checkLength(this);" placeholder="자신이 현재 관심있는 분야 /프로젝트를 작성해주세요." style="width:600px;height:200px;"><%=ddto.getmProfile() %></textarea>
+			<textarea name="mProfile" onkeyup="checkLength(this);" placeholder="자신이 현재 관심있는 분야 /프로젝트를 작성해주세요." style="width:600px;height:200px;"><%=manageNull(ddto.getmProfile()) %></textarea>
 			<input type="text" readonly="readonly" name="lengthinfo" style="border: none;">
 		</td>	
 	</tr>
@@ -573,10 +624,10 @@ function formCheck(){
 		<table>
 		<tr>
 		<%
-		String ga = ddto.getSearchAgreement();
+		String ga = manageNull(ddto.getSearchAgreement());
 		%>
 			<td>
-			<input type="button" id="toggle" onclick="toggleClick();" style="background: '<%=(ga.equals("true"))?"url('/sp/img/toggle_on.jpg')":"url('/sp/img/toggle_off.jpg')" %>'">
+			<input type="image" id="toggle" onclick="toggleClick();return false;" src="<%=ga.equals("true")?"/sp/img/toggle_on.jpg":"/sp/img/toggle_off.jpg" %>">
 			<input type="hidden" id="searchAgreement" name="searchAgreement" value="false">
 			</td>
 			<td>

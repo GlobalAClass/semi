@@ -71,10 +71,9 @@ try{
 		}else{
 			String updateIdxs_s[] = mr.getParameterValues("updateIdx");
 			//String 배열을 int 배열로 변환
-			for(int j=0;j<updateIdxs.length;j++){
-				updateIdxs[i]=Integer.parseInt(updateIdxs_s[j]);
-			}
-			
+			for(int j=0;j<updateIdxs.length;j++)
+				updateIdxs[j]=Integer.parseInt(updateIdxs_s[j]);
+
 			String cName[] = mr.getParameterValues("cName");
 			String period[] = mr.getParameterValues("period");
 			String mainRole[] = mr.getParameterValues("mainRole");
@@ -86,31 +85,43 @@ try{
 	}
 	
 	for(int i=0;i<length;i++){
-		int res3 = hdao.myProfileHistoryUpdate(index, mhdto.get(i));
+		int res3 = hdao.myProfileHistoryUpdate(updateIdxs[i],index, mhdto.get(i));
 	}
-	
+
 	//2. db에는 존재하지만 idx가 존재하지 않는 나머지는 delete하기
-	int res4 = hdao.myProfileHistoryDelete(index,updateIdxs);
-		
-	ArrayList<MemberHistoryDTO> hdto = new ArrayList<MemberHistoryDTO>();
+		hdao.myProfileHistoryDelete(index,updateIdxs);
+	
 	
 	//3. insert 되는 상세이력 구하기
-	for(int i=addCount;i<crtCompSize;i++){
-		String cName = mr.getParameter("cName"+i);
-		String period = mr.getParameter("period"+i);
-		String mainRole = mr.getParameter("mainRole"+i);
-		String detailRole = mr.getParameter("detailRole"+i);
-		String award = mr.getParameter("award"+i);
-		String detail = mr.getParameter("detail"+i);
-		hdto.add(new MemberHistoryDTO(cName, period, mainRole, detailRole, award, detail));
+	ArrayList<MemberHistoryDTO> hdto = new ArrayList<MemberHistoryDTO>();
+	
+	for(int i=crtCompSize;i<addCount;i++){
+		if(addCount-crtCompSize==1){
+			String cName = mr.getParameter("cNameUpdate");
+			String period = mr.getParameter("periodUpdate");
+			String mainRole = mr.getParameter("mainRoleUpdate");
+			String detailRole = mr.getParameter("detailRoleUpdate");
+			String award = mr.getParameter("awardUpdate");
+			String detail = mr.getParameter("detailUpdate");
+			hdto.add(new MemberHistoryDTO(cName, period, mainRole, detailRole, award, detail));
+		}else{
+			String cName[] = mr.getParameterValues("cNameUpdate");
+			String period[] = mr.getParameterValues("periodUpdate");
+			String mainRole[] = mr.getParameterValues("mainRoleUpdate");
+			String detailRole[] = mr.getParameterValues("detailRoleUpdate");
+			String award[] = mr.getParameterValues("awardUpdate");
+			String detail[] = mr.getParameterValues("detailUpdate");
+			hdto.add(new MemberHistoryDTO(cName[i], period[i], mainRole[i], detailRole[i], award[i], detail[i]));
+		}
 	}
+	
 	String msg3="";
 	
-	for(int i=addCount;i<crtCompSize;i++){
+	for(int i=crtCompSize;i<addCount;i++){
 		int res5 = hdao.memberHistoryJoin(hdto.get(i), index);
 		if(res5<0) msg3 += "공모전 정보 입력 오류: "+i+"번째 상세 이력 저장 오류\n";
 	}
-
+	
 	//오류 출력
 	if(!msg1.equals("")){
 		%><script>alert('<%=msg1%>');</script><%
@@ -118,11 +129,10 @@ try{
 		%><script>alert('<%=msg2%>');</script><%
 	} else if(!msg3.equals("")){
 		%><script>alert('<%=msg3%>');</script><%
-	}
-
+	} 
 	
 }catch(Exception e){
-	System.out.println(e);
+	out.print(e);
 	%> <script>
 	alert('프로필 이미지 수정 시 문제 발생');
 	location.href="/sp/mypage/myProfile.jsp";
