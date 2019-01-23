@@ -1,5 +1,7 @@
 package match;
 
+import java.sql.*;
+
 // 모임 매칭 글(모임장이 쓴 글) 
 public class MatchDTO {
 
@@ -41,7 +43,10 @@ public class MatchDTO {
 
 	// 나이제한
 	private String ageRestriction;
-
+	
+	// 장비/기술 사항
+	private String equipTech;
+	
 	// 구체적인 사항
 	private String detail;
 
@@ -49,7 +54,7 @@ public class MatchDTO {
 	private String completedState;
 
 	// 공모전 글 쓴 날짜
-	private String writeDate;
+	private Date writeDate;
 
 	// 기본 생성자
 	public MatchDTO() {
@@ -59,7 +64,8 @@ public class MatchDTO {
 	// 모든 필드 생성자
 	public MatchDTO(Integer matchIx, Integer memberIx, Integer competitionInfoIx, String matchName, String mainRole,
 			String detailRole, String originalMemberNumber, String sido, String sigungu, String timesAWeek, String day,
-			String totalWantedNumber, String ageRestriction, String detail, String completedState, String writeDate) {
+			String totalWantedNumber, String ageRestriction, String equipTech, String detail, String completedState,
+			Date writeDate) {
 		super();
 		this.matchIx = matchIx;
 		this.memberIx = memberIx;
@@ -74,12 +80,11 @@ public class MatchDTO {
 		this.day = day;
 		this.totalWantedNumber = totalWantedNumber;
 		this.ageRestriction = ageRestriction;
+		this.equipTech = equipTech;
 		this.detail = detail;
 		this.completedState = completedState;
 		this.writeDate = writeDate;
 	}
-	//인덱스 제외한 생성자
-	
 	
 	public Integer getMatchIx() {
 		return matchIx;
@@ -176,6 +181,14 @@ public class MatchDTO {
 	public void setAgeRestriction(String ageRestriction) {
 		this.ageRestriction = ageRestriction;
 	}
+	
+	public String getEquipTech() {
+		return equipTech;
+	}
+
+	public void setEquipTech(String equipTech) {
+		this.equipTech = equipTech;
+	}
 
 	public String getDetail() {
 		return detail;
@@ -193,11 +206,11 @@ public class MatchDTO {
 		this.completedState = completedState;
 	}
 
-	public String getWriteDate() {
+	public Date getWriteDate() {
 		return writeDate;
 	}
 
-	public void setWriteDate(String writeDate) {
+	public void setWriteDate(Date writeDate) {
 		this.writeDate = writeDate;
 	}
 

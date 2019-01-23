@@ -76,7 +76,7 @@ tfoot a{
 		<form name="Competition">
 		<div id="main">
 		<h1><%=field%></h1>
-			<table style="width:650px;height:auto;margin-left:190px;" border="1" cellspacing="0">
+			<table style="width:800px;height:auto;margin-left:100px;" border="1" cellspacing="0">
 				<thead>
 					<tr>
 						<th>분류</th>

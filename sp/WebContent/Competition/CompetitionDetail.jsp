@@ -1,3 +1,5 @@
+<%@ page import="java.sql.*" %>
+<%@ page import="java.util.*" %>
 <%@ page import="match.MatchDTO" %>
 <%@ page import="competition.CompetitionInfoDTO" %>
 <%@ page import="match.MatchWantedDTO" %>
@@ -20,16 +22,12 @@ CompetitionInfoDTO dto=cdao.CompetitionCNameInfo(ix);
 //공모전 모임카드 관련  글작성일 /현재인원/총인원 정의 MatchDAO
 MatchDTO mdto=mdao.MoimCardList(ix);
 
-//공모전 모임카드 총 팀원 정의
-String OMN_s=mdto.getOriginalMemberNumber();
-int OMN=Integer.parseInt(OMN_s);
-String TWN_s=mdto.getTotalWantedNumber();
-int TWN=Integer.parseInt(TWN_s);
-int totalnumber=OMN+TWN;
-
+//여러개의 공모전 모임카드 데이터베이스 DAO 구성
+ArrayList<MatchDTO> arr=mdao.MoimCardAllList(ix);
 //공모전 모집인원 정의 MatchWantedDAO
+
 int Match_ix=mdto.getMatchIx();
-MatchWantedDTO mwdto=mwdao.MatchAddPeople(Match_ix);
+ArrayList<MatchWantedDTO> arr2=mwdao.MatchAddPeople(Match_ix);
 %>
 <!DOCTYPE html>
 <html>
@@ -111,7 +109,20 @@ article{
 		<div align="center">
 		<!-- 현재 생성된 모임 클릭 시 -->
 		<p align="right"><a href="/sp/Competition/CompetitionMoimMake.jsp"><input type="button" value="모임 생성하기"></a></p>
-		<%@include file="/Competition/CompetitionMoimCard.jsp" %>
+		<%
+		if(ix_s==null||ix_s.equals("")){
+			%>
+			<script>
+			window.alert('공모전이 삭제되었거나 잘못된 접근입니다.');
+			location.href='/sp';
+			</script>
+			<%
+		}else{	
+			%>
+			<%@include file="/Competition/CompetitionMoimCard.jsp"%>
+			<%
+		}
+		%>
 		<!-- 공모전 상세보기 클릭 시 -->
 		</div>
 	</article>

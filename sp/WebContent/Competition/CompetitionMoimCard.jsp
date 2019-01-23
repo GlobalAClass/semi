@@ -21,9 +21,12 @@
 	margin:10px;
 }
 </style>
-<table id="card">
+<% 
+for(int i=0;i<arr.size();i++){
+	%>
+	<table id="card">
 	<tr>
-		<td class="t1" colspan="3" align="right"><%=mdto.getWriteDate()%></td>
+		<td class="t1" colspan="3" align="right"><%=arr.get(i).getWriteDate()%></td>
 	</tr>
 	<tr>
 		<td rowspan="3" align="justify"><img src="/sp/img/profile.jpg" style="width:80px;height:80px;padding:2px;"></td>
@@ -33,16 +36,28 @@
 		<td colspan="2" style="width:400px;font-weight: bold; font-size:23px"><%=dto.getCName()%></td>
 	</tr>
 	<tr>
-		<td class="t2" colspan="2"><%=mdto.getMatchName()%>&nbsp;|&nbsp;<%=dto.getAuspice()%></td>
+		<td class="t2" colspan="2"><%=arr.get(i).getMatchName()%>&nbsp;|&nbsp;모임주최자</td>
 	</tr>
 	<tr>
 		<td></td>
 		<td class="t3">현재인원/총인원</td>
-		<td>1&nbsp;/&nbsp;<%=totalnumber%></td>
+		<td>1&nbsp;/&nbsp;5</td>
 	</tr>
 	<tr>
 		<td></td>
 		<td class="t3">모집 인원</td>
-		<td><%=mwdto.getMainRole()%><%=mwdto.getWantedNumber()%></td>
+		<td>
+		<%
+		for(int j=0;j<arr2.size();j++){
+			%>
+			<%=arr2.get(j).getMainRole()%>
+			<%=arr2.get(j).getWantedNumber()%>
+			<%
+		}
+		%>
+		</td>
 	</tr>
 </table>
+	<%
+}
+%> 
