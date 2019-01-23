@@ -6,6 +6,7 @@
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.Date" %>
 <%@ page import="java.util.*" %>
+<%@ page import="java.io.File"%>
 
 <jsp:useBean id="dao" class="member.MemberDAO"/>
 <jsp:useBean id="ddao" class="member.MemberDetailDAO"/>
@@ -66,6 +67,7 @@ article{
 	border-bottom: 0.5px gray dotted;
 }
 .td_line{
+	width: 530px;
 	padding: 10px;
 	border-bottom: 0.5px gray dotted;
 }
@@ -171,7 +173,7 @@ function pageAdd(){
 	
 	cell.innerHTML ='<tr>'
 					+'<td>'	
-						+'<table style="border:0.5px dotted black;width:700px;">'
+						+'<table style="border:0.5px dotted black;width:800px;">'
 						+'<tr>'
 							+'<th class="th2">공모전 이름</th>'
 							+'<td class="td_line">'
@@ -209,9 +211,9 @@ function pageAdd(){
 						+'</td>'
 						+'</tr>'
 						+'<tr>'
-							+'<th class="th2">상세내용</th>'
-							+'<td class="td_line">'
-							+'<textarea style="width:400px;height:200px;" placeholder="필요에 따라 입력해주세요.\n어떤 활약을 펼쳤는지 간단하게 작성해주시면 도움이 됩니다." name="detailUpdate"></textarea>'
+							+'<th style="width: 100px;font-size: 15px;text-align: left;padding: 10px;">상세내용</th>'
+							+'<td style="width: 530px;padding: 10px;">'
+							+'<textarea style="width:520px;height:100px;" placeholder="필요에 따라 입력해주세요.\n어떤 활약을 펼쳤는지 간단하게 작성해주시면 도움이 됩니다." name="detailUpdate"></textarea>'
 						+'</td>'
 						+'</tr>'
 					+'</table>'
@@ -227,7 +229,7 @@ function pageDelPopup(row){
 	
 	var result = confirm('삭제되면 데이터 복구가 불가능합니다.\n그래도 삭제하시겠습니까?');
     if(result==true){
-    	length--;
+    	length--; //삭제 되면 db에있던 길이보다 1개 줄어듬
     	row.parentNode.parentNode.parentNode.parentNode.remove();
     	addCount--;
     }
@@ -285,7 +287,7 @@ function select(part,temp){
 	}
 }
 
-var flag=true
+var flag=true;
 function toggleClick(){
 	
 	btn=document.getElementById('toggle');
@@ -300,6 +302,19 @@ function toggleClick(){
 		myProfile.toggleTyping.value='아니오. 프로필을 등록하지 않습니다.';
 		myProfile.searchAgreement.value='false';
 		flag=true;
+	}
+}
+
+function isNull(){
+	//사람 등록 하기 전, 추가 인적사항 작성 했는지 안했는지 확인하고
+	if(myProfile.tel1.value=='' || myProfile.tel2.value=='' || myProfile.kakaoId.value=='' 
+			|| myProfile.kakaoIdAgreement.value=='' || myProfile.birthYear.value=='' || 
+			myProfile.sido.value=='' || myProfile.sigungu.value==''	|| 
+			myProfile.mProfile.value==''){
+		alert('"추가 인적사항"을 모두 작성하셔야 사람등록이 가능합니다.\n공모전 이력 제외');
+	//작성 했으면 버튼 동작하도록 설계
+	}else{
+		toggleClick();
 	}
 }
 
@@ -360,7 +375,18 @@ function formCheck(){
 	<div align="left" style="margin-botton:15px;font-size:30px;font-weight:bold;">기본 인적사항</div>
 		<table style="width: 800px;">
 			<tr>
-				<td rowspan="3"><img name="proimg" style="margin-left:60px;width:120px;height:120px;" src="/sp/img/profile_default.jpg"></td>
+			<%
+			//카드에 출력될 프로필 가져오기.
+			File userdir = new File(request.getServletContext().getRealPath("\\")+ "\\img\\profile\\"+index);
+			File[] files = userdir.listFiles();
+			String imagpath;
+			if(files.length>0){
+				imagpath = "/sp/img/profile/"+index+"/"+files[0].getName();
+			}else{
+				imagpath = "/sp/img/profile_default.jpg";
+			}
+			%>
+				<td rowspan="3"><img name="proimg" style="margin-left:60px;width:120px;height:120px;" src="<%=imagpath %>"></td>
 				<td style="font-size:35px;font-weight: bold;"><%=dto.getMName() %></td>
 				<td style="font-size:15px;color:gray;"><%=manageNull(ddto.getBirthYear()).equals("")?"":manageNull(ddto.getBirthYear())+"년생" %></td>
 				<td colspan="2" style="font-size:16px;"><%=dto.getFieldMajor() %></td>
@@ -597,9 +623,9 @@ function formCheck(){
 					</td>
 					</tr>
 					<tr>
-						<th class="th2">상세내용</th>
-						<td class="td_line">
-						<textarea style="width:400px;height:200px;" placeholder="필요에 따라 입력해주세요.\n어떤 활약을 펼쳤는지 간단하게 작성해주시면 도움이 됩니다." name="detail"><%=arr.get(i).getDetail() %></textarea>
+						<th style="width: 100px;font-size: 15px;text-align: left;padding: 10px;">상세내용</th>
+						<td style="width: 530px;padding: 10px;">
+						<textarea style="width:520px;height:100px;" placeholder="필요에 따라 입력해주세요.\n어떤 활약을 펼쳤는지 간단하게 작성해주시면 도움이 됩니다." name="detail"><%=arr.get(i).getDetail() %></textarea>
 					</td>
 					</tr>
 				</table>
@@ -627,7 +653,7 @@ function formCheck(){
 		String ga = manageNull(ddto.getSearchAgreement());
 		%>
 			<td>
-			<input type="image" id="toggle" onclick="toggleClick();return false;" src="<%=ga.equals("true")?"/sp/img/toggle_on.jpg":"/sp/img/toggle_off.jpg" %>">
+			<img id="toggle" onclick="isNull();" src="<%=ga.equals("true")?"/sp/img/toggle_on.jpg":"/sp/img/toggle_off.jpg" %>">
 			<input type="hidden" id="searchAgreement" name="searchAgreement" value="false">
 			</td>
 			<td>
