@@ -305,6 +305,27 @@ function toggleClick(){
 	}
 }
 
+function checkLength(obj){
+	var textvalue = new String(obj.value); // 자기소개의 입력된 문자열
+	var tcount = 0; //자기소개의 입력된 값의 길이를 구할 변수
+
+	for(i=0;i<textvalue.length;i++){
+		var tchar = textvalue.charAt(i);
+		var addlen = escape(tchar).length > 4? 3:1; //오라클 DB에서 한글은 3, 영어는 1이므로
+		tcount += addlen;
+		
+		//varchar2(3000)으로 자기소개를 제한해두었기 때문에 아래와 같이 제한을 주기.
+		if(tcount > 2990){
+			alert('입력제한 길이를 초과하였습니다.');
+			obj.value = textvalue.substr(0,i-1); //제한 길이를 넘길수 없게 textarea값 조정.
+			tcount -=addlen; //조정한 길이 반영.
+			break;
+		}
+	}
+	
+	myProfile.lengthinfo.value= tcount+'/2990bytes';
+}
+
 function isNull(){
 	//사람 등록 하기 전, 추가 인적사항 작성 했는지 안했는지 확인하고
 	if(myProfile.tel1.value=='' || myProfile.tel2.value=='' || myProfile.kakaoId.value=='' 
@@ -638,8 +659,8 @@ function formCheck(){
 	<tr>
 		<th class="th1">자기소개</th>
 		<td>
-			<textarea name="mProfile" onkeyup="checkLength(this);" placeholder="자신이 현재 관심있는 분야 /프로젝트를 작성해주세요." style="width:600px;height:200px;"><%=manageNull(ddto.getmProfile()) %></textarea>
-			<input type="text" readonly="readonly" name="lengthinfo" style="border: none;">
+			<textarea name="mProfile" onkeyup="checkLength(this);" placeholder="자신이 현재 관심있는 분야 /프로젝트를 작성해주세요." style="width:500px;height:200px;"><%=manageNull(ddto.getmProfile()) %></textarea>
+			<input type="text" readonly="readonly" name="lengthinfo" style="border: none;" value="">
 		</td>	
 	</tr>
 	</table>
