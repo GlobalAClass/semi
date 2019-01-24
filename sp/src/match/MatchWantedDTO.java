@@ -30,7 +30,7 @@ public class MatchWantedDTO {
 	}
 	
 	// 모든 필드 생성자
-	public MatchWantedDTO(Integer matchWantedIx, Integer matchIx, String wwMainRole, String wDetailRole,
+	public MatchWantedDTO(Integer matchWantedIx, Integer matchIx, String wMainRole, String wDetailRole,
 			String requiredAbility, String wantedNumber, String recruitedNumber) {
 		super();
 		this.matchWantedIx = matchWantedIx;

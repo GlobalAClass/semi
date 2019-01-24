@@ -1,6 +1,6 @@
 <%@ page import="java.sql.*" %>
 <%@ page import="java.util.*" %>
-<%@ page import="match.MatchDTO" %>
+<%@ page import="match.MatchDTO"%>
 <%@ page import="competition.CompetitionInfoDTO" %>
 <%@ page import="match.MatchWantedDTO" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -24,10 +24,6 @@ MatchDTO mdto=mdao.MoimCardList(ix);
 
 //여러개의 공모전 모임카드 데이터베이스 DAO 구성
 ArrayList<MatchDTO> arr=mdao.MoimCardAllList(ix);
-//공모전 모집인원 정의 MatchWantedDAO
-
-int Match_ix=mdto.getMatchIx();
-ArrayList<MatchWantedDTO> arr2=mwdao.MatchAddPeople(Match_ix);
 %>
 <!DOCTYPE html>
 <html>
@@ -108,7 +104,8 @@ article{
 		<!-- 내부 영역 -->
 		<div align="center">
 		<!-- 현재 생성된 모임 클릭 시 -->
-		<p align="right"><a href="/sp/Competition/CompetitionMoimMake.jsp"><input type="button" value="모임 생성하기"></a></p>
+		
+		<p align="right"><a href="/sp/Competition/CompetitionMoimMake.jsp?ix=<%=ix%>"><input type="button" value="모임 생성하기"></a></p>
 		<%
 		if(ix_s==null||ix_s.equals("")){
 			%>
@@ -117,7 +114,7 @@ article{
 			location.href='/sp';
 			</script>
 			<%
-		}else{	
+		}else{
 			%>
 			<%@include file="/Competition/CompetitionMoimCard.jsp"%>
 			<%

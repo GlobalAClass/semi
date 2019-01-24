@@ -26,16 +26,16 @@ public class MatchWantedDAO {
 				// 매칭 멤버 테이블 인덱스
 				Integer matchWantedIx=rs.getInt("Match_Wanted_IX");
 				// 담당 역할-대분류
-				String mainRole=rs.getString("MAIN_ROLE");
+				String wMainRole=rs.getString("W_MAIN_ROLE");
 				// 담당 역할-소분류
-				String detailRole=rs.getString("DETAIL_ROLE");
+				String wDetailRole=rs.getString("W_DETAIL_ROLE");
 				// 필요 능력사항
 				String requiredAbility=rs.getString("REQUIRED_ABILITY");
 				// 필요 인원 수
 				String wantedNumber=rs.getString("WANTED_NUMBER");
 				// 해당 역할 모집된 인원 수
 				String recruitedNumber=rs.getString("RECRUITED_NUMBER");
-				MatchWantedDTO dto=new MatchWantedDTO(matchWantedIx, matchIx, mainRole, detailRole, requiredAbility, wantedNumber, recruitedNumber);
+				MatchWantedDTO dto=new MatchWantedDTO(matchWantedIx, matchIx, wMainRole, wDetailRole, requiredAbility, wantedNumber, recruitedNumber);
 				arr.add(dto);
 			}
 			return arr;

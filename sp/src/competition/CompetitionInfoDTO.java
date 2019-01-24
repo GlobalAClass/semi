@@ -1,7 +1,5 @@
 package competition;
 
-import javax.xml.crypto.Data;
-
 //공모전 정보
 public class CompetitionInfoDTO {
 
