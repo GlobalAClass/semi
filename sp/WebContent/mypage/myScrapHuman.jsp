@@ -6,10 +6,10 @@
 <%@page import="java.io.File"%>
 
 <%
+//본인 인덱스 가져오는 메소드
 String crt_id = (String)session.getAttribute("sidEmail");
 MemberDAO dao = new MemberDAO();
 int member_ix=dao.getMemberIndex(crt_id);
-System.out.println(member_ix);
 %>
 <!DOCTYPE html>
 <html>

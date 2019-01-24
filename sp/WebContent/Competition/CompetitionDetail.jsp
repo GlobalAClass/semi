@@ -1,3 +1,5 @@
+<%@page import="member.MemberDAO"%>
+<%@page import="competition.CompetitionScrapDAO"%>
 <%@ page import="java.sql.*" %>
 <%@ page import="java.util.*" %>
 <%@ page import="match.MatchDTO"%>
@@ -24,6 +26,16 @@ MatchDTO mdto=mdao.MoimCardList(ix);
 
 //여러개의 공모전 모임카드 데이터베이스 DAO 구성
 ArrayList<MatchDTO> arr=mdao.MoimCardAllList(ix);
+
+//본인 인덱스 가져오는 메소드
+String crt_id = (String)session.getAttribute("sidEmail");
+MemberDAO dao = new MemberDAO();
+int idx=dao.getMemberIndex(crt_id);
+
+//
+CompetitionScrapDAO csdao = new CompetitionScrapDAO();
+boolean scrapcheck = csdao.checkScrapComp(idx, ix);
+
 %>
 <!DOCTYPE html>
 <html>
@@ -56,7 +68,6 @@ article{
 <section>
 	<article>
 		<div>
-		<form name="Competitionscrap">
 			<table style="width:800px;height:250px;">
 				<tr>
 					<td style="width:200px;height:250px;" rowspan="9"><img style="width:200px;height:250px;border: 1px solid gray; margin-right:30px;" src="/sp/img/content/<%=dto.getCImage()%>"></td>
@@ -68,7 +79,14 @@ article{
 					<td class="sub">분야</td>
 					<td><%=dto.getField()%></td>
 					<td rowspan="3" colspan="2">
-					<input type="image" src="/sp/img/heart.jpg" style="width:60px;height:60px;"></td>
+					<form name="CompScrapCheck" action="CompScrapCheck_ok.jsp" method="post">
+						<input type="image" src="<%if(scrapcheck){out.print("/sp/img/heart.jpg");}else{out.print("/sp/img/unheart.jpg");} %>" style="width:60px;height:60px;">
+						<input type="hidden" value="<%=idx %>" name="user_ix">
+						<input type="hidden" value="<%=ix %>" name="comp_ix">
+						<input type="hidden" value="<%=scrapcheck %>" name="scrapcheck">
+					</form>
+					</td>
+					
 				</tr>
 				<tr>
 					<td class="sub">팀/개인</td>
@@ -95,7 +113,6 @@ article{
 					<td><a><%=dto.getCLink()%></a></td>
 				</tr>
 			</table>
-		</form>
 		</div>
 		<!-- 현재 생성된 모임 | 공모전 상세보기 -->
 		<div>

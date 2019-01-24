@@ -128,8 +128,8 @@ public class CompetitionInfoDAO{
 		try {
 			conn=db.DB.getConn();
 			//String sql="select * from Competition_Info_TB where FIELD=?";
-			String sql="select * from" + 
-					"(select rownum as rnum,a.* from" + 
+			String sql="select * from " + 
+					"(select rownum as rnum,a.* from " + 
 					"(select * from Competition_Info_TB where FIELD=?)a)b " + 
 					"where rnum>=(("+cp+"-1)*"+list+"+1) and rnum<="+cp+"*"+list;
 			ps=conn.prepareStatement(sql);

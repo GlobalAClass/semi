@@ -77,6 +77,7 @@
 %>
 
 <script>
-location.href="/sp/index.jsp";
+alert('회원가입이 완료되었습니다. 로그인해주세요.');
+location.href="/sp/login.jsp";
 </script>
 
