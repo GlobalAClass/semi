@@ -442,20 +442,6 @@ function formcheck(){
 
 	return true;
 }
-//test용 기본 세팅
-function defaultset(){
-	CompetitionMoimMake.matchName.value = "test1";
-	CompetitionMoimMake.mainRole.value = "developer";
-	CompetitionMoimMake.detailRole.value = "서버";
-	
-	//CompetitionMoimMake.sido.value = "서울특별시";
-	//CompetitionMoimMake.sigungu.value = "강남구";
-	CompetitionMoimMake.timesAWeek.value = "1회";
-	CompetitionMoimMake.day.value = "월화수목금";
-	
-	CompetitionMoimMake.equipTech.value = "기술/장비";
-	CompetitionMoimMake.detail.value="모임상세기술"
-}
 </script>
 </head>
 <body>
@@ -507,7 +493,6 @@ function defaultset(){
 			</table>
 		</div>
 		<div class="bodytype2">
-			<input type="button" onclick="defaultset();" value="test">
 			<p style="font-size:25px; font-weight: bold;">모임명
 			<input style="margin-left:20px;width: 300px;height:25px;" type="text" name="matchName" placeholder="ex)모두의 게임, 대상소리, 자동문" required="required">
 			</p>

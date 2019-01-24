@@ -56,16 +56,19 @@ article{
 <section>
 	<article>
 		<div>
+		<form name="Competitionscrap">
 			<table style="width:800px;height:250px;">
 				<tr>
 					<td style="width:200px;height:250px;" rowspan="9"><img style="width:200px;height:250px;border: 1px solid gray; margin-right:30px;" src="/sp/img/content/<%=dto.getCImage()%>"></td>
 				</tr>
 				<tr>
-					<td colspan="2" style="font-size:20px;"><%=dto.getCName()%></td>
+					<td colspan="4" style="font-size:20px;"><%=dto.getCName()%></td>
 				</tr>
 				<tr>
 					<td class="sub">분야</td>
 					<td><%=dto.getField()%></td>
+					<td rowspan="3" colspan="2">
+					<input type="image" src="/sp/img/heart.jpg" style="width:60px;height:60px;"></td>
 				</tr>
 				<tr>
 					<td class="sub">팀/개인</td>
@@ -92,6 +95,7 @@ article{
 					<td><a><%=dto.getCLink()%></a></td>
 				</tr>
 			</table>
+		</form>
 		</div>
 		<!-- 현재 생성된 모임 | 공모전 상세보기 -->
 		<div>
