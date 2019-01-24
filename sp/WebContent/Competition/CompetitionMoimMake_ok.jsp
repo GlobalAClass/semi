@@ -67,38 +67,38 @@
 	*/
 	
 	
+	
 	//모임글 DB insert.
-	matchdao.makeMoim(matchdto);
+	int matchIx = matchdao.getMatchSEQUENCE();
+	matchdao.makeMoim(matchdto, matchIx);
 	
 	//현재 있는, 구하는 인원 수 확인하기 위한 변수.
 	int cnt = Integer.parseInt(request.getParameter("cnt"));
 	int wcnt = Integer.parseInt(request.getParameter("wcnt"));
-	
+
 
 	//모임글에 현재 같이 진행중인 인원들 DB insert.
 	if(cnt>0){
+		String ogMainRoles[] = request.getParameterValues("ogMainRole");
+		String ogDetialRole[] = request.getParameterValues("ogDetailRole");
+		String memberNumber[] = request.getParameterValues("memberNumber");
 		for(int i =0; i<cnt; i++){
-			String ogMainRoles[] = request.getParameterValues("ogMainRole");
-			String ogDetialRole[] = request.getParameterValues("ogDetailRole");
-			String memberNumber[] = request.getParameterValues("memberNumber");
-			
-			ogdto = new MatchOriginalDTO();
+			ogdto = new MatchOriginalDTO(matchIx, ogMainRoles[i], ogDetialRole[i], memberNumber[i]);
 			ogdao.insertOriginalM(ogdto);
 		}
 	}
 
 	//모임글에 구하는 인원들 DB insert.
-		if(wcnt>0){
-			String wMainRoles[] = request.getParameterValues("wMainRole");
-			String wDetialRole[] = request.getParameterValues("wDetailRole");
-			String ra[] = request.getParameterValues("requiredAbility");
-			String wn[] = request.getParameterValues("wantedNumber");
-			String rcn[] = request.getParameterValues("recruitedNumber");
-			for(int i =0; i<cnt; i++){
-
-				wdto = new MatchWantedDTO();
-				wdao.insertWantedM(wdto);
-			}
+	if(wcnt>0){
+		String wMainRoles[] = request.getParameterValues("wMainRole");
+		String wDetialRole[] = request.getParameterValues("wDetailRole");
+		String ra[] = request.getParameterValues("requiredAbility");
+		String wn[] = request.getParameterValues("wantedNumber");
+		String rcn[] = request.getParameterValues("recruitedNumber");
+		for(int i =0; i<cnt; i++){
+			wdto = new MatchWantedDTO(matchIx, wMainRoles[i], wDetialRole[i], ra[i], wn[i], rcn[i]);
+			wdao.insertWantedM(wdto);
+		}
 	}
 
 %>

@@ -17,7 +17,7 @@ public class MatchWantedDAO {
 	public int insertWantedM(MatchWantedDTO wdto) {
 		try {
 			conn = db.DB.getConn();
-			String sql = "Insert into Match_Wanted_TB values(Match_Wanted_IX.nextVal, ?, ?, ?, ?, ?, ?)";
+			String sql = "Insert into Match_Wanted_TB values(Match_Wanted_TB_SEQ.nextVal, ?, ?, ?, ?, ?, ?)";
 			ps = conn.prepareStatement(sql);
 			ps.setInt(1, wdto.getMatchIx());
 			ps.setString(2, wdto.getwMainRole());

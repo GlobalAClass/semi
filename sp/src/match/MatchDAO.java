@@ -15,27 +15,56 @@ public class MatchDAO {
 		System.out.println("MatchDAO 생성");
 	}
 	
+	// 회원 테이블의 다음 시퀀스 값 구하기.
+	public int getMatchSEQUENCE() {
+		try {
+			System.out.println("getMemberSEQUENCE()호출");
+			conn = db.DB.getConn();
+			String sql = "select Member_TB_SEQ.nextval from dual";
+			ps = conn.prepareStatement(sql);
+			rs = ps.executeQuery();
+
+			rs.next();
+			return rs.getInt(1);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -1; // error = -1
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (ps != null)
+					ps.close();
+				if (conn != null)
+					conn.close();
+			} catch (Exception e2) {
+
+			}
+		}
+	}
+	
 	//모임글 작성시에 입력하는 함수
-	public int makeMoim(MatchDTO mdto) {
+	public int makeMoim(MatchDTO mdto, int matchSEQ) {
 		try {
 			conn = db.DB.getConn();
-			String sql = "Insert into Match_TB values(Match_TB_SEQ.nextVal, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, sysdate)";
+			String sql = "Insert into Match_TB values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, sysdate)";
 			ps = conn.prepareStatement(sql);
-			ps.setInt(1, mdto.getMemberIx());
-			ps.setInt(2, mdto.getCompetitionInfoIx());
-			ps.setString(3, mdto.getMatchName());
-			ps.setString(4, mdto.getMainRole());
-			ps.setString(5, mdto.getDetailRole());
-			ps.setString(6, mdto.getOriginalMemberNumber());
-			ps.setString(7, mdto.getSido());
-			ps.setString(8, mdto.getSigungu());
-			ps.setString(9, mdto.getTimesAWeek());
-			ps.setString(10, mdto.getDay());
-			ps.setString(11, mdto.getTotalWantedNumber());
-			ps.setString(12, mdto.getAgeRestriction());
-			ps.setString(13, mdto.getEquipTech());
-			ps.setString(14, mdto.getDetail());
-			ps.setString(15, "false");
+			ps.setInt(1, matchSEQ);
+			ps.setInt(2, mdto.getMemberIx());
+			ps.setInt(3, mdto.getCompetitionInfoIx());
+			ps.setString(4, mdto.getMatchName());
+			ps.setString(5, mdto.getMainRole());
+			ps.setString(6, mdto.getDetailRole());
+			ps.setString(7, mdto.getOriginalMemberNumber());
+			ps.setString(8, mdto.getSido());
+			ps.setString(9, mdto.getSigungu());
+			ps.setString(10, mdto.getTimesAWeek());
+			ps.setString(11, mdto.getDay());
+			ps.setString(12, mdto.getTotalWantedNumber());
+			ps.setString(13, mdto.getAgeRestriction());
+			ps.setString(14, mdto.getEquipTech());
+			ps.setString(15, mdto.getDetail());
+			ps.setString(16, "false");
 
 			int count = ps.executeUpdate();
 			return count;

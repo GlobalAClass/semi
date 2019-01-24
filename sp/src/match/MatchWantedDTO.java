@@ -42,6 +42,18 @@ public class MatchWantedDTO {
 		this.recruitedNumber = recruitedNumber;
 	}
 	
+	//해당테이블 인덱스(matchWantedIx)를 제외한 생성자.
+	public MatchWantedDTO(Integer matchIx, String wMainRole, String wDetailRole, String requiredAbility,
+			String wantedNumber, String recruitedNumber) {
+		super();
+		this.matchIx = matchIx;
+		this.wMainRole = wMainRole;
+		this.wDetailRole = wDetailRole;
+		this.requiredAbility = requiredAbility;
+		this.wantedNumber = wantedNumber;
+		this.recruitedNumber = recruitedNumber;
+	}
+	
 	public Integer getmatchWantedIx() {
 		return matchWantedIx;
 	}

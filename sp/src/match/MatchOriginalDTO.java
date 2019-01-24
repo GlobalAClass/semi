@@ -33,6 +33,15 @@ public class MatchOriginalDTO {
 			this.ogDetailRole = ogDetailRole;
 			this.memberNumber = memberNumber;
 		}
+	    
+	    //해당 테이블 인덱스(matchOriginalIx)를 제외한 생성자.
+		public MatchOriginalDTO(Integer matchIx, String ogMainRole, String ogDetailRole, String memberNumber) {
+			super();
+			this.matchIx = matchIx;
+			this.ogMainRole = ogMainRole;
+			this.ogDetailRole = ogDetailRole;
+			this.memberNumber = memberNumber;
+		}
 
 	    public Integer getMatchOriginalIx() {
 	        return matchOriginalIx;
