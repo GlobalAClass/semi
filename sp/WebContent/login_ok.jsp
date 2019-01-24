@@ -42,7 +42,7 @@ if(idEmail!=null && pwd!=null){
 	} else{
 	%>
 		<script>
-		alert("오류입니다.");
+		alert("아이디 또는 비밀번호가 잘못됬습니다.");
 		location.href = 'login.jsp';
 		</script>
 	<%
