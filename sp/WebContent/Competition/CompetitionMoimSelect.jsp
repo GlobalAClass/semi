@@ -2,29 +2,30 @@
     pageEncoding="UTF-8"%>
 <style>
 #group_name{
-	width:100%;
+	width:800px;
 	height:auto;
-	text-align:center;
 }
 .group_info{
-	width: 100%;
+	width:800px;
 	height: auto;
-	overflow: hidden;
-	position: relative;
 }
 .group_all{
-	width: 100%;
+	width:800px;
 	height: auto;
-	overflow: hidden;
-	position: relative;
 	margin:0px;
 	padding:5px;
 }
+.group_2{
+	margin-top:10px;
+	width: 600px;
+	height: auto;
+}
 .group_2 th{
+	width: 150px;
 	background: #D8D8D8;
 }
 .group{
-	width: 530px;
+	width: 800px;
 	height: auto;
 	border-bottom: 1px solid black;
 }
@@ -39,15 +40,18 @@
 	padding-right: 5px;
 }
 </style>
-	<div id="group_name">
-	<h2>모임명</h2>
+<div id="group_name">
+	<div class="group_info">
+		<input style="float:left;" type="button" value="모임 목록으로 돌아가기">
+		<a href="/sp/Competition/CompetitionMoimApply.jsp"><input style="float:right;" type="button" value="글 수정하기"></a>
 	</div>
 	<div class="group_info">
-		<h4>모임장 소개글</h4>
-		<h4>2019.01.13 12:20작성</h4>
+		<h2>모임명</h2>
+		<h4 style="float:left;">모임장 소개글</h4>
+		<h4 style="float:right;">2019.01.13 12:20작성</h4>
 	</div>
 	<div class="group_all">
-		<table style="width: 540px;height: auto;">
+		<table style="width: 800px;height: auto;">
 			<tr>
 				<td rowspan="4"><img style="width:90px;height:100px;" src="/sp/img/profile.jpg"></td>
 				<td style="font-size:19px;">홍길동</td>
@@ -68,7 +72,7 @@
 				<td style="color:red;">세부사항 닫기</td>
 			</tr>
 		</table>
-		<table border="1" class="group_2">
+		<table border="1" class="group_2" cellspacing="0">
 			<tr>
 				<th>공모전 이름</th>
 				<td></td>
@@ -92,20 +96,28 @@
 		</table>
 	<div class="group">
 		<h4>현재 모임에 속해있는 사람</h4>
-		<img class="group_people" src="/sp/img/profile.jpg">
-		<ul style="float:left;">
-			<li>WEB</li>
-			<li>1명</li>
-		</ul>
-		<img class="group_people" style="margin-left:60px;" src="/sp/img/profile.jpg">
-		<ul style="float:left;">
-			<li>포토샵,UI/UX디자인</li>
-			<li>1명</li>
-		</ul>
+		<table style="width:650px;">
+			<tr>
+				<td><img class="group_people" src="/sp/img/profile.jpg"></td>
+				<td>
+					<ul>
+						<li>WEB</li>
+						<li>1명</li>
+					</ul>
+				</td>
+				<td><img class="group_people" src="/sp/img/profile.jpg"></td>
+				<td>
+					<ul>
+						<li>포토샵,UI/UX디자인</li>
+						<li>1명</li>
+					</ul>
+				</td>
+			</tr>
+		</table>
 	</div>
 	<div class="group">
 		<h4>이런 지역/요일에 모임을 가지고 싶어요</h4>
-		<ul>
+		<ul style="list-style-type:none;">
 			<li>서울특별시 전체</li>
 			<li>주 2회</li>
 			<li>평일 1회,주말 1회</li>
@@ -113,7 +125,7 @@
 	</div>
 	<div class="group">
 		<h4>이런 기술/장비를 이용하고 싶어요</h4>
-		<ul>
+		<ul style="list-style-type:none;">
 			<li>기술 블라블라</li>
 			<li>장비 블라블라</li>
 		</ul>
@@ -124,7 +136,7 @@
 	</div>
 	<div class="group">
 		<h4>이런 사람을 구하고 있어요</h4>
-		<table>
+		<table style="width:650px;">
 				<tr>
 					<td><img class="group_people" src="/sp/img/profile.jpg"></td>
 					<td>
@@ -145,4 +157,5 @@
 				</tr>
 			</table>
 		</div>
-		</div>
+	</div>
+</div>
