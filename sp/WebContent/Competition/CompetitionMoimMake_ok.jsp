@@ -66,16 +66,17 @@
 	}
 	*/
 	
-	
-	
 	//모임글 DB insert.
 	int matchIx = matchdao.getMatchSEQUENCE();
-	matchdao.makeMoim(matchdto, matchIx);
+	int checkm = matchdao.makeMoim(matchdto, matchIx);
 	
 	//현재 있는, 구하는 인원 수 확인하기 위한 변수.
 	int cnt = Integer.parseInt(request.getParameter("cnt"));
 	int wcnt = Integer.parseInt(request.getParameter("wcnt"));
 
+	//오류 확인을 위한 배열
+	int checkog[] = new int[cnt];
+	int checkw[] = new int[wcnt];
 
 	//모임글에 현재 같이 진행중인 인원들 DB insert.
 	if(cnt>0){
@@ -84,7 +85,7 @@
 		String memberNumber[] = request.getParameterValues("memberNumber");
 		for(int i =0; i<cnt; i++){
 			ogdto = new MatchOriginalDTO(matchIx, ogMainRoles[i], ogDetialRole[i], memberNumber[i]);
-			ogdao.insertOriginalM(ogdto);
+			checkog[i] = ogdao.insertOriginalM(ogdto);
 		}
 	}
 
@@ -97,8 +98,36 @@
 		String rcn[] = request.getParameterValues("recruitedNumber");
 		for(int i =0; i<cnt; i++){
 			wdto = new MatchWantedDTO(matchIx, wMainRoles[i], wDetialRole[i], ra[i], wn[i], rcn[i]);
-			wdao.insertWantedM(wdto);
+			checkw[i] = wdao.insertWantedM(wdto);
 		}
 	}
-
+	
+	String msg ="";
+	if(checkm<0){
+		msg="모임 정보 입력 오류\n";
+	}
+	else{
+		for(int i =0; i<cnt; i++){
+			if(checkog[i] <0){
+				msg += i+1+"번째 함께하고 있는 인원 입력 오류\n";
+			}
+		}
+		for(int i =0; i<wcnt; i++){
+			if(checkw[i] <0){
+				msg += i+1+"번째 함께하고 있는 인원 입력 오류\n";
+			}
+		}
+	}
+	
+	if(msg.equals("")){
+		%><script>
+			alert("모임글이 등록되었습니다!");
+			location.href='CompetitionDetail.jsp?ix='+<%=matchdto.getCompetitionInfoIx()%>;
+		</script><%
+	}else{
+		%><script>
+			alert('<%=msg%>');
+			location.href='/index.jsp';
+		</script><%
+	}
 %>
