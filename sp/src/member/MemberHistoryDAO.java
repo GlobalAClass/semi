@@ -137,9 +137,11 @@ public class MemberHistoryDAO {
 			rs=ps.executeQuery();
 			
 			Vector<Integer> v = new Vector<Integer>();
-			while(rs.next()) {
-				int index=rs.getInt("MEMBER_HISTORY_IX");
-				v.add(index);
+			if(rs.next()) {
+				do{
+					int index=rs.getInt("MEMBER_HISTORY_IX");
+					v.add(index);
+				}while(rs.next());
 			}
 			
 			int dbIndex[]=new int[v.size()];
