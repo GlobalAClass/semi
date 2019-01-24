@@ -10,10 +10,10 @@ public class MatchWantedDTO {
 	private Integer matchIx;
 
 	// 담당 역할-대분류
-	private String mainRole;
+	private String wMainRole;
 
 	// 담당 역할-소분류
-	private String detailRole;
+	private String wDetailRole;
 
 	// 필요 능력사항
 	private String requiredAbility;
@@ -30,13 +30,13 @@ public class MatchWantedDTO {
 	}
 	
 	// 모든 필드 생성자
-	public MatchWantedDTO(Integer matchWantedIx, Integer matchIx, String mainRole, String detailRole,
+	public MatchWantedDTO(Integer matchWantedIx, Integer matchIx, String wwMainRole, String wDetailRole,
 			String requiredAbility, String wantedNumber, String recruitedNumber) {
 		super();
 		this.matchWantedIx = matchWantedIx;
 		this.matchIx = matchIx;
-		this.mainRole = mainRole;
-		this.detailRole = detailRole;
+		this.wMainRole = wMainRole;
+		this.wDetailRole = wDetailRole;
 		this.requiredAbility = requiredAbility;
 		this.wantedNumber = wantedNumber;
 		this.recruitedNumber = recruitedNumber;
@@ -58,20 +58,20 @@ public class MatchWantedDTO {
 		this.matchIx = matchIx;
 	}
 
-	public String getMainRole() {
-		return mainRole;
+	public String getwMainRole() {
+		return wMainRole;
 	}
 
-	public void setMainRole(String mainRole) {
-		this.mainRole = mainRole;
+	public void setwMainRole(String wMainRole) {
+		this.wMainRole = wMainRole;
 	}
 
-	public String getDetailRole() {
-		return detailRole;
+	public String getwDetailRole() {
+		return wDetailRole;
 	}
 
-	public void setDetailRole(String detailRole) {
-		this.detailRole = detailRole;
+	public void setwDetailRole(String wDetailRole) {
+		this.wDetailRole = wDetailRole;
 	}
 
 	public String getRequiredAbility() {

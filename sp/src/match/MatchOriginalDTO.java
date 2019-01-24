@@ -10,10 +10,10 @@ public class MatchOriginalDTO {
 	    private Integer matchIx;
 
 	    // 담당 역할-대분류 
-	    private String mainRole;
+	    private String ogMainRole;
 
 	    // 담당 역할-소분류 
-	    private String detailRole;
+	    private String ogDetailRole;
 
 	    // 해당 역할 인원 수 
 	    private String memberNumber;
@@ -24,13 +24,13 @@ public class MatchOriginalDTO {
 		}
 	    
 	    // 모든 필드 생성자
-	    public MatchOriginalDTO(Integer matchOriginalIx, Integer matchIx, String mainRole, String detailRole,
+	    public MatchOriginalDTO(Integer matchOriginalIx, Integer matchIx, String ogMainRole, String ogDetailRole,
 				String memberNumber) {
 			super();
 			this.matchOriginalIx = matchOriginalIx;
 			this.matchIx = matchIx;
-			this.mainRole = mainRole;
-			this.detailRole = detailRole;
+			this.ogMainRole = ogMainRole;
+			this.ogDetailRole = ogDetailRole;
 			this.memberNumber = memberNumber;
 		}
 
@@ -50,20 +50,20 @@ public class MatchOriginalDTO {
 	        this.matchIx = matchIx;
 	    }
 
-	    public String getMainRole() {
-	        return mainRole;
+	    public String getogMainRole() {
+	        return ogMainRole;
 	    }
 
-	    public void setMainRole(String mainRole) {
-	        this.mainRole = mainRole;
+	    public void setogMainRole(String ogMainRole) {
+	        this.ogMainRole = ogMainRole;
 	    }
 
-	    public String getDetailRole() {
-	        return detailRole;
+	    public String getogDetailRole() {
+	        return ogDetailRole;
 	    }
 
-	    public void setDetailRole(String detailRole) {
-	        this.detailRole = detailRole;
+	    public void setogDetailRole(String ogDetailRole) {
+	        this.ogDetailRole = ogDetailRole;
 	    }
 
 	    public String getmemberNumber() {
