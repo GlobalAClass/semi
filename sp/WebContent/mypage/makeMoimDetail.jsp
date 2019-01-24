@@ -159,14 +159,18 @@ function formcheck(str){
 			
 			<%
 			for(int i=0; i<len; i++){
+				String mainrole = manageNull(list.get(i).getMainRole());
+				String detailrole = manageNull(list.get(i).getDetailRole());
+				String award = manageNull(list.get(i).getAward());
+				String detail = manageNull(list.get(i).getDetail());
 			%>
 			<jsp:include page="makeMoimDetailCard.jsp" flush="false">
 				<jsp:param value="<%=list.get(i).getCName() %>" name="cName"/>
 				<jsp:param value="<%=list.get(i).getPeriod() %>" name="period"/>
-				<jsp:param value="<%=list.get(i).getMainRole() %>" name="mainRole"/>
-				<jsp:param value="<%=list.get(i).getDetailRole() %>" name="detailRole"/>
-				<jsp:param value="<%=list.get(i).getAward() %>" name="award"/>
-				<jsp:param value="<%=list.get(i).getDetail() %>" name="detail"/>
+				<jsp:param value="<%=mainrole %>" name="mainRole"/>
+				<jsp:param value="<%=detailrole %>" name="detailRole"/>
+				<jsp:param value="<%=award %>" name="award"/>
+				<jsp:param value="<%=detail %>" name="detail"/>
 			</jsp:include>
 			<%
 			}

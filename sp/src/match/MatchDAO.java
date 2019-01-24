@@ -3,6 +3,8 @@ package match;
 import java.sql.*;
 import java.util.*;
 
+import member.MemberDTO;
+
 public class MatchDAO {
 	
 	private Connection conn;
@@ -11,6 +13,46 @@ public class MatchDAO {
 	
 	public MatchDAO() {
 		System.out.println("MatchDAO 생성");
+	}
+	
+	//모임글 작성시에 입력하는 함수
+	public int makeMoim(MatchDTO mdto) {
+		try {
+			conn = db.DB.getConn();
+			String sql = "Insert into Match_TB values(Match_TB_SEQ.nextVal, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, sysdate)";
+			ps = conn.prepareStatement(sql);
+			ps.setInt(1, mdto.getMemberIx());
+			ps.setInt(2, mdto.getCompetitionInfoIx());
+			ps.setString(3, mdto.getMatchName());
+			ps.setString(4, mdto.getMainRole());
+			ps.setString(5, mdto.getDetailRole());
+			ps.setString(6, mdto.getOriginalMemberNumber());
+			ps.setString(7, mdto.getSido());
+			ps.setString(8, mdto.getSigungu());
+			ps.setString(9, mdto.getTimesAWeek());
+			ps.setString(10, mdto.getDay());
+			ps.setString(11, mdto.getTotalWantedNumber());
+			ps.setString(12, mdto.getAgeRestriction());
+			ps.setString(13, mdto.getEquipTech());
+			ps.setString(14, mdto.getDetail());
+			ps.setString(15, "false");
+
+			int count = ps.executeUpdate();
+			return count;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -1; // error = -1
+		} finally {
+			try {
+				if (ps != null)
+					ps.close();
+				if (conn != null)
+					conn.close();
+			} catch (Exception e2) {
+
+			}
+		}
 	}
 	
 	//모임생성 및 수정 데이터베이스 값 정의

@@ -13,6 +13,37 @@ public class MatchWantedDAO {
 		System.out.println("MatchWantedDAO 생성");
 	}
 	
+	// 모임글 작성시에 구하는 인원 입력하는 함수
+	public int insertWantedM(MatchWantedDTO wdto) {
+		try {
+			conn = db.DB.getConn();
+			String sql = "Insert into Match_Wanted_TB values(Match_Wanted_IX.nextVal, ?, ?, ?, ?, ?, ?)";
+			ps = conn.prepareStatement(sql);
+			ps.setInt(1, wdto.getMatchIx());
+			ps.setString(2, wdto.getwMainRole());
+			ps.setString(3, wdto.getwDetailRole());
+			ps.setString(4, wdto.getRequiredAbility());
+			ps.setString(5, wdto.getWantedNumber());
+			ps.setString(6, wdto.getRecruitedNumber());
+
+			int count = ps.executeUpdate();
+			return count;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -1; // error = -1
+		} finally {
+			try {
+				if (ps != null)
+					ps.close();
+				if (conn != null)
+					conn.close();
+			} catch (Exception e2) {
+
+			}
+		}
+	}
+	
 	//매칭에서 구하는 팀원에 대한 내용
 	public ArrayList<MatchWantedDTO> MatchAddPeople(Integer matchIx){
 		try {
