@@ -14,15 +14,15 @@ public class MatchWantedDAO {
 	}
 	
 	//매칭에서 구하는 팀원에 대한 내용
-	public MatchWantedDTO MatchAddPeople(Integer matchIx){
+	public ArrayList<MatchWantedDTO> MatchAddPeople(Integer matchIx){
 		try {
 			conn=db.DB.getConn();
 			String sql="select * from Match_Wanted_TB where Match_IX=?";
 			ps=conn.prepareStatement(sql);
 			ps.setInt(1, matchIx);
 			rs=ps.executeQuery();
-			MatchWantedDTO dto=null;
-			if(rs.next()) {
+			ArrayList<MatchWantedDTO> arr=new ArrayList<MatchWantedDTO>();
+			while(rs.next()) {
 				// 매칭 멤버 테이블 인덱스
 				Integer matchWantedIx=rs.getInt("Match_Wanted_IX");
 				// 담당 역할-대분류
@@ -35,9 +35,10 @@ public class MatchWantedDAO {
 				String wantedNumber=rs.getString("WANTED_NUMBER");
 				// 해당 역할 모집된 인원 수
 				String recruitedNumber=rs.getString("RECRUITED_NUMBER");
-				dto=new MatchWantedDTO(matchWantedIx, matchIx, mainRole, detailRole, requiredAbility, wantedNumber, recruitedNumber);
+				MatchWantedDTO dto=new MatchWantedDTO(matchWantedIx, matchIx, mainRole, detailRole, requiredAbility, wantedNumber, recruitedNumber);
+				arr.add(dto);
 			}
-			return dto;
+			return arr;
 		}catch(Exception e) {
 			e.printStackTrace();
 			return null;
@@ -49,4 +50,11 @@ public class MatchWantedDAO {
 			}catch(Exception e2) {}
 		}
 	}
+	
+	
+	
+	
+	
+	
+	
 }
