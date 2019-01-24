@@ -87,7 +87,15 @@ public class MemberDetailDTO {
 		this.searchAgreement = searchAgreement;
 	}
 	
+	//생년과 시도, 시군구를 가지는 생성
+	public MemberDetailDTO(String birthYear, String sido, String sigungu) {
+		super();
+		this.birthYear = birthYear;
+		this.sido = sido;
+		this.sigungu = sigungu;
+	}
 
+	
 	public Integer getMemberDetailIx() {
 		return memberDetailIx;
 	}

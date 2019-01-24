@@ -99,4 +99,55 @@ public class HumanScrapDAO {
 			}
 		}
 	}
+	
+	public Pair<MemberDTO, MemberDetailDTO> Pair(MemberDTO mdto, MemberDetailDTO mddto) {
+		Pair<MemberDTO, MemberDetailDTO> pair = new Pair<MemberDTO, MemberDetailDTO>(mdto, mddto);
+		return pair;
+	}
+	
+	//회원이 스크랩한 사람의 카드에 넣을 조건을 가져오는 메소드
+	public ArrayList<Pair<MemberDTO,MemberDetailDTO>> myScrapHumanCard(int member_ix) {
+		try {
+			conn=db.DB.getConn();
+			
+			String sql="select h.scrap_member_ix, m.m_name , md.birth_year, m.field_major, md.sido, md.sigungu, m.id_email " + 
+					"from human_scrap_Tb h, member_tb m, member_detail_tb md " + 
+					"where h.member_ix=? and (m.member_ix=h.scrap_member_ix) and m.member_ix=md.member_ix";
+			
+			ps=conn.prepareStatement(sql);
+			ps.setInt(1, member_ix);
+			
+			rs = ps.executeQuery();
+			
+			ArrayList<Pair<MemberDTO,MemberDetailDTO>> myScrapCards = new ArrayList<Pair<MemberDTO,MemberDetailDTO>>();
+			
+			if(rs.next()) {
+				do {
+					int scrapMemberIx = rs.getInt("SCRAP_MEMBER_IX");
+					String idEmail = rs.getString("ID_EMAIL");
+					String mName = rs.getString("M_NAME");
+					String fieldMajor = rs.getString("FIELD_MAJOR");
+					String birthYear = rs.getString("BIRTH_YEAR");
+					String sido = rs.getString("SIDO");
+					String sigungu	= rs.getString("SIGUNGU");
+					
+					MemberDTO dto = new MemberDTO(scrapMemberIx,idEmail,mName,fieldMajor);
+					MemberDetailDTO ddto = new MemberDetailDTO(birthYear, sido, sigungu);
+					
+					myScrapCards.add(Pair(dto,ddto));
+					
+				}while(rs.next());
+			}
+			
+			return myScrapCards;
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}finally {
+			try {
+				
+			}catch(Exception e2) {}
+		}
+	}
 }

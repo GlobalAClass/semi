@@ -46,6 +46,16 @@ public class MemberDTO {
 		this.emailAgreement = emailAgreement;
 		this.fieldMajor = fieldMajor;
 	}
+	
+	// 회원 인덱스, 회원의 이름, 전공, 이메일을 가지는 생성자
+	public MemberDTO(Integer memberIx,String idEmail, String mName, String fieldMajor) {
+		super();
+		this.memberIx = memberIx;
+		this.idEmail = idEmail;
+		this.mName = mName;
+		this.fieldMajor = fieldMajor;
+	}
+
 
 	public Integer getMemberIx() {
 		return memberIx;

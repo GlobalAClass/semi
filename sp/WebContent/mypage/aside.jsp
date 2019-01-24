@@ -36,7 +36,7 @@ aside a{
 	<p class="p_style"><b>스크랩</b></p>
 		<ul>
 		<li>공모전</li>
-		<li>사람</li>
+		<li><a href="/sp/mypage/myScrapHuman.jsp">사람</a></li>
 		</ul>
 	</nav>
 </aside>
