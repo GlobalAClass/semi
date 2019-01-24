@@ -95,18 +95,21 @@ public class MemberHistoryDAO {
 			rs=ps.executeQuery();
 			
 			ArrayList<MemberHistoryDTO> arr=new ArrayList<MemberHistoryDTO>();
-			while(rs.next()) {
-				Integer memberHistoryIx = rs.getInt("MEMBER_HISTORY_IX");
-				Integer memberIx = rs.getInt("MEMBER_IX");
-				String cName=rs.getString("C_NAME");
-				String period=rs.getString("PERIOD");
-				String mainRole=rs.getString("MAIN_ROLE");
-				String detailRole=rs.getString("DETAIL_ROLE");
-				String award=rs.getString("AWARD");
-				String detail=rs.getString("DETAIL");
-				
-				MemberHistoryDTO dto=new MemberHistoryDTO(memberHistoryIx, memberIx, cName, period, mainRole, detailRole, award, detail);
-				arr.add(dto);
+			
+			if(rs.next()) {
+				do {
+					Integer memberHistoryIx = rs.getInt("MEMBER_HISTORY_IX");
+					Integer memberIx = rs.getInt("MEMBER_IX");
+					String cName=rs.getString("C_NAME");
+					String period=rs.getString("PERIOD");
+					String mainRole=rs.getString("MAIN_ROLE");
+					String detailRole=rs.getString("DETAIL_ROLE");
+					String award=rs.getString("AWARD");
+					String detail=rs.getString("DETAIL");
+					
+					MemberHistoryDTO dto=new MemberHistoryDTO(memberHistoryIx, memberIx, cName, period, mainRole, detailRole, award, detail);
+					arr.add(dto);
+				}while(rs.next());
 			}
 			return arr;
 		}catch(Exception e) {
