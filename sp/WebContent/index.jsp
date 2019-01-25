@@ -1,10 +1,11 @@
+<%@ page import="competition.CompetitionInfoDTO" %>
+<%@ page import="member.*" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.*" %>
 <%@ page import="competition.*" %>
-<jsp:useBean id="cdto" class="competition.CompetitionInfoDTO"/>
-<jsp:setProperty property="*" name="cdto"/>
 <jsp:useBean id="cdao" class="competition.CompetitionInfoDAO"/>
+<jsp:useBean id="mbdao" class="member.MemberDAO"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -145,6 +146,53 @@ tbody a:hover{
 			</div>
 			<div class="main_body_2">
 				<h2>최근 등록된 사람 5명</h2>
+			</div>
+			<div class="main_table_1">
+				<table style="width:480px;height:auto;" border="1" cellspacing="0">
+					<thead>
+						<tr>
+							<th>이름</th>
+							<th>분야/전공</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td></td>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div style="float:left;margin-left:120px;">
+				<table style="width:270px;height:auto;text-align:center;" border="1" cellspacing="0">
+					<thead>
+						<tr>
+							<th>이름</th>
+							<th>분야/전공</th>
+						</tr>
+					</thead>
+					<tbody>
+						<%
+						ArrayList<MemberDTO> mbarr=mbdao.RecentPeople();
+						if(mbarr==null||mbarr.size()==0){
+							%>
+							<tr>
+								<td colspan="2"><h2>최근 등록된 사람이 없습니다.</h2></td>
+							</tr>
+							<%
+						}else{
+							for(int i=0;i<mbarr.size();i++){
+								%>
+								<tr>
+									<td style="width:70px;"><a href="/sp/mypage/makeMoimDetail.jsp?member_ix=<%=mbarr.get(i).getMemberIx()%>"><%=mbarr.get(i).getMName()%></a></td>
+									<td style="width:200px;"><%=mbarr.get(i).getFieldMajor()%></td>
+								</tr>
+								<%
+							}
+						}
+						%>
+					</tbody>
+				</table>
 			</div>
 		</div>
 	</article>

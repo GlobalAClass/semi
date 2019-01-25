@@ -5,6 +5,7 @@
 <%@ page import="java.util.*" %>
 <%@ page import="member.*" %>
 <%@ page import="match.*" %>
+<%@ page import="java.io.File" %>
 
 <jsp:useBean id="madto" class="match.MatchApplyDTO"></jsp:useBean>
 <jsp:setProperty property="*" name="madto"/>
@@ -32,7 +33,20 @@
 	request.setCharacterEncoding("UTF-8");	
 
 	//신청한 사람의 회원 인덱스 구하기
-	int member_ix = madto.getMemberIx();
+	String member_ix_s=request.getParameter("member_ix");
+	if(member_ix_s==null||member_ix_s.equals("")){
+		member_ix_s="0";
+	}
+	int member_ix=Integer.parseInt(member_ix_s);
+	//회원 인덱스로 회원 이미지 추가하기
+	File proimg=new File(request.getServletContext().getRealPath("\\")+"\\img\\profile\\"+member_ix);
+	File[] files=proimg.listFiles();
+	String imgpath;
+	if(files.length>0){
+		imgpath="/sp/img/profile/"+member_ix+"/"+files[0].getName();
+	}else{
+		imgpath="/sp/img/profile_default.jpg";
+	}
 	//회원인덱스로 회원의 필수사항, 추가사항 받기
 	MemberDTO mdto = mdao.getMemberInfo(member_ix);
 	MemberDetailDTO mddto = mddao.getMemberDetailInfo(member_ix);
@@ -57,6 +71,7 @@
 	if(mddto.getContactAgreement().equals("false")){
 		contact= "비공개";
 	}
+	
 	
 %>
 <!DOCTYPE html>
@@ -132,7 +147,7 @@ function formcheck(str){
 			<h2>마이페이지 - 내가 만든 모임 - 지원글 상세</h2>
 			<table id="top_table">
 				<tr>
-					<td rowspan="4" style="width: 140px"><img src="/sp/img/profile_default.jpg"
+					<td rowspan="4" style="width: 140px"><img src="<%=imgpath%>"
 						style="width: 100px; height: 120px; padding: 2px;"></td>
 					<td style="width: 200px; font-weight: bold; font-size: 40px"><%=mdto.getMName() %></td>
 					<td style="width: 200px; font-size: 20px; color: gray;"><%=birthyear %></td>

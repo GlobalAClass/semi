@@ -294,4 +294,59 @@ public class MemberDAO {
 			}
 		}
 	}
+	
+	//index.jsp 메인페이지 최근등록된 사람 5명
+	public ArrayList<MemberDTO> RecentPeople(){
+		try {
+			conn=db.DB.getConn();
+			String sql="select * from (select * from Member_TB order by MEMBER_IX desc) where rownum<=5";
+			ps=conn.prepareStatement(sql);
+			rs=ps.executeQuery();
+			ArrayList<MemberDTO> arr=new ArrayList<MemberDTO>();
+			while(rs.next()) {
+				//회원 인덱스
+				Integer memberIx=rs.getInt("MEMBER_IX");
+				//회원 아이디
+				String idEmail=rs.getString("ID_EMAIL");
+				//비밀번호
+				String pwd=rs.getString("PWD");
+				//회원 이름
+				String mName=rs.getString("M_NAME");
+				//이메일수신동의
+				String emailAgreement=rs.getString("EMAIL_AGREEMENT");
+				//회원 분야/전공
+				String fieldMajor=rs.getString("FIELD_MAJOR");
+				MemberDTO dto=new MemberDTO(memberIx, idEmail, pwd, mName, emailAgreement, fieldMajor);
+				arr.add(dto);
+			}
+			return arr;
+		}catch(Exception e){
+			e.printStackTrace();
+			return null;
+		}finally {
+			try {
+				if(rs!=null)rs.close();
+				if(ps!=null)ps.close();
+				if(conn!=null)conn.close();
+			}catch(Exception e2) {}
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

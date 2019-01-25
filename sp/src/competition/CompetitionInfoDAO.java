@@ -61,7 +61,7 @@ public class CompetitionInfoDAO{
 	public ArrayList<CompetitionInfoDTO> CompetitonRecent(){
 		try {
 			conn=db.DB.getConn();
-			String sql="select * from Competition_Info_TB where rownum<=5 order by Competition_Info_IX desc";
+			String sql="select * from (select * from Competition_Info_TB order by Competition_Info_IX desc) where rownum<=5";
 			ps=conn.prepareStatement(sql);
 			rs=ps.executeQuery();
 			ArrayList<CompetitionInfoDTO> arr=new ArrayList<CompetitionInfoDTO>();

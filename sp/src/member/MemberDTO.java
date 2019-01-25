@@ -27,11 +27,11 @@ public class MemberDTO {
 	}
 
 	// 모든 필드를 가지는 생성자
-	public MemberDTO(Integer memberIx, String email, String pwd, String mName, String emailAgreement,
+	public MemberDTO(Integer memberIx, String idEmail, String pwd, String mName, String emailAgreement,
 			String fieldMajor) {
 		super();
 		this.memberIx = memberIx;
-		this.idEmail = email;
+		this.idEmail = idEmail;
 		this.pwd = pwd;
 		this.mName = mName;
 		this.emailAgreement = emailAgreement;
