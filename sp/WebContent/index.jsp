@@ -7,7 +7,7 @@
 <jsp:useBean id="cdao" class="competition.CompetitionInfoDAO"/>
 <jsp:useBean id="mbdao" class="member.MemberDAO"/>
 <jsp:useBean id="mdao" class="match.MatchDAO"/>
-<jsp:useBean id="mwdao" class="match.MatchWantedDAO"></jsp:useBean>
+<jsp:useBean id="mwdao" class="match.MatchWantedDAO"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -174,17 +174,16 @@ tbody a:hover{
 									<td style="width:270px;">
 								<%
 								int match_ix=marr.get(i).getMatchIx();
-								ArrayList<MatchWantedDTO> mwarr=mwdao.RecentMoimlist(match_ix);
+								ArrayList<MatchWantedDTO> mwarr=mwdao.MatchAddPeople(match_ix);
 								for(int j=0;j<mwarr.size();j++){
 										String a=mwarr.get(j).getwDetailRole();
 										String b=mwarr.get(j).getWantedNumber();
 									%>
 										<%=a%>&nbsp;<%=b%>
 									<%
-									if(mwarr.size()==1){
-										
-									}else{
-										mwarr.size();
+									if(mwarr.size()>=3){
+										%>&middot;&middot;&middot;<%
+										break;
 									}
 								}
 								%>
