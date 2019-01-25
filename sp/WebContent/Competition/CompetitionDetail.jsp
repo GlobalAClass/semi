@@ -28,9 +28,6 @@ int cix=Integer.parseInt(cix_s);
 //공모전 제목 클릭시 정보보기 CompetitionInfoDAO
 CompetitionInfoDTO dto=cdao.CompetitionCNameInfo(ix);
 
-//공모전 모임카드 관련  글작성일 /현재인원/총인원 정의 MatchDAO
-MatchDTO mdto=mdao.MoimCardList(ix);
-
 //여러개의 공모전 모임카드 데이터베이스 DAO 구성
 ArrayList<MatchDTO> arr=mdao.MoimCardAllList(ix);
 
