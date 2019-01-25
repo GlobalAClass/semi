@@ -20,12 +20,18 @@
 	border: gray solid 0.5px;
 	padding: 2px;
 	margin:10px;
+	border-spacing: 0;
+}
+#card :hover{
+	background: #E9F0FD;
+	cursor:pointer;
 }
 </style>
 <form name="CompetitionMoimCard" action="CompetitionMoimCard_ok.jsp">
 <% 
 for(int i=0;i<arr.size();i++){
 	int member_ix=arr.get(i).getMemberIx();
+	String mn = dao.getMemberInfo(member_ix).getMName();
 	
 	File proimg=new File(request.getServletContext().getRealPath("\\")+"\\img\\profile\\"+member_ix);
 	File[] files=proimg.listFiles();
@@ -35,8 +41,17 @@ for(int i=0;i<arr.size();i++){
 	}else{
 		imgpath="/sp/img/profile_default.jpg";
 	}
-	%>
-	<table id="card">
+	
+	
+%>
+<script>
+function goDetail(obj){
+	//alert(obj.previousSibling.previousSibling);
+	location.href='/sp/Competition/CompetitionDetail.jsp?ix='+<%=ix%>+'&cix='+obj.previousSibling.previousSibling.value;
+}
+</script>
+	<input type="text" hidden="" value="<%=i %>">
+	<table id="card" onclick="goDetail(this)">
 	<tr>
 		<td class="t1" colspan="4" align="right"><%=arr.get(i).getWriteDate()%></td>
 	</tr>
@@ -48,23 +63,38 @@ for(int i=0;i<arr.size();i++){
 		<td colspan="2" style="width:400px;font-weight: bold; font-size:15px"><%=dto.getCName()%></td>
 	</tr>
 	<tr>
-		<td style="font-size:20px;font-weight:bold;" colspan="3"><%=arr.get(i).getMatchName()%>&nbsp;|&nbsp;모임주최자</td>
+		<td style="font-size:20px;font-weight:bold;" colspan="3">
+			<%=arr.get(i).getMatchName()%>&nbsp;|&nbsp;<%=mn %>
+		</td>
 	</tr>
 	<tr>
+		<%
+		//모임 글에서 존재하는 팀원 수, 구하고 싶은 팀원 수 가져오기
+		int ornum = Integer.parseInt(arr.get(i).getOriginalMemberNumber());
+		int wnum = Integer.parseInt(arr.get(i).getTotalWantedNumber());
+		//구하는 팀원에 대한 정보 받기
+		int match_ix = arr.get(i).getMatchIx();
+		ArrayList<MatchWantedDTO> arr2=mwdao.MatchAddPeople(match_ix);
+		int le = arr2.size();
+		//현재 인원 계산하기
+		int curnum=ornum;
+		for(int k=0;k<le;k++){
+			curnum += Integer.parseInt(arr2.get(k).getRecruitedNumber());
+		}
+		%>
 		<td class="t3">현재인원/총인원</td>
-		<td style="width:330px;"><%=arr.get(i).getOriginalMemberNumber()%>&nbsp;/&nbsp;5</td>
+		<td style="width:330px;"><%=curnum%>&nbsp;/&nbsp;<%=(ornum+wnum)%></td>
 	</tr>
 	<tr>
 		<td class="t3">모집 인원</td>
 		<td style="width:330px;">
 		<%
-		int match_ix = arr.get(i).getMatchIx();
-		ArrayList<MatchWantedDTO> arr2=mwdao.MatchAddPeople(match_ix);
-		for(int j=0;j<arr2.size();j++){
+		for(int j=0;j<le;j++){
 			%>
-			<%=arr2.get(j).getwMainRole()%>
-			<%=arr2.get(j).getWantedNumber()%>
-			<%
+			<%=arr2.get(j).getwMainRole()+" - "+arr2.get(j).getwDetailRole()%> : 
+			<%=arr2.get(j).getRecruitedNumber()+" / "+arr2.get(j).getWantedNumber()%>명
+			<br>
+		<%
 		}
 		%>
 		</td>

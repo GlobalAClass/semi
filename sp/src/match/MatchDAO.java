@@ -88,7 +88,7 @@ public class MatchDAO {
 	public MatchDTO MoimCardList(Integer competitionInfoIx){
 		try {
 			conn=db.DB.getConn();
-			String sql="select * from Match_TB where Competition_Info_IX=?";
+			String sql="select m.*, to_char(m.WRITE_DATE) time from Match_TB m where Competition_Info_IX=?";
 			ps=conn.prepareStatement(sql);
 			ps.setInt(1, competitionInfoIx);
 			rs=ps.executeQuery();
@@ -105,7 +105,7 @@ public class MatchDAO {
 				//담당역할-소분류
 				String detailRole=rs.getString("DETAIL_ROLE");
 				//현재 존재하는 팀원수
-				String originalMemberNumber=rs.getString("ORIGINAL_MEMBER_NUMBER");
+				String originalMemberNumber=rs.getString("ORIGINAL_ME3MBER_NUMBER");
 				// 시/도
 				String sido=rs.getString("SIDO");
 				// 시/군/구
@@ -125,7 +125,7 @@ public class MatchDAO {
 				//완료 여부
 				String completedState=rs.getString("COMPLETED_STATE");
 				//공모전 글쓴 날짜
-				java.sql.Date writeDate=rs.getDate("WRITE_DATE");
+				String writeDate=rs.getString("TIME");
 				dto=new MatchDTO(matchIx, memberIx, competitionInfoIx, matchName, mainRole, detailRole, originalMemberNumber, sido, sigungu, timesAWeek, day, totalWantedNumber, ageRestriction, equipTech, detail, completedState, writeDate);
 			}
 			return dto;
@@ -145,7 +145,7 @@ public class MatchDAO {
 	public ArrayList<MatchDTO> MoimCardAllList(Integer competitionInfoIx){
 		try {
 			conn=db.DB.getConn();
-			String sql="select * from Match_TB where Competition_Info_IX=?";
+			String sql="select m.*, to_char(m.WRITE_DATE,'yyyy-mm-dd, hh24:mi:ss') time from Match_TB m where Competition_Info_IX=?";
 			ps=conn.prepareStatement(sql);
 			ps.setInt(1, competitionInfoIx);
 			rs=ps.executeQuery();
@@ -182,7 +182,7 @@ public class MatchDAO {
 				//완료 여부
 				String completedState=rs.getString("COMPLETED_STATE");
 				//공모전 글쓴 날짜
-				java.sql.Date writeDate=rs.getDate("WRITE_DATE");
+				String writeDate=rs.getString("TIME");
 				MatchDTO dto=new MatchDTO(matchIx, memberIx, competitionInfoIx, matchName, mainRole, detailRole, originalMemberNumber, sido, sigungu, timesAWeek, day, totalWantedNumber, ageRestriction, equipTech, detail, completedState, writeDate);
 				arr.add(dto);
 			}

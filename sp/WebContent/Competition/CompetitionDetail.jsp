@@ -18,6 +18,13 @@ if(ix_s==null||ix_s.equals("")){
 }
 int ix=Integer.parseInt(ix_s);
 
+//모임 카드 클릭한 경우, 모임의 인덱스 가져오기
+String cix_s=request.getParameter("cix");
+if(cix_s==null||cix_s.equals("")){
+	cix_s="-1";
+}
+int cix=Integer.parseInt(cix_s);
+
 //공모전 제목 클릭시 정보보기 CompetitionInfoDAO
 CompetitionInfoDTO dto=cdao.CompetitionCNameInfo(ix);
 
@@ -44,10 +51,11 @@ boolean scrapcheck = csdao.checkScrapComp(idx, ix);
 <title>Insert title here</title>
 <link rel="stylesheet" type="text/css" href="/sp/css/mainLayout.css">
 <style>
-.sub{
+.sub {
 	font-weight: bold;
 }
-#Competition_title{
+
+#Competition_title {
 	width: 800px;
 	margin-top: 10px;
 	background: #D8D8D8;
@@ -56,8 +64,13 @@ boolean scrapcheck = csdao.checkScrapComp(idx, ix);
 	font-weight: bold;
 	text-align: center;
 }
-article{
-	width:800px;
+td.hvr:hover, td.hvr:active{
+	color:#585858;
+	cursor: pointer;
+}
+
+article {
+	width: 800px;
 	margin-left: 100px;
 }
 </style>
@@ -118,26 +131,31 @@ article{
 		<div>
 			<table id="Competition_title">
 			<tr>
-				<td style="border-right:1px gray solid;">현재 생성된 모임</td><td>공모전 상세보기</td>
+				<td class="hvr" style="border-right:1px gray solid" 
+					onclick="javascript:location.href='CompetitionDetail.jsp?ix=<%=ix%>'">현재 생성된 모임</td>
+				<td class="hvr" >공모전 상세보기</td>
 			</tr>
 			</table>
 		</div>
 		<!-- 내부 영역 -->
 		<div align="center">
 		<!-- 현재 생성된 모임 클릭 시 -->
-		
-		<p align="right"><a href="/sp/Competition/CompetitionMoimMake.jsp?ix=<%=ix%>"><input type="button" value="모임 생성하기"></a></p>
 		<%
-		if(ix_s==null||ix_s.equals("")){
+		if(ix==0){
 			%>
 			<script>
 			window.alert('공모전이 삭제되었거나 잘못된 접근입니다.');
 			location.href='/sp';
 			</script>
 			<%
+		}else if(cix==-1){
+			%>
+			<p align="right"><a href="/sp/Competition/CompetitionMoimMake.jsp?ix=<%=ix%>"><input style="height:35px;" type="button" value="모임 생성하기"></a></p>
+			<%@include file="/Competition/CompetitionMoimCard.jsp"%>
+			<%
 		}else{
 			%>
-			<%@include file="/Competition/CompetitionMoimCard.jsp"%>
+			<%@include file="/Competition/CompetitionMoimSelect.jsp"%>
 			<%
 		}
 		%>

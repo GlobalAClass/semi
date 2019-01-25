@@ -54,7 +54,7 @@ public class MatchDTO {
 	private String completedState;
 
 	// 공모전 글 쓴 날짜
-	private Date writeDate;
+	private String writeDate;
 
 	// 기본 생성자
 	public MatchDTO() {
@@ -65,7 +65,7 @@ public class MatchDTO {
 	public MatchDTO(Integer matchIx, Integer memberIx, Integer competitionInfoIx, String matchName, String mainRole,
 			String detailRole, String originalMemberNumber, String sido, String sigungu, String timesAWeek, String day,
 			String totalWantedNumber, String ageRestriction, String equipTech, String detail, String completedState,
-			Date writeDate) {
+			String writeDate) {
 		super();
 		this.matchIx = matchIx;
 		this.memberIx = memberIx;
@@ -206,11 +206,11 @@ public class MatchDTO {
 		this.completedState = completedState;
 	}
 
-	public Date getWriteDate() {
+	public String getWriteDate() {
 		return writeDate;
 	}
 
-	public void setWriteDate(Date writeDate) {
+	public void setWriteDate(String writeDate) {
 		this.writeDate = writeDate;
 	}
 

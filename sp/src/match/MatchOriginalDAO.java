@@ -13,34 +13,6 @@ public class MatchOriginalDAO {
 		System.out.println("MatchOriginalDAO 생성");
 	}
 	
-	// 회원 테이블의 다음 시퀀스 값 구하기.
-	public int getMemberSEQUENCE() {
-		try {
-			System.out.println("getMemberSEQUENCE()호출");
-			conn = db.DB.getConn();
-			String sql = "select Member_TB_SEQ.nextval from dual";
-			ps = conn.prepareStatement(sql);
-			rs = ps.executeQuery();
-
-			rs.next();
-			return rs.getInt(1);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return -1; // error = -1
-		} finally {
-			try {
-				if (rs != null)
-					rs.close();
-				if (ps != null)
-					ps.close();
-				if (conn != null)
-					conn.close();
-			} catch (Exception e2) {
-
-			}
-		}
-	}
-	
 	//모임글 작성시에 현재 함께하고 있는 인원 입력하는 함수
 	public int insertOriginalM(MatchOriginalDTO ogdto) {
 		try {
@@ -71,7 +43,7 @@ public class MatchOriginalDAO {
 	}
 	
 	//매칭글 인덱스로 모집 이전 인원 테이블 가져오기.
-	public ArrayList<MatchOriginalDTO> MatchAddPeople(Integer matchIx){
+	public ArrayList<MatchOriginalDTO> getogMemberInfo(Integer matchIx){
 		try {
 			conn=db.DB.getConn();
 			String sql="select * from Match_Original_TB where Match_IX=?";
