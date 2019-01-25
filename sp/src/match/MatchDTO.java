@@ -86,6 +86,13 @@ public class MatchDTO {
 		this.writeDate = writeDate;
 	}
 	
+	//index 매칭글인덱스 / 모임명
+	public MatchDTO(Integer matchIx, String matchName) {
+		super();
+		this.matchIx = matchIx;
+		this.matchName = matchName;
+	}
+	
 	public Integer getMatchIx() {
 		return matchIx;
 	}

@@ -1,11 +1,13 @@
-<%@ page import="competition.CompetitionInfoDTO" %>
+<%@ page import="match.*" %>
 <%@ page import="member.*" %>
+<%@ page import="competition.*" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.*" %>
-<%@ page import="competition.*" %>
 <jsp:useBean id="cdao" class="competition.CompetitionInfoDAO"/>
 <jsp:useBean id="mbdao" class="member.MemberDAO"/>
+<jsp:useBean id="mdao" class="match.MatchDAO"/>
+<jsp:useBean id="mwdao" class="match.MatchWantedDAO"></jsp:useBean>
 <!DOCTYPE html>
 <html>
 <head>
@@ -147,23 +149,55 @@ tbody a:hover{
 			<div class="main_body_2">
 				<h2>최근 등록된 사람 5명</h2>
 			</div>
-			<div class="main_table_1">
-				<table style="width:480px;height:auto;" border="1" cellspacing="0">
+			<div style="float:left;margin-left:120px;">
+				<table style="width:420px;height:auto;text-align:center;" border="1" cellspacing="0">
 					<thead>
 						<tr>
-							<th>이름</th>
-							<th>분야/전공</th>
+							<th>모임명</th>
+							<th>구하는 역할/구하는 인원수</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<td></td>
-							<td></td>
-						</tr>
+						<%
+						ArrayList<MatchDTO> marr=mdao.RecentMoimAllList();
+						if(marr==null||marr.size()==0){
+							%>
+							<tr>
+								<td colspan="3"><h2>최근 등록된 모임이 없습니다.</h2></td>
+							</tr>
+							<%
+						}else{
+							for(int i=0;i<marr.size();i++){
+								%>
+								<tr>
+									<td style="width:150px;"><%=marr.get(i).getMatchName()%></td>
+									<td style="width:270px;">
+								<%
+								int match_ix=marr.get(i).getMatchIx();
+								ArrayList<MatchWantedDTO> mwarr=mwdao.RecentMoimlist(match_ix);
+								for(int j=0;j<mwarr.size();j++){
+										String a=mwarr.get(j).getwDetailRole();
+										String b=mwarr.get(j).getWantedNumber();
+									%>
+										<%=a%>&nbsp;<%=b%>
+									<%
+									if(mwarr.size()==1){
+										
+									}else{
+										mwarr.size();
+									}
+								}
+								%>
+								</td>
+								</tr>
+								<%
+							}
+						}
+						%>
 					</tbody>
 				</table>
 			</div>
-			<div style="float:left;margin-left:120px;">
+			<div style="float:left;margin-left:163px;">
 				<table style="width:270px;height:auto;text-align:center;" border="1" cellspacing="0">
 					<thead>
 						<tr>

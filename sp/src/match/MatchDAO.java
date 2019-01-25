@@ -199,6 +199,34 @@ public class MatchDAO {
 		}
 	}
 	
+	//index 페이지 모임 최근올라온 목록보기 5개
+		public ArrayList<MatchDTO> RecentMoimAllList(){
+			try {
+				conn=db.DB.getConn();
+				String sql="select * from (select * from Match_TB order by Match_IX desc) where rownum<=5";
+				ps=conn.prepareStatement(sql);
+				rs=ps.executeQuery();
+				ArrayList<MatchDTO> arr=new ArrayList<MatchDTO>();
+				while(rs.next()) {
+					//매칭 글 인덱스
+					Integer matchIx=rs.getInt("Match_IX");
+					//모임명
+					String matchName=rs.getString("MATCH_NAME");
+					MatchDTO dto=new MatchDTO(matchIx, matchName);
+					arr.add(dto);
+				}
+				return arr;
+			}catch(Exception e) {
+				e.printStackTrace();
+				return null;
+			}finally {
+				try {
+					if(rs!=null)rs.close();
+					if(ps!=null)ps.close();
+					if(conn!=null)conn.close();
+				}catch(Exception e2) {}
+			}
+		}
 	
 
 	
