@@ -170,7 +170,7 @@ tbody a:hover{
 							for(int i=0;i<marr.size();i++){
 								%>
 								<tr>
-									<td style="width:150px;"><%=marr.get(i).getMatchName()%></td>
+									<td style="width:150px;"><a href=""><%=marr.get(i).getMatchName()%></a></td>
 									<td style="width:270px;">
 								<%
 								int match_ix=marr.get(i).getMatchIx();
@@ -178,13 +178,13 @@ tbody a:hover{
 								for(int j=0;j<mwarr.size();j++){
 										String a=mwarr.get(j).getwDetailRole();
 										String b=mwarr.get(j).getWantedNumber();
-									%>
-										<%=a%>&nbsp;<%=b%>
-									<%
-									if(mwarr.size()>=3){
+									if(j>=2){
 										%>&middot;&middot;&middot;<%
 										break;
 									}
+									%>
+									<%=a%>&nbsp;<%=b%>
+								<%
 								}
 								%>
 								</td>
