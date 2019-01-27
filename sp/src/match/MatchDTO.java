@@ -93,6 +93,18 @@ public class MatchDTO {
 		this.matchName = matchName;
 	}
 	
+	//MoimSearchCard 생성자
+	public MatchDTO(Integer matchIx, Integer memberIx, String matchName, String originalMemberNumber,
+			String totalWantedNumber, String writeDate) {
+		super();
+		this.matchIx = matchIx;
+		this.memberIx = memberIx;
+		this.matchName = matchName;
+		this.originalMemberNumber = originalMemberNumber;
+		this.totalWantedNumber = totalWantedNumber;
+		this.writeDate = writeDate;
+	}
+
 	public Integer getMatchIx() {
 		return matchIx;
 	}

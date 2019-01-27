@@ -2,7 +2,6 @@ package match;
 
 import java.sql.*;
 import java.util.*;
-
 import member.MemberDTO;
 
 public class MatchDAO {
@@ -84,7 +83,7 @@ public class MatchDAO {
 		}
 	}
 	
-	//여러개의 모임카드 DAO구성
+	//여러개의 모임카드 공모전인덱스받는 DAO구성
 	public ArrayList<MatchDTO> MoimCardAllList(Integer competitionInfoIx){
 		try {
 			conn=db.DB.getConn();

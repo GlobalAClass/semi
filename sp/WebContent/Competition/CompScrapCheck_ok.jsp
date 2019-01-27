@@ -19,7 +19,7 @@
 	String msg="";
 	if(scrapcheck.equals("false")){
 		check = csdao.insertScrapComp(member_ix, scrap_comp_ix);
-		msg = check>0? "해당 공모전이 스크랩 되었습니다.\n마이페이지에서 확인 가능합니다.":"스크랩 실패";
+		msg = check>0? "해당 공모전이 스크랩 되었습니다.마이페이지에서 확인 가능합니다.":"스크랩 실패";
 	}else if(scrapcheck.equals("true")){
 		check = csdao.deleteScrapComp(member_ix, scrap_comp_ix);
 		msg = check>0? "스크랩이 해제되었습니다.":"스크랩해제 실패";

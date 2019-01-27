@@ -1,5 +1,37 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+
+<%@ page import="member.MemberDAO"%>
+<%@ page import="competition.*" %>	
+<%@ page import="member.*" %>
+<%@ page import="msearch.*" %>
+<%@ page import="match.*" %>
+<%@ page import="java.util.*" %>
+
+<jsp:useBean id="msdao" class="msearch.MsearchDAO"/>
+<jsp:useBean id="mwdao" class="match.MatchWantedDAO"/>
+<%
+	//로그인해야 해당 페이지를 이용할 수 있음.
+	String uname=(String)session.getAttribute("smname");
+	String uid=(String)session.getAttribute("sidEmail");
+	
+	if(uname==null||uname.equals("")||uid==null||uid.equals("")){
+		%>
+		<script>
+			alert("로그인하셔야 이용하실 수 있습니다.");
+			location.href="/sp/login.jsp";
+		</script>
+		<%
+		return;
+	}
+	
+//여러개의 공모전 모임카드 데이터베이스 DAO 구성
+ArrayList<MatchDTO> arr=msdao.MoimSearchCard();
+//본인 인덱스 가져오는 메소드
+String crt_id = (String)session.getAttribute("sidEmail");
+MemberDAO dao = new MemberDAO();
+int idx=dao.getMemberIndex(crt_id);
+%>
 <!DOCTYPE html>
 <html>
 <head>

@@ -97,11 +97,11 @@ if(cp%pagesize==0){
 					for(int i=0;i<arr.size();i++){
 						%>
 						<tr>
-							<td><%=arr.get(i).getField()%></td>
-							<td style="width:300px;"><a href="CompetitionDetail.jsp?ix=<%=arr.get(i).getCompetitionInfoIx()%>"><%=arr.get(i).getCName()%></a></td>
-							<td style="width:200px;"><%=arr.get(i).getPeriod()%></td>
-							<td><%=arr.get(i).getTeamSolo()%></td>
-							<td><%=arr.get(i).getReadnum()%></td>
+							<td style="text-align:center;"><%=arr.get(i).getField()%></td>
+							<td style="width:300px;padding-left:10px;"><a href="CompetitionDetail.jsp?ix=<%=arr.get(i).getCompetitionInfoIx()%>"><%=arr.get(i).getCName()%></a></td>
+							<td style="width:200px;text-align:center;"><%=arr.get(i).getPeriod()%></td>
+							<td style="text-align:center;"><%=arr.get(i).getTeamSolo()%></td>
+							<td style="text-align:center;"><%=arr.get(i).getReadnum()%></td>
 						</tr>
 						<%
 					}

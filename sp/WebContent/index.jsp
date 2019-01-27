@@ -99,9 +99,9 @@ tbody a:hover{
 							for(int i=0;i<arr2.size();i++){
 								%>
 								<tr>
-									<td><%=arr2.get(i).getField()%></td>
-									<td style="width:300px;"><a href="/sp/Competition/CompetitionDetail.jsp?ix=<%=arr2.get(i).getCompetitionInfoIx()%>"><%=arr2.get(i).getCName()%></a></td>
-									<td><%=arr2.get(i).getReadnum()%></td>
+									<td style="text-align:center;"><%=arr2.get(i).getField()%></td>
+									<td style="width:300px;padding-left:10px;"><a href="/sp/Competition/CompetitionDetail.jsp?ix=<%=arr2.get(i).getCompetitionInfoIx()%>"><%=arr2.get(i).getCName()%></a></td>
+									<td style="text-align:center;"><%=arr2.get(i).getReadnum()%></td>
 								</tr>
 								<%
 							}
@@ -132,9 +132,9 @@ tbody a:hover{
 							for(int i=0;i<arr.size();i++){
 								%>
 								<tr>
-									<td><%=arr.get(i).getField()%></td>
-									<td style="width:300px;"><a href="/sp/Competition/CompetitionDetail.jsp?ix=<%=arr.get(i).getCompetitionInfoIx()%>"><%=arr.get(i).getCName()%></a></td>
-									<td><%=arr.get(i).getReadnum()%></td>
+									<td style="text-align:center;"><%=arr.get(i).getField()%></td>
+									<td style="width:300px;padding-left:10px;"><a href="/sp/Competition/CompetitionDetail.jsp?ix=<%=arr.get(i).getCompetitionInfoIx()%>"><%=arr.get(i).getCName()%></a></td>
+									<td style="text-align:center;"><%=arr.get(i).getReadnum()%></td>
 								</tr>
 								<%
 							}
