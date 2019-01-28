@@ -12,10 +12,10 @@ section{
 	font-size: 12px;
 }
 .t2{
-	font-size: 15px;
+	font-size: 14px;
 }
 .t3{
-	font-size: 15px;
+	font-size: 14px;
 	font-weight: bold;
 }
 table{
@@ -23,6 +23,16 @@ table{
 	height: 250px;
 	border: gray solid 0.5px;
 	margin: 40px;
+	border-collapse:collapse;
+}
+table :hover{
+	background: #E9F0FD;
+	font-weight: bold;
+	cursor:pointer;
+}
+section a{
+	text-decoration:none;
+	color:black;
 }
 </style>
 <section>
@@ -36,7 +46,7 @@ for(int i=0;i<arr.size();i++){
 	CompetitionInfoDTO dto=msdao.CompetitionMoimSearchCard(matchIx);
 	//구하는 팀원 정보 DAO
 	ArrayList<MatchWantedDTO> arr2=mwdao.MatchAddPeople(matchIx);
-	
+	//프로필 이미지 가져오기
 	File proimg=new File(request.getServletContext().getRealPath("\\")+"\\img\\profile\\"+member_ix);
 	File[] files=proimg.listFiles();
 	String imgpath;
@@ -47,6 +57,7 @@ for(int i=0;i<arr.size();i++){
 	}
 %>
 <form>
+<a href="/sp/Competition/CompetitionDetail.jsp?ix=<%=dto.getCompetitionInfoIx()%>&mix=<%=matchIx%>">
 <table>
 	<tr>
 		<td class="t1" colspan="3" align="right"><%=arr.get(i).getWriteDate()%></td>
@@ -56,10 +67,14 @@ for(int i=0;i<arr.size();i++){
 		<td class="t2" colspan="2">[<%=dto.getField()%>]</td>
 	</tr>
 	<tr>
-		<td colspan="2" style="width:400px;font-weight: bold; font-size:23px"><%=dto.getCName()%></td>
+		<td colspan="2" style="width:400px;font-weight: bold; font-size:20px"><%=dto.getCName()%></td>
 	</tr>
 	<tr>
 		<td class="t2" colspan="2"><%=arr.get(i).getMatchName()%>&nbsp;|&nbsp;<%=mn%></td>
+	</tr>
+	<tr>
+		<td></td>
+		<td class="t3" colspan="2"><%=arr.get(i).getSido()%>&nbsp;&nbsp;<%=arr.get(i).getSigungu()%></td>
 	</tr>
 	<tr>
 		<%
@@ -92,9 +107,8 @@ for(int i=0;i<arr.size();i++){
 		%>
 		</td>
 	</tr>
-	<tr>
-	</tr>
 </table>
+</a>
 </form>
 		<%
 	}

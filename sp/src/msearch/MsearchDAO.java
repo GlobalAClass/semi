@@ -26,13 +26,17 @@ public class MsearchDAO {
 				Integer memberIx=rs.getInt("MEMBER_IX");
 				//모임명
 				String matchName=rs.getString("MATCH_NAME");
+				//시도
+				String sido=rs.getString("SIDO");
+				//시군구
+				String sigungu=rs.getString("SIGUNGU");
 				//현재 존재하는 팀원수
 				String originalMemberNumber=rs.getString("ORIGINAL_MEMBER_NUMBER");
 				//구하고 싶은 팀원수
 				String totalWantedNumber=rs.getString("TOTAL_WANTED_NUMBER");
 				//공모전 글쓴 날짜
 				String writeDate=rs.getString("TIME");
-				MatchDTO dto=new MatchDTO(matchIx, memberIx, matchName, originalMemberNumber, totalWantedNumber, writeDate);
+				MatchDTO dto=new MatchDTO(matchIx, memberIx, matchName, originalMemberNumber, sido, sigungu, totalWantedNumber, writeDate);
 				arr.add(dto);
 			}
 			return arr;
