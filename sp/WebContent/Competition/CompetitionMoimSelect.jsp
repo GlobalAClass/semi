@@ -74,6 +74,14 @@ function expand(obj){
 			return str;
 		}
 	}
+
+	public String manageNull2(String str) {
+		if (str == null || str.equals("")) {
+			return "없음";
+		} else {
+			return str;
+		}
+}
 %>
 <%
 	int member_ix = arr.get(cix).getMemberIx();
@@ -251,6 +259,7 @@ function expand(obj){
 		ArrayList<MatchWantedDTO> mwdto = mwdao.MatchAddPeople(match_ix);
 		int li = mwdto.size();
 		for(int i=0; i<li; i+=2){
+			String ra = manageNull2(mwdto.get(i).getRequiredAbility());
 		%>
 		<table style="width:650px;">
 				<tr>
@@ -264,7 +273,7 @@ function expand(obj){
 					<td>
 					<%if(!mwdto.get(i).getRecruitedNumber().equals(mwdto.get(i).getWantedNumber())){ %>
 						<input style="width:70px;height:40px;background:#58ACFA;color:white;" type="button" value="지원하기" 
-							onclick="javascript:location.href='CompetitionMoimApply.jsp?mix=<%=match_ix%>&mwix=<%=mwdto.get(i).getmatchWantedIx()%>'"></td>
+							onclick="javascript:location.href='CompetitionMoimApply.jsp?ix=<%=request.getParameter("ix") %>&mix=<%=match_ix%>&mwix=<%=mwdto.get(i).getmatchWantedIx()%>'"></td>
 					<%}else{ %>
 					<p style="color:red;">모집종료</p>
 					<%} 
@@ -280,7 +289,7 @@ function expand(obj){
 					<%if(!mwdto.get(i+1).getRecruitedNumber().equals(mwdto.get(i+1).getWantedNumber())){ %>
 					<td>
 						<input style="width:70px;height:40px;background:#58ACFA;color:white;" type="button" value="지원하기"
-							onclick="javascript:location.href='CompetitionMoimApply.jsp?mix=<%=match_ix%>&mwix=<%=mwdto.get(i+1).getmatchWantedIx()%>'"></td>
+							onclick="javascript:location.href='CompetitionMoimApply.jsp?ix=<%=request.getParameter("ix") %>&mix=<%=match_ix%>&mwix=<%=mwdto.get(i+1).getmatchWantedIx()%>'"></td>
 					<%}else{ %>
 					<p style="color:red;">모집종료</p>
 					<%}
