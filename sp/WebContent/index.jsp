@@ -168,13 +168,13 @@ tbody a:hover{
 							<%
 						}else{
 							for(int i=0;i<marr.size();i++){
-								%>
-								<tr>
-									<td style="width:150px;"><a href=""><%=marr.get(i).getMatchName()%></a></td>
-									<td style="width:270px;">
-								<%
 								int match_ix=marr.get(i).getMatchIx();
 								ArrayList<MatchWantedDTO> mwarr=mwdao.MatchAddPeople(match_ix);
+								%>
+								<tr>
+									<td style="width:150px;"><a href="/sp/Competition/CompetitionDetail.jsp?ix=<%=marr.get(i).getCompetitionInfoIx()%>&mix=<%=match_ix%>"><%=marr.get(i).getMatchName()%></a></td>
+									<td style="width:270px;">
+								<%
 								for(int j=0;j<mwarr.size();j++){
 										String a=mwarr.get(j).getwDetailRole();
 										String b=mwarr.get(j).getWantedNumber();
@@ -217,7 +217,7 @@ tbody a:hover{
 							for(int i=0;i<mbarr.size();i++){
 								%>
 								<tr>
-									<td style="width:70px;"><a href="/sp/mypage/makeMoimDetail.jsp?member_ix=<%=mbarr.get(i).getMemberIx()%>"><%=mbarr.get(i).getMName()%></a></td>
+									<td style="width:70px;"><a href=""><%=mbarr.get(i).getMName()%></a></td>
 									<td style="width:200px;"><%=mbarr.get(i).getFieldMajor()%></td>
 								</tr>
 								<%
