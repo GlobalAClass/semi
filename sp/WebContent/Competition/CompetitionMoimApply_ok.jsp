@@ -31,7 +31,7 @@ var res = confirm('<%=msg%>');
 if(res){
 	location.href='/sp/mypage/recruitMoim.jsp';
 }else{
-	location.href='/sp/Competition/CompetitionDetail.jsp?ix='+<%=ix%>;
+	location.href='/sp/Competition/CompetitionDetail.jsp?ix='+<%=ix%>+'&mix='+<%=matchIx%>;
 }
 
 </script>
