@@ -316,6 +316,7 @@ function expand(obj){
 			<%if(jangcheck){ %>
 			<p style="text-align: right;"><button style="color:red;" type="button" onclick="javascript:location.href='/sp/mypage/makeMoim.jsp'">모집인원<br>보러가기</button></p></td>
 			<%} %>
+			<br>
 			<table style="width:700px; margin: 5px auto;">
 				<thead>
 					<tr>
@@ -367,7 +368,7 @@ function expand(obj){
 						<%=mwdto.get(i).getRecruitedNumber() %>/<%=mwdto.get(i).getWantedNumber() %>명
 					</td>
 					<td width=150px;>
-						<pre><%=mwdto.get(i).getRequiredAbility() %></pre>
+						<pre><%=manageNull2(mwdto.get(i).getRequiredAbility()) %></pre>
 					</td>
 					<td width="150px;">
 					<%

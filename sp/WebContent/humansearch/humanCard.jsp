@@ -50,7 +50,7 @@ function scrap(obj){
 }
 <%if(mddao.getMemberDetailInfo(user_ix).getSearchAgreement().equals("true")){%>
 function goDetail(){
-	location.href='/sp';
+	location.href='/sp/humansearch/humanSelect.jsp?member_ix=<%=member_ix%>';
 }
 <%}else{%>
 function goDetail(){
