@@ -30,7 +30,7 @@ if(mname==null){
 <%
 }
 %>
-	<p><img src="/sp/img/idea.jpg" width="480" height="480"></p> 
+	<p><img src="/sp/img/idea.jpg" width="480" height="480" onclick="javascript:location.href='/sp'" id="homeImg"></p> 
 	<nav>
 		<ul>
 			<li><a href="/sp/Competition/Competition.jsp">공모전 정보</a></li>

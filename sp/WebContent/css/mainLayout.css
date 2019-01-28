@@ -37,6 +37,9 @@ header nav li{
 	display: inline;
 	margin-left: 158px;
 }
+#homeImg:hover{
+	cursor:pointer;
+}
 
 section{
 	width: 1200px;
