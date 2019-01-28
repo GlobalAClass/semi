@@ -5,10 +5,12 @@
 <%@ page import="java.util.*" %>
 <%@ page import="java.io.*" %>
 <%@ page import="member.*" %>
+<%@page import="competition.*"%>
 
 <jsp:useBean id="memberdao" class="member.MemberDAO"/>
 <jsp:useBean id="mddao" class="member.MemberDetailDAO"/>
 <jsp:useBean id="mhdao" class="member.MemberHistoryDAO"/>
+<jsp:useBean id="cidao" class="competition.CompetitionInfoDAO"/>
 
 <%!
 	//
@@ -43,6 +45,7 @@
 	//글쓴이 내용 출력을 위한 DTO구하기
 	MemberDTO memberdto = memberdao.getMemberInfo(member_ix);
 	MemberDetailDTO mddto = mddao.getMemberDetailInfo(member_ix);
+	CompetitionInfoDTO cidto = cidao.CompetitionCNameInfo(com_ix);
 	
 	//이미지경로 구하기.
 	File userdir = new File(request.getServletContext().getRealPath("\\")+ "\\img\\profile\\"+member_ix);
@@ -453,42 +456,42 @@ function formcheck(){
 		<input type="text" hidden="" name="competitionInfoIx">
 		<input type="text" hidden="" name="cnt">
 		<input type="text" hidden="" name="wcnt">
-		<p style="font-size: 30px; font-weight: bold;" align="center">모임을 개설하려는 공모전 정보</p>
+		<p style="font-size: 30px; font-weight: bold;" align="center">모임 글의 공모전 정보</p>
 		<div id="compInfo" align="center">
 			<table style="width:800px;height:250px;">
 				<tr>
-					<td style="width:200px;height:250px;" rowspan="9"><img style="width:200px;height:250px;border: 1px solid gray; margin-right:30px;" src="/sp/img/content.jpg"></td>
+					<td style="width:200px;height:250px;" rowspan="9"><img style="width:200px;height:250px;border: 1px solid gray; margin-right:30px;" src="/sp/img/content/<%=cidto.getCImage()%>"></td>
 				</tr>
 				<tr>
-					<td colspan="2" style="font-size:20px;">어촌 사랑 초등학생 공모전</td>
+					<td colspan="2" style="font-size:20px;"><%=cidto.getCName() %></td>
 				</tr>
 				<tr>
 					<td class="sub">분야</td>
-					<td>디자인</td>
+					<td><%=cidto.getField() %></td>
 				</tr>
 				<tr>
 					<td class="sub">팀/개인</td>
-					<td>개인</td>
+					<td><%=cidto.getTeamSolo() %></td>
 				</tr>
 				<tr>
 					<td class="sub">주최</td>
-					<td>고용노동부</td>
+					<td><%=cidto.getAuspice() %></td>
 				</tr>
 				<tr>
 					<td class="sub">주관</td>
-					<td>방송통신위원회, 안전보건공단</td>
+					<td><%=cidto.getCManage() %></td>
 				</tr>
 				<tr>
 					<td class="sub">참가자격</td>
-					<td>초등학생</td>
+					<td><%=cidto.getEntitlement() %></td>
 				</tr>
 				<tr>
 					<td class="sub">접수기간</td>
-					<td>2018-12-21 ~ 2019-01-30</td>
+					<td><%=cidto.getPeriod() %></td>
 				</tr>
 				<tr>
 					<td class="sub">홈페이지</td>
-					<td><a>홈페이지 링크 걸기</a></td>
+					<td><a href="<%=cidto.getCLink() %>" style="text-decoration: none; color: skyblue;">해당 공모전 사이트 가기</a></td>
 				</tr>
 			</table>
 		</div>
