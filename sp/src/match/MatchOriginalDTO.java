@@ -43,9 +43,18 @@ public class MatchOriginalDTO {
 			this.memberNumber = memberNumber;
 		}
 
+		//모든 인덱스 제외한 생성자
+		public MatchOriginalDTO(String ogMainRole, String ogDetailRole, String memberNumber) {
+			super();
+			this.ogMainRole = ogMainRole;
+			this.ogDetailRole = ogDetailRole;
+			this.memberNumber = memberNumber;
+		}
+		
 	    public Integer getMatchOriginalIx() {
 	        return matchOriginalIx;
 	    }
+
 
 		public void setMatchOriginalIx(Integer matchOriginalIx) {
 	        this.matchOriginalIx = matchOriginalIx;

@@ -53,6 +53,14 @@ public class MatchWantedDTO {
 		this.wantedNumber = wantedNumber;
 		this.recruitedNumber = recruitedNumber;
 	}
+	//역할과 필요요구사항 가지는 생성자
+	public MatchWantedDTO(String wMainRole, String wDetailRole, String requiredAbility) {
+		super();
+		this.wMainRole = wMainRole;
+		this.wDetailRole = wDetailRole;
+		this.requiredAbility = requiredAbility;
+	}
+
 	
 	public Integer getmatchWantedIx() {
 		return matchWantedIx;

@@ -104,6 +104,27 @@ public class MatchDTO {
 		this.totalWantedNumber = totalWantedNumber;
 		this.writeDate = writeDate;
 	}
+	
+	//index 제외한 생성자
+	public MatchDTO(String matchName, String mainRole, String detailRole, String originalMemberNumber, String sido,
+			String sigungu, String timesAWeek, String day, String totalWantedNumber, String ageRestriction,
+			String equipTech, String detail, String completedState, String writeDate) {
+		super();
+		this.matchName = matchName;
+		this.mainRole = mainRole;
+		this.detailRole = detailRole;
+		this.originalMemberNumber = originalMemberNumber;
+		this.sido = sido;
+		this.sigungu = sigungu;
+		this.timesAWeek = timesAWeek;
+		this.day = day;
+		this.totalWantedNumber = totalWantedNumber;
+		this.ageRestriction = ageRestriction;
+		this.equipTech = equipTech;
+		this.detail = detail;
+		this.completedState = completedState;
+		this.writeDate = writeDate;
+	}
 
 	public Integer getMatchIx() {
 		return matchIx;

@@ -38,6 +38,17 @@ public class MatchApplyDTO {
 		this.otherExC = otherExC;
 	}
 	
+	//MatciApplyIx를 제외한 생성자
+	public MatchApplyDTO(Integer memberIx, Integer matchIx, Integer matchWantedIx, String aboutApplicant,
+			String otherExC) {
+		super();
+		this.memberIx = memberIx;
+		this.matchIx = matchIx;
+		this.matchWantedIx = matchWantedIx;
+		this.aboutApplicant = aboutApplicant;
+		this.otherExC = otherExC;
+	}
+	
 	public Integer getMatchApplyIx() {
 		return matchApplyIx;
 	}
