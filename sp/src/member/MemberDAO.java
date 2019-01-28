@@ -231,6 +231,36 @@ public class MemberDAO {
 			}
 		}
 	}
+	
+	public String getMemberName(int member_ix) {
+		try {
+			conn = db.DB.getConn();
+			String sql = "select m_name from Member_TB where MEMBER_IX=?";
+			ps = conn.prepareStatement(sql);
+			ps.setInt(1, member_ix);
+			rs = ps.executeQuery();
+
+			if (rs.next()) {
+				return rs.getString("M_NAME");
+			} else {
+				return null;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (ps != null)
+					ps.close();
+				if (conn != null)
+					conn.close();
+			} catch (Exception e2) {
+
+			}
+		}
+	}
 
 	//idx에 따라 기본 정보 넘겨 받기 위한 메소드 - myProfile 사용
 	public MemberDTO myProfileInfo(int idx) {
@@ -333,9 +363,60 @@ public class MemberDAO {
 	}
 	
 	
+	public boolean areYouRecruitedMember(int match_ix, int match_wanted_ix, int member_ix){
+		try {
+			conn=db.DB.getConn();
+			String sql="select MEMBER_IX from Match_Recruited_TB where Match_IX = "+match_ix+" and Match_Wanted_IX = "+match_wanted_ix;
+			ps=conn.prepareStatement(sql);
+			rs=ps.executeQuery();
+			
+			while(rs.next()) {
+				//회원 인덱스
+				Integer memberIx=rs.getInt("MEMBER_IX");
+				if(member_ix == memberIx) {
+					return true;
+				}
+			}
+			return false;
+		}catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}finally {
+			try {
+				if(rs!=null)rs.close();
+				if(ps!=null)ps.close();
+				if(conn!=null)conn.close();
+			}catch(Exception e2) {}
+		}
+	}
 	
-	
-	
+	public ArrayList<String> getRecruitedMemberName(int match_ix, int match_wanted_ix){
+		try {
+			conn=db.DB.getConn();
+			String sql="select MEMBER_IX from Match_Recruited_TB where Match_IX = "+match_ix+" and Match_Wanted_IX = "+match_wanted_ix;
+			ps=conn.prepareStatement(sql);
+			rs=ps.executeQuery();
+			
+			ArrayList<String> name_list = new ArrayList<String>();
+			if(rs.next()) {
+				do {
+				//회원 인덱스
+				Integer memberIx=rs.getInt("MEMBER_IX");
+				name_list.add(getMemberName(memberIx));
+				}while(rs.next());
+			}
+			return name_list;
+		}catch(Exception e){
+			e.printStackTrace();
+			return null;
+		}finally {
+			try {
+				if(rs!=null)rs.close();
+				if(ps!=null)ps.close();
+				if(conn!=null)conn.close();
+			}catch(Exception e2) {}
+		}
+	}
 	
 	
 	

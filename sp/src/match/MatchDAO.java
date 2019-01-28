@@ -87,7 +87,7 @@ public class MatchDAO {
 	public ArrayList<MatchDTO> MoimCardAllList(Integer competitionInfoIx){
 		try {
 			conn=db.DB.getConn();
-			String sql="select m.*, to_char(m.WRITE_DATE,'yyyy-mm-dd, hh24:mi:ss') time from Match_TB m where Competition_Info_IX=?";
+			String sql="select m.*, to_char(m.WRITE_DATE,'yyyy-mm-dd, hh24:mi:ss') time from Match_TB m where Competition_Info_IX=? order by Match_IX desc";
 			ps=conn.prepareStatement(sql);
 			ps.setInt(1, competitionInfoIx);
 			rs=ps.executeQuery();

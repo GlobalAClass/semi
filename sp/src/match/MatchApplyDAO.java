@@ -254,4 +254,32 @@ public class MatchApplyDAO {
 		}
 	}
 	
+	
+	// match_wanted_ix로 matchapplyDTO 가져오는 함수 - CompetitionMoimSelect.jsp에 쓰임.
+	// 로그인한 유저가 지원서를 작성했는지 여부를 판단하기 위한 함수.
+	public boolean areYouApply(int match_wanted_ix, int member_ix) {
+		try {
+			conn = db.DB.getConn();
+			String sql = "SELECT 1 FROM (SELECT MEMBER_IX FROM Match_Apply_TB WHERE MATCH_WANTED_IX = "+match_wanted_ix+" ) WHERE MEMBER_IX = "+member_ix;
+
+			ps = conn.prepareStatement(sql);
+			rs = ps.executeQuery();
+
+			if (rs.next()) {
+				return true; //지원자
+			}else {
+				return false; //지원 안함
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		} finally {
+			try {
+				if (rs != null)rs.close();
+				if (ps != null)ps.close();
+				if (conn != null)conn.close();
+			} catch (Exception e2) {
+			}
+		}
+	}
 }
