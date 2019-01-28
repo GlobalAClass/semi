@@ -49,11 +49,11 @@ function scrap(obj){
 	//window.location.reload();
 }
 <%if(mddao.getMemberDetailInfo(user_ix).getSearchAgreement().equals("true")){%>
-function goDetail(){
-	location.href='/sp/humansearch/humanSelect.jsp?member_ix=<%=member_ix%>';
+function goDetail(obj){
+	location.href='/sp/humansearch/humanSelect.jsp?member_ix='+obj.previousSibling.previousSibling.value;;
 }
 <%}else{%>
-function goDetail(){
+function goDetail(obj){
 	alert('프로필에서 사람 검색 등록을 허용하셔야\n다른 사람을 볼 수 있습니다.');
 }
 <%}%>
@@ -77,7 +77,8 @@ table :hover{
 }
 </style>
 <span style="<% if(i%2==0){out.print("float: left;");} else{out.print("float: right;");}%>">
-<table onclick="goDetail()">
+<input type="text" hidden="" id="mix" value="<%=member_ix %>">
+<table onclick="goDetail(this)">
 	<tr>
 		<td rowspan="3" style="width:100px"><img src="<%=imagpath %>" style="width:80px;height:80px;margin:10px;"></td>
 		<td style="font-weight: bold; font-size:30px; width : 200px;"><%=mname %></td>

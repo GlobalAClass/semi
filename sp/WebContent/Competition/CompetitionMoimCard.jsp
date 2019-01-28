@@ -56,20 +56,32 @@ function goDetail(obj){
 		<td class="t1" colspan="4" align="right"><%=arr.get(i).getWriteDate()%></td>
 	</tr>
 	<tr>
-		<td rowspan="6" align="justify" style="text-align: center;"><img src="<%=imgpath%>" style="width:120px;height:120px;padding:2px;"></td>
+		<td rowspan="7" align="justify" style="text-align: center;"><img src="<%=imgpath%>" style="width:120px;height:120px;padding:2px;"></td>
 		<td class="t2" colspan="3">[<%=dto.getField()%>]</td>
 	</tr>
 	<tr>
 		<td colspan="2" style="width:400px;font-weight: bold; font-size:15px"><%=dto.getCName()%></td>
 	</tr>
 	<tr>
-		<td style="font-size:20px;font-weight:bold;" colspan="3">
+		<td height="40px" style="font-size:20px;font-weight:bold;" colspan="3">
 			<%=arr.get(i).getMatchName()%>&nbsp;|&nbsp;<%=mn %>
 		</td>
 	</tr>
 	<tr>
 		<td class="t3">모임 지역</td>
 		<td><%=arr.get(i).getSido() %> <%=arr.get(i).getSigungu() %><td>
+	</tr>
+	<tr>
+		<td class="t3">나이 제한</td>
+		<%
+		String ar = arr.get(i).getAgeRestriction();
+		if(!ar.equals("무관")){
+			%><td><%=ar %>이하</td><%
+		}else{
+			%>
+			<td><%=ar %><td>
+			<%
+		}%>
 	</tr>
 	<tr>
 		<%
