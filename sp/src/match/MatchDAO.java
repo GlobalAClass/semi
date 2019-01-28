@@ -152,9 +152,11 @@ public class MatchDAO {
 				while(rs.next()) {
 					//매칭 글 인덱스
 					Integer matchIx=rs.getInt("Match_IX");
+					// 공모전 정보 인덱스
+					Integer competitionInfoIx=rs.getInt("Competition_Info_IX");
 					//모임명
 					String matchName=rs.getString("MATCH_NAME");
-					MatchDTO dto=new MatchDTO(matchIx, matchName);
+					MatchDTO dto=new MatchDTO(matchIx,competitionInfoIx,matchName);
 					arr.add(dto);
 				}
 				return arr;
