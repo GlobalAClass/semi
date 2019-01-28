@@ -10,6 +10,7 @@
 <jsp:useBean id="memdao" class="member.MemberDAO"/>
 <jsp:useBean id="mddao" class="member.MemberDetailDAO"/>
 <jsp:useBean id="mhdao" class="member.MemberHistoryDAO"/>
+<jsp:useBean id="matdao" class="match.MatchDAO"/>
 <jsp:useBean id="ogdao" class="match.MatchOriginalDAO"/>
 
 <style>
@@ -84,7 +85,10 @@ function expand(obj){
 }
 %>
 <%
-	int member_ix = arr.get(cix).getMemberIx();
+	int match_ix = Integer.parseInt(request.getParameter("mix"));
+	MatchDTO matchdto= matdao.getMoimCard(match_ix);
+
+	int member_ix = matchdto.getMemberIx();
 	//모임장의 필수 사항
 	MemberDTO memdto = memdao.getMemberInfo(member_ix);
 	//모임장의 추가 사항
@@ -119,8 +123,8 @@ function expand(obj){
 <div id="group_name">
 	<div class="group_info">
 		<br>
-		<h3 style="font-size: 35px;"><%=arr.get(cix).getMatchName() %></h3>
-		<p style="float:right;"><%=arr.get(cix).getWriteDate() %></p>
+		<h3 style="font-size: 35px;"><%=matchdto.getMatchName() %></h3>
+		<p style="float:right;"><%=matchdto.getWriteDate() %></p>
 		<br>
 		<h4 style="float:left;">모임장 소개글</h4>
 	</div>
@@ -133,7 +137,7 @@ function expand(obj){
 				<td><%=memdto.getFieldMajor() %></td>
 			</tr>
 			<tr>	
-				<td colspan="4" style="font-size:19px"><%=arr.get(cix).getMainRole() %>, <%=arr.get(cix).getDetailRole() %></td>
+				<td colspan="4" style="font-size:19px"><%=matchdto.getMainRole() %>, <%=matchdto.getDetailRole() %></td>
 			</tr>
 			<tr>
 				<td colspan="2"><img src="/sp/img/mail.png" class="group_img"><%=memdto.getidEmail() %></td>
@@ -193,7 +197,6 @@ function expand(obj){
 		%>
 		<h4>현재 모임에 속해있는 사람</h4>
 		<%
-		int match_ix = arr.get(cix).getMatchIx();
 		ArrayList<MatchOriginalDTO> ogdto=ogdao.getogMemberInfo(match_ix);
 		int l = ogdto.size();
 		for(int j=0;j<l;j+=2){
@@ -224,15 +227,15 @@ function expand(obj){
 	<div class="group">
 		<h4>이런 지역/요일에 모임을 가지고 싶어요</h4>
 		<ul style="list-style-type:none;">
-			<li><%=arr.get(cix).getSido() %> <%=arr.get(cix).getSigungu() %></li>
-			<li>주 <%=arr.get(cix).getTimesAWeek() %></li>
-			<li><%=arr.get(cix).getDay() %></li>
+			<li><%=matchdto.getSido() %> <%=matchdto.getSigungu() %></li>
+			<li>주 <%=matchdto.getTimesAWeek() %></li>
+			<li><%=matchdto.getDay() %></li>
 		</ul>
 	</div>
 	<%
 		//null 들어갈 수 있는 항목 처리.
-		String et = manageNull(arr.get(cix).getEquipTech());
-		String dt = manageNull(arr.get(cix).getDetail());
+		String et = manageNull(matchdto.getEquipTech());
+		String dt = manageNull(matchdto.getDetail());
 	%>
 	<div class="group">
 		<h4>이런 기술/장비를 이용하고 싶어요</h4>
@@ -247,7 +250,7 @@ function expand(obj){
 	<div class="group">
 		<h4>이런 사람을 구하고 있어요</h4>
 		<%
-		String Agert = arr.get(cix).getAgeRestriction();
+		String Agert = matchdto.getAgeRestriction();
 		if(Agert.equals("무관")){
 			Agert = "상관없어요.";
 		}else{

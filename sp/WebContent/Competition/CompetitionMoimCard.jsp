@@ -47,16 +47,16 @@ for(int i=0;i<arr.size();i++){
 <script>
 function goDetail(obj){
 	//alert(obj.previousSibling.previousSibling);
-	location.href='/sp/Competition/CompetitionDetail.jsp?ix='+<%=ix%>+'&cix='+obj.previousSibling.previousSibling.value;
+	location.href='/sp/Competition/CompetitionDetail.jsp?ix='+<%=ix%>+'&mix='+obj.previousSibling.previousSibling.value;
 }
 </script>
-	<input type="text" hidden="" value="<%=i %>">
+	<input type="text" hidden="" value="<%=arr.get(i).getMatchIx() %>">
 	<table id="card" onclick="goDetail(this)">
 	<tr>
 		<td class="t1" colspan="4" align="right"><%=arr.get(i).getWriteDate()%></td>
 	</tr>
 	<tr>
-		<td rowspan="5" align="justify"><img src="<%=imgpath%>" style="width:120px;height:120px;padding:2px;"></td>
+		<td rowspan="6" align="justify" style="text-align: center;"><img src="<%=imgpath%>" style="width:120px;height:120px;padding:2px;"></td>
 		<td class="t2" colspan="3">[<%=dto.getField()%>]</td>
 	</tr>
 	<tr>
@@ -66,6 +66,10 @@ function goDetail(obj){
 		<td style="font-size:20px;font-weight:bold;" colspan="3">
 			<%=arr.get(i).getMatchName()%>&nbsp;|&nbsp;<%=mn %>
 		</td>
+	</tr>
+	<tr>
+		<td class="t3">모임 지역</td>
+		<td><%=arr.get(i).getSido() %> <%=arr.get(i).getSigungu() %><td>
 	</tr>
 	<tr>
 		<%

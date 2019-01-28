@@ -19,11 +19,11 @@ if(ix_s==null||ix_s.equals("")){
 int ix=Integer.parseInt(ix_s);
 
 //모임 카드 클릭한 경우, 모임의 인덱스 가져오기
-String cix_s=request.getParameter("cix");
-if(cix_s==null||cix_s.equals("")){
-	cix_s="-1";
+String mix_s=request.getParameter("mix");
+if(mix_s==null||mix_s.equals("")){
+	mix_s="-1";
 }
-int cix=Integer.parseInt(cix_s);
+int mix=Integer.parseInt(mix_s);
 
 //공모전 제목 클릭시 정보보기 CompetitionInfoDAO
 CompetitionInfoDTO dto=cdao.CompetitionCNameInfo(ix);
@@ -145,7 +145,7 @@ article {
 			location.href='/sp';
 			</script>
 			<%
-		}else if(cix==-1){
+		}else if(mix==-1){
 			%>
 			<p align="right"><a href="/sp/Competition/CompetitionMoimMake.jsp?ix=<%=ix%>"><input style="height:35px;" type="button" value="모임 생성하기"></a></p>
 			<%@include file="/Competition/CompetitionMoimCard.jsp"%>
