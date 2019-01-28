@@ -7,6 +7,8 @@
 <%@ page import="hsearch.*" %>
 <%@page import="java.io.File"%>
 
+<jsp:useBean id="mddao" class="member.MemberDetailDAO"/>
+
 <%
 	Calendar c = Calendar.getInstance(); //나이 계산을 위해 년도 받기.
 	int year = c.get(Calendar.YEAR);
@@ -46,9 +48,15 @@ function scrap(obj){
 	}
 	//window.location.reload();
 }
+<%if(mddao.getMemberDetailInfo(user_ix).getSearchAgreement().equals("true")){%>
 function goDetail(){
 	location.href='/sp';
 }
+<%}else{%>
+function goDetail(){
+	alert('프로필에서 사람 검색 등록을 허용하셔야\n다른 사람을 볼 수 있습니다.');
+}
+<%}%>
 </script>
 <style>
 span {

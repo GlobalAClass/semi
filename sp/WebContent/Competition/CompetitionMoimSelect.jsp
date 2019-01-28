@@ -76,15 +76,17 @@ function expand(obj){
 			return str;
 		}
 	}
-
+%>
+<%!
 	public String manageNull2(String str) {
 		if (str == null || str.equals("")) {
 			return "없음";
 		} else {
 			return str;
 		}
-}
+	}
 %>
+
 <%	
 	//로그인해야 해당 페이지를 이용할 수 있음.
 	String uname = (String)session.getAttribute("smname");
@@ -99,15 +101,47 @@ function expand(obj){
 		<%
 		return ;
 	}
-	
+	//로그인한 유저의 ix
+	int usermem_ix = memdao.getMemberIndex(uid);
 	//모임글 정보 가져오기.
 	int match_ix = Integer.parseInt(request.getParameter("mix"));
 	MatchDTO matchdto= matdao.getMoimCard(match_ix);
+	//모임글의 나이제한 
+	String Agert = matchdto.getAgeRestriction();
+	int Agert_num = 500;
+	if(Agert != null && !Agert.equals("") && !Agert.equals("무관")){
+		Agert_num = Integer.parseInt(Agert);
+	}
+	//로그인한 유저의 나이 구하기 위한 정보 준비.
+	MemberDetailDTO uddto = mddao.getMemberDetailInfo(usermem_ix);
+	Calendar cal = Calendar.getInstance();
+	int y = cal.get(Calendar.YEAR);
+	//나이 입력하지 않은 경우 막기.
+	if(uddto.getBirthYear() == null || uddto.getBirthYear().equals("")){
+		%>
+		<script>
+			alert('나이를 입력하고 이용해주세요.');
+			location.href="/sp/mypage/myProfile.jsp?";
+		</script>
+		<%
+		return;	
+	}else{
+		//나이제한 걸리면 접근 막기.
+		int uage = y - Integer.parseInt(uddto.getBirthYear()) +1;
+		if(uage> Agert_num){
+			%>
+			<script>
+				alert('나이제한 해당되셔서 접근하실 수 없습니다.');
+				location.href="/sp/Competition/CompetitionDetail.jsp?ix=<%=request.getParameter("ix")%>";
+			</script>
+			<%
+			return;	
+		}
+	}
 	
 	int member_ix = matchdto.getMemberIx();
 	//현재 로그인한 유저가 모임장과 일치하는지 체크
 	boolean jangcheck =false;
-	int usermem_ix = memdao.getMemberIndex(uid);
 	if(usermem_ix == member_ix){
 		jangcheck = true;
 	}
@@ -272,7 +306,6 @@ function expand(obj){
 		<div class="group" style="margin-bottom: 10px;">
 			<h4>이런 사람을 구하고 있어요</h4>
 			<%
-			String Agert = matchdto.getAgeRestriction();
 			if(Agert.equals("무관")){
 				Agert = "상관없어요.";
 			}else{

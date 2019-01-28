@@ -7,6 +7,9 @@
 <%@page import="hsearch.*" %>
 <%@page import="java.io.File"%>
 
+<jsp:useBean id="mdao" class="member.MemberDAO"/>
+<jsp:useBean id="mddao" class="member.MemberDetailDAO"/>
+
 <%
 	//로그인해야 해당 페이지를 이용할 수 있음.
 	String uname = (String)session.getAttribute("smname");
@@ -105,9 +108,11 @@ function scrap(obj){
 	String sido_str = request.getParameter("sido");
 	String sigungu_str = request.getParameter("sigungu");
 	String fieldMajor_str = request.getParameter("fieldMajor");
-	
+	//로그인한 회원의 인덱스
+	int u_ix = mdao.getMemberIndex(uid);
+	MemberDetailDTO mddto = mddao.getMemberDetailInfo(u_ix);
+	//사람 리스트
 	HsearchDAO hdao = new HsearchDAO();
-	
 	ArrayList<Pair<MemberDTO, MemberDetailDTO>> searchlist = hdao.searchHuman(sido_str, sigungu_str, fieldMajor_str);
 %>
 <body>
@@ -142,7 +147,9 @@ function scrap(obj){
 						type="text" placeholder="분야/전공 검색"  name="fieldMajor" >&nbsp;
 				<input type="button" value="분야/전공 찾기" onclick="fieldMajorPop()">
 				<input type="button" value="사람 찾기" style="float: right" onclick="search()">
-				<input type="button" value="나도 등록하기!" style="float: right; margin-right: 20px;" >
+				<%if(mddto.getSearchAgreement().equals("false")) {%>
+				<input type="button" value="나도 등록하기!" style="float: right; margin-right: 20px;" onclick="javascript:alert('프로필에서 검색을 등록해주세요.');location.href='/sp/mypage/myProfile.jsp'">
+				<%} %>
 			</form>
 			<script>//사람찾기 검색조건 유지.
 				var sido = humanSearch.sido;
@@ -163,13 +170,12 @@ function scrap(obj){
 	</section>
 	<section>
 	<article style="margin:20px;">
-	<%
-	MemberDAO mdao = new MemberDAO();
-	int u_ix = mdao.getMemberIndex(uid);
-		
+	<%		
 	if(searchlist!=null){
 		int len = searchlist.size();
 		for(int i=0; i<len; i++){
+			if(searchlist.get(i).getRight().getSearchAgreement().equals("true") &&
+					(searchlist.get(i).getLeft().getMemberIx() != u_ix)){
 	%>
 			<jsp:include page="humanCard.jsp" flush="false">
 				<jsp:param value="<%=i %>" name="i" />
@@ -183,6 +189,7 @@ function scrap(obj){
 				<jsp:param value="<%=searchlist.get(i).getLeft().getidEmail()%>" name="idEmail"/>
 			</jsp:include>
 	<%
+			}
 			
 		}
 	}
