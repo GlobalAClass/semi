@@ -94,15 +94,13 @@ public class MatchDTO {
 	}
 	
 	//MoimSearchCard 생성자
-	public MatchDTO(Integer matchIx, Integer memberIx, String matchName, String originalMemberNumber, String sido,
-			String sigungu, String totalWantedNumber, String writeDate) {
+	public MatchDTO(Integer matchIx, Integer memberIx, String matchName, String originalMemberNumber,
+			String totalWantedNumber, String writeDate) {
 		super();
 		this.matchIx = matchIx;
 		this.memberIx = memberIx;
 		this.matchName = matchName;
 		this.originalMemberNumber = originalMemberNumber;
-		this.sido = sido;
-		this.sigungu = sigungu;
 		this.totalWantedNumber = totalWantedNumber;
 		this.writeDate = writeDate;
 	}
@@ -126,6 +124,14 @@ public class MatchDTO {
 		this.detail = detail;
 		this.completedState = completedState;
 		this.writeDate = writeDate;
+	}
+
+	//idx와 모임 진행중인지 여부, 모임명 가지는 생성자
+	public MatchDTO(Integer matchIx, String matchName, String completedState) {
+		super();
+		this.matchIx = matchIx;
+		this.matchName = matchName;
+		this.completedState = completedState;
 	}
 
 	public Integer getMatchIx() {

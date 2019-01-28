@@ -55,7 +55,13 @@ public class MemberDTO {
 		this.mName = mName;
 		this.fieldMajor = fieldMajor;
 	}
-
+	
+	// 회원 인덱스, 회원의 이름을 가지는 생성자
+	public MemberDTO(Integer memberIx, String mName) {
+		super();
+		this.memberIx = memberIx;
+		this.mName = mName;
+	}
 
 	public Integer getMemberIx() {
 		return memberIx;

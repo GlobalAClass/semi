@@ -60,11 +60,19 @@ public class MatchWantedDTO {
 		this.wDetailRole = wDetailRole;
 		this.requiredAbility = requiredAbility;
 	}
-
+	
+	//테이블 인덱스와 역할 가지는 생성자
+	public MatchWantedDTO(Integer matchWantedIx, String wMainRole, String wDetailRole) {
+		super();
+		this.matchWantedIx = matchWantedIx;
+		this.wMainRole = wMainRole;
+		this.wDetailRole = wDetailRole;
+	}
 	
 	public Integer getmatchWantedIx() {
 		return matchWantedIx;
 	}
+
 
 	public void setmatchWantedIxx(Integer matchWantedIx) {
 		this.matchWantedIx = matchWantedIx;
