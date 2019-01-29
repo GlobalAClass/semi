@@ -137,6 +137,16 @@ public class MatchDTO {
 		this.matchName = matchName;
 		this.completedState = completedState;
 	}
+	
+	//idx와 모임명, 모임장의 역할, 모임 진행 여부 가지는 생성자
+	public MatchDTO(Integer matchIx, String matchName, String mainRole, String detailRole, String completedState) {
+		super();
+		this.matchIx = matchIx;
+		this.matchName = matchName;
+		this.mainRole = mainRole;
+		this.detailRole = detailRole;
+		this.completedState = completedState;
+	}
 
 	public Integer getMatchIx() {
 		return matchIx;

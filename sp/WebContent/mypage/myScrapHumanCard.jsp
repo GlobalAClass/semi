@@ -11,17 +11,18 @@
 	Calendar c = Calendar.getInstance(); //나이 계산을 위해 년도 받기.
 	int year = c.get(Calendar.YEAR);
 	
+	int scrapMemberIdx = myScrapHumans.get(i).getLeft().getMemberIx();
+	
 	//카드에 출력될 프로필 가져오기.
-	File userdir = new File(request.getServletContext().getRealPath("\\")+ "\\img\\profile\\"+member_ix);
+	File userdir = new File(request.getServletContext().getRealPath("\\")+ "\\img\\profile\\"+scrapMemberIdx);
 	File[] files = userdir.listFiles();
 	String imagpath;
 	if(files.length>0){
-		imagpath = "/sp/img/profile/"+member_ix+"/"+files[0].getName();
+		imagpath = "/sp/img/profile/"+scrapMemberIdx+"/"+files[0].getName();
 	}else{
 		imagpath = "/sp/img/profile_default.jpg";
 	}
 	
-	int scrapMemberIdx = myScrapHumans.get(i).getLeft().getMemberIx();
 	String mName = myScrapHumans.get(i).getLeft().getMName();
 	String birthYear = myScrapHumans.get(i).getRight().getBirthYear();
 	int age = year-Integer.parseInt(birthYear)+1;

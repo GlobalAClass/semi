@@ -11,8 +11,6 @@ int memberIx = Integer.parseInt(request.getParameter("memberIx"));
 int matchIx = Integer.parseInt(request.getParameter("matchIx"));
 int matchWantedIx = Integer.parseInt(request.getParameter("matchWantedIx"));
 
-System.out.println(matchApplyIx+"/"+memberIx+"/"+matchIx+"/"+matchWantedIx);
-
 int res = rdao.recuritDel(matchApplyIx, memberIx, matchIx, matchWantedIx);
 
 %>

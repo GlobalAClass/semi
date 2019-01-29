@@ -84,6 +84,12 @@ public class CompetitionInfoDTO {
 		this.field = field;
 		this.readnum = readnum;
 	}
+	//공모전 인덱스, 공모전 이름 가지는 생성자
+	public CompetitionInfoDTO(Integer competitionInfoIx, String cName) {
+		super();
+		this.competitionInfoIx = competitionInfoIx;
+		CName = cName;
+	}
 	
 	public Integer getCompetitionInfoIx() {
 		return competitionInfoIx;

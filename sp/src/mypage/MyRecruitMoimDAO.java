@@ -49,7 +49,12 @@ public class MyRecruitMoimDAO {
 			return null;
 		}finally {
 			try {
-				
+				if (rs != null)
+					rs.close();
+				if (ps != null)
+					ps.close();
+				if (conn != null)
+					conn.close();
 			}catch(Exception e2) {}
 		}
 	}
@@ -245,8 +250,6 @@ public class MyRecruitMoimDAO {
 			return ERROR;
 		}finally {
 			try {
-				if (rs != null)
-					rs.close();
 				if (ps != null)
 					ps.close();
 				if (conn != null)
