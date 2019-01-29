@@ -128,7 +128,7 @@ article{
 //지역 선택시에 추가 옵션 보여주는 함수.
 function addOption(obj){
 	var option = obj.value;
-	var ary;
+	var ary = new Array();
 	var addop = CompetitionMoimMake.sigungu;
 	//추가 옵션이 이미 있던 경우 삭제해주기. 길이를 1로 두는 것은 '선택해주세요'만 남기고 삭제하기 위해서이다.
 	if(addop.length>1){
@@ -158,13 +158,18 @@ function select(part,temp){
 	   var partname=part.value; //선택한 역할 값.
 	   var inputRes;
 	   var role;
+	   var temp;
 	   
 	   if(temp=='inner'){ //innerText에 존재하는 담당 역할
 	      inputRes=part.nextSibling;
-	      role=inputRes.nextSibling.nextSibling; 
+	      role=inputRes.nextSibling.nextSibling;
 	   }else if(temp=='outer'){ //외부 html에 존재하는 담당 역할
 	      inputRes=part.nextSibling.nextSibling;
 	      role=inputRes.nextSibling.nextSibling;
+	   }else if(temp=='setting'){
+		   temp = part.nextSibling.nextSibling;
+		   inputRes = temp.nextSibling.nextSibling;
+		   role = inputRes.nextSibling.nextSibling.nextSibling.nextSibling;
 	   }
 	   
 	   //담당역할 선택 -> 세부사항 기입 불가, 세부사항 빈문자열.
@@ -429,15 +434,15 @@ function formcheck(){
 		alert('상세 역할을 입력해주세요');
 		CompetitionMoimMake.detailRole.focus();
 		return false;
-	}else if(CompetitionMoimMake.sido.value == ""){
+	}else if(CompetitionMoimMake.sido.value == "1"){
 		alert('지역을 선택해주세요');
 		CompetitionMoimMake.sido.focus();
 		return false;
-	}else if(CompetitionMoimMake.sigungu.value == ""){
+	}else if(CompetitionMoimMake.sigungu.value == "1"){
 		alert('상세 지역을 입력해주세요');
 		CompetitionMoimMake.sigungu.focus();
 		return false;
-	}else if(CompetitionMoimMake.timesAWeek.value == ""){
+	}else if(CompetitionMoimMake.timesAWeek.value == "1"){
 		alert('주 몇 회인지 입력해주세요');
 		CompetitionMoimMake.timesAWeek.focus();
 		return false;
@@ -522,7 +527,7 @@ function formcheck(){
 					</td>
 					<th style="width:150px;height:80px;">담당 역할</th>
 					<td>
-					<select name="mainRole" onchange="select(this, 'outer')" style="width:130px;height:25px;" required="required">
+					<select name="mainRole" onchange="select(this, 'setting')" style="width:130px;height:25px;" required="required">
 						<option value="" >선택하기</option>
 						<option value="developer" >개발자</option>
 						<option value="desiner" >디자이너</option>
@@ -536,7 +541,6 @@ function formcheck(){
 							mmainRole[i].selected = "true";
 						}
 					}
-					select(document.CompetitionMoimMake.mainRole, 'outer');
 					</script>
 					<input style="width:170px;height:20px;" type="text" id="dRole" name="detailRole" required="required" value="<%=matdto.getDetailRole() %>">
 					<div style="font-size:11px; color:#D20505;">해당 담당 역할이 없는경우 직접 작성해주세요. (1개 선택 가능)</div>
@@ -651,8 +655,34 @@ function formcheck(){
 		//현재 구성된 총 팀원 수
 		document.all.sumTeam.value=sum;
 		
+		function curTeamSet1(){
+			
+			//mainRole
+			var mainrole = document.CompetitionMoimMake.ogMainRole;
+			var mr = mainrole;
+			for(var j=0;j<mr.length;j++){
+				if(mr[j].value==marr[0]){
+					mr[j].selected = true;
+				}
+			}
+			select(mr, 'inner');
+			
+			//detaileRole 
+			var detailrole = document.CompetitionMoimMake.ogDetailRole;
+			var dr = detailrole;
+			dr.value = darr[0];
+			//memberNumber
+			var memberNumber = document.CompetitionMoimMake.memberNumber;
+			var mn = memberNumber;
+			for(var j=0;j<mn.length;j++){
+				if(mn[j].value==mnarr[0]){
+					mn[j].selected = true;
+				}
+			}
+			
+		}
 		
-		function curTeamSet(){
+		function curTeamSet2(){
 			//현재 팀원의 Role setting.
 			for(var k=0;k<i;k++){
 				//mainRole
@@ -667,7 +697,7 @@ function formcheck(){
 				
 				//detaileRole 
 				var detailrole = document.CompetitionMoimMake.ogDetailRole;
-				var dr = detailrole[k];
+				var dr = detaole[k];
 				dr.value = darr[k];
 				//memberNumber
 				var memberNumber = document.CompetitionMoimMake.memberNumber;
@@ -679,13 +709,13 @@ function formcheck(){
 				}
 			}
 		}
-		curTeamSet();
+		
 		</script>
 		<div class="bodytype">
 			<div style="font-size:25px;font-weight: bold;">이런 지역/요일에 모임을 가지고 싶어요</div>
 			<p>지역 선택
 			<select onchange="addOption(this)" name="sido" style="width:130px;height:25px;">
-				<option value="">선택해주세요</option>
+				<option value="1">선택해주세요</option>
 				<option >서울특별시</option>
 				<option >인천광역시</option>
 				<option >대구광역시</option>
@@ -705,7 +735,7 @@ function formcheck(){
 				<option >제주도</option>
 			</select>
 			<select name="sigungu" style="width:130px;height:25px;"> <!-- 추가옵션 달릴 부분 -->
-				<option value="">선택해주세요</option>
+				<option value="1">선택해주세요</option>
 			</select>
 			<script>
 			//DB에 있는 시도, 시군구 세팅.
@@ -727,7 +757,7 @@ function formcheck(){
 			</p>
 			주
 			<select style="width:80px;height:25px;" name="timesAWeek" onload="setTAW()">
-				<option value="" selected>선택</option>
+				<option value="1" selected>선택</option>
 				<option value="1회">1회</option>
 				<option value="2회">2회</option>
 				<option value="3회">3회 이상</option>
@@ -787,12 +817,16 @@ function formcheck(){
 		//구하는 팀원의 역할 수
 		int length = wmem.size();
 		for(int i =0; i<length;i++){
+			String ra = wmem.get(i).getRequiredAbility();
+			if(ra == null || ra.equals("") || ra.equals(null)){
+				ra = "";
+			}
 		%>
 		addwTeam();
 		wmarr.push('<%=wmem.get(i).getwMainRole()%>');
 		wdarr.push('<%=wmem.get(i).getwDetailRole()%>');
 		wmnarr.push('<%=wmem.get(i).getWantedNumber()%>');
-		raarr.push('<%=wmem.get(i).getRequiredAbility()%>');
+		raarr.push('<%=ra%>');
 		wsum+=<%=wmem.get(i).getWantedNumber()%>;
 		w++;
 		<%
@@ -801,7 +835,48 @@ function formcheck(){
 		//원하는 총 팀원 수
 		document.all.sumwTeam.value=wsum;
 
-		function wantedTeamSet(){
+		function wantedTeamSet1(){
+			//구하는 팀원의 Role setting.
+			
+				
+				//mainRole
+				var wmainrole = document.CompetitionMoimMake.wMainRole;
+				var wmr = wmainrole;
+				for(var j=0;j<wmr.length;j++){
+					if(wmr[j].value==wmarr[0]){
+						wmr[j].selected = true;
+					}
+				}
+				select(wmr, 'inner');
+				
+				//detaileRole 
+				var wdetailrole = document.CompetitionMoimMake.wDetailRole;
+				var wdr = wdetailrole;
+				wdr.value = wdarr[0];
+				//wantedNumber
+				var wantedNumber = document.CompetitionMoimMake.wantedNumber;
+				var wmn = wantedNumber;
+				for(var j=0;j<wmn.length;j++){
+					if(wmn[j].value==wmnarr[0]){
+						wmn[j].selected = true;
+					}
+				}
+				//requiredAbility
+				var requiredAbility = document.CompetitionMoimMake.requiredAbility;
+				var ra = requiredAbility;
+				ra.value = raarr[0];
+			
+		}
+		
+		var addFunctionOnWindowLoad = function(callback){
+		      if(window.addEventListener){
+		          window.addEventListener('load',callback,false);
+		      }else{
+		          window.attachEvent('onload',callback);
+		      }
+		}
+		
+		function wantedTeamSet2(){
 			//구하는 팀원의 Role setting.
 			for(var k=0;k<w;k++){
 				
@@ -833,7 +908,16 @@ function formcheck(){
 				ra.value = raarr[k];
 			}
 		}
-		wantedTeamSet();
+		
+		var addFunctionOnWindowLoad = function(callback){
+		      if(window.addEventListener){
+		          window.addEventListener('load',callback,false);
+		      }else{
+		          window.attachEvent('onload',callback);
+		      }
+		}
+		
+
 		</script>
 		<div class="bodytype">
 			<div style="margin-top:15px;margin-bottom:15px;"><font style="font-size:25px;font-weight:bold;margin-right:300px;">이런 기술/장비를 다뤄보고 싶어요</font>
@@ -851,6 +935,24 @@ function formcheck(){
 				<input class="btn" type="button" value="취소">
 		</div>
 		</form>
+		<script>
+		function ms(){
+			var mainRole = document.all.mainRole;
+			select(mainRole, 'setting');
+		}
+		
+		addFunctionOnWindowLoad(ms);
+		if(w==1){
+			addFunctionOnWindowLoad(curTeamSet1);
+		}else{
+			addFunctionOnWindowLoad(curTeamSet2);
+		}
+		if(w==1){
+			addFunctionOnWindowLoad(wantedTeamSet1);
+		}else{
+			addFunctionOnWindowLoad(wantedTeamSet2);
+		}
+		</script>
 	</article>
 </section>
 <%@include file="/footer.jsp" %>
