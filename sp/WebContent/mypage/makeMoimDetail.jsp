@@ -12,6 +12,7 @@
 <jsp:useBean id="mdao" class="member.MemberDAO"></jsp:useBean>
 <jsp:useBean id="mddao" class="member.MemberDetailDAO"></jsp:useBean>
 <jsp:useBean id="mhdao" class="member.MemberHistoryDAO"></jsp:useBean>
+<jsp:useBean id="adao" class="match.MatchApplyDAO"></jsp:useBean>
 
 <%!
 	//
@@ -26,7 +27,7 @@
 
 
 <%
-	//madto.setMemberIx(79); //test용도로 사용한 코드줄. 공모전 이력있는 회원인덱스 번호를 주면 테스트할 수 있음.
+
 	//구현안 된 내용. 
 	//1. 자기소개, 2. 현재또는 다른 공모전 여부, 3. submit할 때 폼(폼형태는 아래에 기술 되어 있음)에 입력될 값 넣기.-모임글인덱스, 신청글 인덱스. 
 	
@@ -38,6 +39,7 @@
 		member_ix_s="0";
 	}
 	int member_ix=Integer.parseInt(member_ix_s);
+	
 	//회원 인덱스로 회원 이미지 추가하기
 	File proimg=new File(request.getServletContext().getRealPath("\\")+"\\img\\profile\\"+member_ix);
 	File[] files=proimg.listFiles();
@@ -47,9 +49,11 @@
 	}else{
 		imgpath="/sp/img/profile_default.jpg";
 	}
+	
 	//회원인덱스로 회원의 필수사항, 추가사항 받기
 	MemberDTO mdto = mdao.getMemberInfo(member_ix);
 	MemberDetailDTO mddto = mddao.getMemberDetailInfo(member_ix);
+	
 	//회원인덱스로 회원의 공모전 이력 받기
 	ArrayList<MemberHistoryDTO> list = mhdao.getMemberHistoryInfo(member_ix);
 	int len = 0;
@@ -72,6 +76,21 @@
 		contact= "비공개";
 	}
 	
+	//지원글에 대한 인덱스 받기
+	int match_apply_ix = Integer.parseInt(request.getParameter("match_apply_ix"));
+	
+	//지원글의 자기소개, 현재 공모전 진행 여부 받아오기
+	MatchApplyDTO adto = adao.getMyApply(match_apply_ix);
+	
+	//지원서글 자기소개
+	String introduce = adto.getAboutApplicant();
+	String other_ex_c = adto.getOtherExC();
+	
+	if(other_ex_c.equals("true")){
+		other_ex_c = "예. 참여하고 있습니다.";
+	}else{
+		other_ex_c = "아니오. 참여하고 있지 않습니다.";
+	}
 	
 %>
 <!DOCTYPE html>
@@ -144,7 +163,7 @@ function formcheck(str){
 	<%@include file="/mypage/aside.jsp"%>
 	<section>
 		<article>
-			<h2>마이페이지 - 내가 만든 모임 - 지원글 상세</h2>
+			<div align="center" style="font-size:40px;font-weight:bold;margin:20px;">지원글 상세보기</div>
 			<table id="top_table">
 				<tr>
 					<td rowspan="4" style="width: 140px"><img src="<%=imgpath%>"
@@ -193,11 +212,17 @@ function formcheck(str){
 
 			<div id="m_pfofile">
 				<h3 class="fontsize_35">자기소개</h3>
-				<p>그리고 그래서 그렇습니다.</p>
+				<table style="width:800px;height:150px;border:0.5px gray dotted;">
+					<tr>
+						<td>
+						<pre><%=introduce %></pre>
+						</td>
+					</tr>
+				</table>
 			</div>
 			<div id="m_pfofile">
 				<h3 class="fontsize_35">현재 또 다른 공모전 / 프로젝트 참여 여부</h3>
-				<p>예. 참여하고 있습니다. / 아니오. 참여하고 있지 않습니다.</p>
+				<p align="center" style="font-size:20px;"><%=other_ex_c %></p>
 			</div>
 			<form name="makeMoimDetail" action="" method="post">
 				<input type="text" hidden="" value="" name="matchIx"><!-- 공모정 모임 인덱스 -->
