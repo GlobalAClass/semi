@@ -74,7 +74,13 @@ for(int i=0;i<arr.size();i++){
 	</tr>
 	<tr>
 		<td></td>
-		<td class="t3" colspan="2"><%=arr.get(i).getSido()%>&nbsp;&nbsp;<%=arr.get(i).getSigungu()%></td>
+		<td class="t3">모임 지역</td>
+		<td><%=arr.get(i).getSido()%>&nbsp;&nbsp;<%=arr.get(i).getSigungu()%></td>
+	</tr>
+	<tr>
+		<td></td>
+		<td class="t3">나이제한</td>
+		<td><%=arr.get(i).getAgeRestriction()%></td>
 	</tr>
 	<tr>
 		<%

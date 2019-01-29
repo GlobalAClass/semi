@@ -96,7 +96,7 @@ public class MatchDTO {
 	
 	//MoimSearchCard 생성자
 	public MatchDTO(Integer matchIx, Integer memberIx, String matchName, String originalMemberNumber, String sido,
-			String sigungu, String totalWantedNumber, String writeDate) {
+			String sigungu, String totalWantedNumber, String ageRestriction, String writeDate) {
 		super();
 		this.matchIx = matchIx;
 		this.memberIx = memberIx;
@@ -105,6 +105,7 @@ public class MatchDTO {
 		this.sido = sido;
 		this.sigungu = sigungu;
 		this.totalWantedNumber = totalWantedNumber;
+		this.ageRestriction = ageRestriction;
 		this.writeDate = writeDate;
 	}
 

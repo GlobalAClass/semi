@@ -34,9 +34,11 @@ public class MsearchDAO {
 				String originalMemberNumber=rs.getString("ORIGINAL_MEMBER_NUMBER");
 				//구하고 싶은 팀원수
 				String totalWantedNumber=rs.getString("TOTAL_WANTED_NUMBER");
+				// 나이제한
+				String ageRestriction=rs.getString("AGE_RESTRICTION");
 				//공모전 글쓴 날짜
 				String writeDate=rs.getString("TIME");
-				MatchDTO dto=new MatchDTO(matchIx, memberIx, matchName, originalMemberNumber, sido, sigungu, totalWantedNumber, writeDate);
+				MatchDTO dto=new MatchDTO(matchIx, memberIx, matchName, originalMemberNumber, sido, sigungu, totalWantedNumber,ageRestriction ,writeDate);
 				arr.add(dto);
 			}
 			return arr;
