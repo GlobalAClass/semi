@@ -180,7 +180,7 @@ public class MyMakeMoimDAO {
 		try {
 			conn=db.DB.getConn();
 			
-			String sql="SELECT MW.W_MAIN_ROLE, MW.W_DETAIL_ROLE,MW.REQUIRED_ABILITY FROM MATCH_WANTED_TB MW, MATCH_APPLY_TB MA WHERE MA.MATCH_IX=? AND MW.MATCH_WANTED_IX=MA.MATCH_WANTED_IX ORDER BY MA.MATCH_APPLY_IX DESC";
+			String sql="SELECT MW.MATCH_WANTED_IX,MW.W_MAIN_ROLE, MW.W_DETAIL_ROLE FROM MATCH_WANTED_TB MW, MATCH_APPLY_TB MA WHERE MA.MATCH_IX=? AND MW.MATCH_WANTED_IX=MA.MATCH_WANTED_IX ORDER BY MA.MATCH_APPLY_IX DESC";
 			ps=conn.prepareStatement(sql);
 			ps.setInt(1, match_ix);
 			
@@ -189,11 +189,11 @@ public class MyMakeMoimDAO {
 			ArrayList<MatchWantedDTO> arr = new ArrayList<MatchWantedDTO>();
 			if(rs.next()) {
 				do {
+					int matchWantedIx = rs.getInt("MATCH_WANTED_IX");
 					String wMainRole = rs.getString("W_MAIN_ROLE");
 					String wDetailRole = rs.getString("W_DETAIL_ROLE");
-					String requiredAbility = rs.getString("REQUIRED_ABILITY");
 					
-					MatchWantedDTO dto = new MatchWantedDTO(wMainRole, wDetailRole, requiredAbility);
+					MatchWantedDTO dto = new MatchWantedDTO(matchWantedIx, wMainRole, wDetailRole);
 					arr.add(dto);
 				}while(rs.next());
 			}
@@ -214,27 +214,29 @@ public class MyMakeMoimDAO {
 		}
 	}
 	
-	//해당 모임글에 대한 인덱스 가져오는 메소드
-	public int[] moimApplyIdx(int match_ix){
+	//해당 모임글에 대한 인덱스와 모임에 뽑혔는지 여부를 가져오는 메소드
+	public ArrayList<MatchApplyDTO> moimApplyIdx(int match_ix){
 		try {
 			conn=db.DB.getConn();
 			
-			String sql="SELECT MATCH_APPLY_IX FROM MATCH_APPLY_TB WHERE MATCH_IX=? ORDER BY MATCH_APPLY_IX DESC";
+			String sql="SELECT * FROM MATCH_APPLY_TB WHERE MATCH_IX=? ORDER BY MATCH_APPLY_IX DESC";
 			ps=conn.prepareStatement(sql);
 			ps.setInt(1, match_ix);
 			
 			rs=ps.executeQuery();
 			
-			Vector<Integer> v = new Vector<Integer>();
+			 ArrayList<MatchApplyDTO> arr = new  ArrayList<MatchApplyDTO>();
 			while(rs.next()) {
-				int temp = rs.getInt("MATCH_APPLY_IX");
-				v.add(temp);
-			}
-
-			int arr[]=new int[v.size()];
-	
-			for(int i=0;i<arr.length;i++) {
-				arr[i]=v.get(i);
+				int matchApplyIx  = rs.getInt("MATCH_APPLY_IX");
+				int memberIx = rs.getInt("MEMBER_IX");
+				int matchIx = rs.getInt("MATCH_IX");
+				int matchWantedIx = rs.getInt("MATCH_WANTED_IX");
+				String aboutApplicant = rs.getString("ABOUT_APPLICANT");
+				String otherExC = rs.getString("OTHER_EX_C");
+				String hold = rs.getString("HOLD");
+				
+				MatchApplyDTO dto = new MatchApplyDTO(matchApplyIx, memberIx, matchIx, matchWantedIx, aboutApplicant, otherExC, hold);
+				arr.add(dto);
 			}
 			
 			return arr;
@@ -287,6 +289,33 @@ public class MyMakeMoimDAO {
 		}
 		
 		return arr;
+	}
+	
+	
+	//모임 지원 더이상 받지 않기 위해 COMPLETED_STATE 변경하는 메소드
+	public int applyHoldChange(int match_ix) {
+		try {
+			conn=db.DB.getConn();
+			
+			String sql="UPDATE MATCH_TB SET COMPLETED_STATE='true' WHERE MATCH_IX=?";
+			ps=conn.prepareStatement(sql);
+			ps.setInt(1, match_ix);
+			
+			int cnt = ps.executeUpdate();
+			
+			return cnt;
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+			return -1;
+		}finally {
+			try {
+				if (ps != null)
+					ps.close();
+				if (conn != null)
+					conn.close();
+			}catch(Exception e2) {}
+		}
 	}
 	
 }

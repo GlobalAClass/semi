@@ -54,6 +54,13 @@ public class MatchApplyDTO {
 		this.hold = hold;
 	}
 	
+	//matchApplyIx와 hold 여부 가지는 생성자
+	public MatchApplyDTO(Integer matchApplyIx, String hold) {
+		super();
+		this.matchApplyIx = matchApplyIx;
+		this.hold = hold;
+	}
+	
 	public Integer getMatchApplyIx() {
 		return matchApplyIx;
 	}

@@ -41,16 +41,15 @@ article{
 	
 	int length = matchlist.size();
 	if(length==0){
-		%><div>내가 만든모임이 존재하지 않습니다.</div><%
+		%><div align="center" style="margin-top:40px;font-size:20px;font-weight:bold;margin:20px;">내가 만든모임이 존재하지 않습니다.</div><%
 	}else{
 		for(int i=0;i<length;i++){
 			int match_ix = matchlist.get(i).getMatchIx();
 			int comp_ix = complist.get(i).getCompetitionInfoIx();
 			String matchName = matchlist.get(i).getMatchName();//모임명
 			String compName = complist.get(i).getCName();//공모전명
-			
-			String myMainRole = matchlist.get(i).getMainRole();
-			String myDetailRole = matchlist.get(i).getDetailRole();
+			String myMainRole = matchlist.get(i).getMainRole(); //나의 메인 역할
+			String myDetailRole = matchlist.get(i).getDetailRole(); //나의 보조 역할
 			
 	%>
 		<%@include file="/mypage/makeMoimCard.jsp" %>

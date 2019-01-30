@@ -82,6 +82,10 @@
 	//지원글의 자기소개, 현재 공모전 진행 여부 받아오기
 	MatchApplyDTO adto = adao.getMyApply(match_apply_ix);
 	
+	//해당 지원자에 대한 인덱스 모두 받아오기
+	int match_ix=adto.getMatchIx();
+	int wanted_ix=adto.getMatchWantedIx();
+	
 	//지원서글 자기소개
 	String introduce = adto.getAboutApplicant();
 	String other_ex_c = adto.getOtherExC();
@@ -135,7 +139,7 @@ input{
 </style>
 </head>
 <script>
-//폼체크하는 함수. 1. 각 글의 index null인지 판단. 2. 사용자가 누른 버튼이 '승인'인지 '거절'인지 판단.
+//폼체크하는 함수. 1. 각 글의 index null인지 판단.
 function formcheck(str){
 	if(makeMoimDetail.matchIx.value == ""){
 		alert('모임글ix null');
@@ -143,14 +147,6 @@ function formcheck(str){
 	}else if(makeMoimDetail.matchApplyIx.value == ""){
 		alert('신청글ix null');
 		return false;
-	}
-	
-	if(str=='accept'){
-		alert('승인!');
-		makeMoimDetail.checkselect.value = 'true';
-	}else if(str=='deny'){
-		alert('거절!');
-		makeMoimDetail.checkselect.value = 'false';
 	}else{
 		return false;
 	}
@@ -224,13 +220,15 @@ function formcheck(str){
 				<h3 class="fontsize_35">현재 또 다른 공모전 / 프로젝트 참여 여부</h3>
 				<p align="center" style="font-size:20px;"><%=other_ex_c %></p>
 			</div>
-			<form name="makeMoimDetail" action="" method="post">
-				<input type="text" hidden="" value="" name="matchIx"><!-- 공모정 모임 인덱스 -->
-				<input type="text" hidden="" value="" name="matchApplyIx"><!-- 신청 글 인덱스 -->
-				<input type="text" hidden="" value="" name="checkselect">
-				<input type="submit" value="승인" onsubmit="return formcheck('accept')" style="margin-top:50px; margin-left: 380px; margin-bottom: 50px;">
-				<input type="submit" value="삭제" onsubmit="return formcheck('deny')" style="margin-left: 20px;">
+			<form name="makeMoimDetail" action="makeMoimCardPick.jsp" method="post">
+				<input type="text" hidden="" value="<%=match_ix%>" name="mix">
+				<input type="text" hidden="" value="<%=wanted_ix%>" name="wix">
+				<input type="text" hidden="" value="<%=match_apply_ix%>" name="aix">
+				<input type="text" hidden="" value="<%=member_ix%>" name="ix">
+				<input type="submit" value="모임에 추가하기" style="width:200px;margin-top:50px; margin-left: 300px; margin-bottom: 50px;">
+				<input type="button" value="뒤로가기" onclick="javascript:location.href='/sp/mypage/makeMoim.jsp'" style="width:200px;margin-left:20px;">
 			</form>
+				
 			</article>
 	</section>
 	<%@include file="/footer.jsp"%>
