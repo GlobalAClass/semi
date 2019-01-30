@@ -197,7 +197,7 @@ tbody a:hover{
 				</table>
 			</div>
 			<div style="float:left;margin-left:163px;">
-				<table style="width:270px;height:auto;text-align:center;" border="1" cellspacing="0">
+				<table style="width:270px;height:auto;text-align:center;margin-bottom: 50px;" border="1" cellspacing="0">
 					<thead>
 						<tr>
 							<th>이름</th>

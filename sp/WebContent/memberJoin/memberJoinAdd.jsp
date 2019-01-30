@@ -68,6 +68,17 @@ input[type="radio"] + label span {
 input[type="radio"]:checked + label span {
     background:url(/sp/img/check_radio_sheet.png) -58px top no-repeat;
 }
+#btn{
+	width:150px;
+	height:50px;
+	font-size:20px;
+	font-weight: bold;
+	background: lightgray;
+}
+#btn:hover, .hvr:active{
+	background: gray;
+	cursor: pointer;
+}
 </style>
 </head>
 <script type="text/javascript">
@@ -128,15 +139,14 @@ function pageAdd(){
 	var cell1 = row.insertCell(0);
 	var cell2 = row.insertCell(1);
 	cell1.innerHTML='공모전 이력 '+(addCount+1);
-	cell2.innerHTML = '<fieldset><legend>공모전이력</legend>'
-						+'<table id="table_design">'
+	cell2.innerHTML = '<table style="width:800px;">'
 							+'<tr><th id="design">공모전 이름</th>'
 								+'<td id="design"><input type="text" style="width:170px; height:20px;" name="cName'+addCount+'" required="required"></td>'
 							+'</tr>'
 							+'<tr><th id="design">공모전 기간</th>'
-								+'<td id="design"><input style="width:170px;height:20px;" type="text" id="period'+addCount+'_1" name="period'+addCount+'_1" onchange="checkPeriod(this);" required="required">&nbsp;~&nbsp;'
-												+'<input style="width:170px;height:20px;" type="text" id="period'+addCount+'_2" name="period'+addCount+'_2" onchange="checkPeriod(this);" required="required">'
-												+'<input type="text" hidden="" id="period'+addCount+'" name="period'+addCount+'" value="">'+'<span style="margin-left:8px; font-size:5px; color:#A9D0F5;">기간은 년,월,일 순서로 0000-00-00으로 입력해주세요</span></td>'
+								+'<td id="design"><input style="width:170px;height:20px;" type="text" id="period'+addCount+'_1" name="period'+addCount+'_1" onchange="checkPeriod(this);" required="required" placeholder=" ex) 2018-01-01">&nbsp;~&nbsp;'
+												+'<input style="width:170px;height:20px;" type="text" id="period'+addCount+'_2" name="period'+addCount+'_2" onchange="checkPeriod(this);" required="required" placeholder=" ex) 2018-06-30">'
+												+'<input type="text" hidden="" id="period'+addCount+'" name="period'+addCount+'" value="">'+'<span style="margin-left:8px; font-size:10px; color:#2E2E2E;">기간은 년,월,일 순서로 0000-00-00으로 입력해주세요</span></td>'
 							+'</tr>'
 							+'<tr><th id="design">담당역할</th>'
 								+'<td id="design"><select id="part" onchange="select(this)" name=mainRole'+addCount+'>'
@@ -152,11 +162,10 @@ function pageAdd(){
 							+'<tr><th id="design">수상내역</th>'
 								+'<td id="design"><input style="width:170px;height:20px;" type="text" placeholder="ex)입선" name="award'+addCount+'"></td>'
 							+'</tr>'
-							+'<tr><th id="design">상세내용</th>'
-								+'<td id="design"><textarea rows="12" cols="40" placeholder="필요에 따라 입력해주세요.\n어떤 활약을 펼쳤는지 간단하게 작성해주시면 도움이 됩니다." name=detail'+addCount+'></textarea></td>'
+							+'<tr><th style="width:100px">상세내용</th>'
+								+'<td style="width:500px;height:100px;"><textarea style="width:500px;height:100px;" placeholder="필요에 따라 입력해주세요.\n어떤 활약을 펼쳤는지 간단하게 작성해주시면 도움이 됩니다." name=detail'+addCount+'></textarea></td>'
 							+'</tr>'
-						+'</table>'
-					+'</fieldset>';
+						+'</table>';
 	cell1.style.borderBottom="1px dotted black";
 	cell1.style.textAlign="center";
 	cell1.style.fontWeight="bold";
@@ -305,6 +314,9 @@ function formCheck(){
 		<div align="center">	
 			<table style="width:100%;">
 				<tr>
+				<td colspan="2"><div align="center" style="color:gray;font-weight: bold;font-size:30px;margin:10px;">추가정보를 입력하지 않아도 회원 가입이 가능합니다.</div></td>
+				</tr>
+				<tr>
 					<td align="center" class="height_170px" colspan="3">
 						<img width="150" height="150" name="proimg" src="/sp/img/profile_default.jpg">
 					</td>
@@ -414,11 +426,8 @@ function formCheck(){
 					</td>
 				</tr>
 				<tr>
-				<td colspan="2"><div align="center" style="color:gray;font-weight: bold;font-size:30px;margin:10px;">추가정보를 입력하지 않아도 회원 가입이 가능합니다.</div></td>
-				</tr>
-				<tr>
 					<td colspan="2" align="center">
-						<input style="width:100px;height:35px;" type="submit" value="가입하기">
+						<input id="btn" type="submit" value="가입하기">
 					</td>
 				</tr>
 			</table>

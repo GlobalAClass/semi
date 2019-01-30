@@ -36,7 +36,10 @@ ArrayList<Pair<MemberDTO, MemberDetailDTO>> myScrapHumans = hdao.myScrapHumanCar
 
 int cards = myScrapHumans.size();
 
-if(cards>0){
+if(cards==0){
+	%><div align="center" style="margin-top:40px;font-size:20px;font-weight:bold;margin:20px;">스크랩한 사람이 없습니다.</div><%
+}else{
+
 	for(int i=0;i<cards;i++){
 %>
 <%@include file="/mypage/myScrapHumanCard.jsp" %>

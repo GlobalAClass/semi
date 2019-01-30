@@ -109,7 +109,7 @@ tfoot a{
 				%>
 				<tr>
 					<td><%=arr.get(i).getField()%></td>
-					<td style="width:300px;"><a href="CompetitionDetail.jsp?ix=<%=arr.get(i).getCompetitionInfoIx()%>"><%=arr.get(i).getCName()%></a></td>
+					<td style="width:300px;"><a href="/sp/Competition/CompetitionDetail.jsp?ix=<%=arr.get(i).getCompetitionInfoIx()%>"><%=arr.get(i).getCName()%></a></td>
 					<td style="width:200px;"><%=arr.get(i).getPeriod()%></td>
 					<td><%=arr.get(i).getTeamSolo()%></td>
 					<td><%=arr.get(i).getReadnum()%></td>

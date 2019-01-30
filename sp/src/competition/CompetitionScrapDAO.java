@@ -134,8 +134,10 @@ public class CompetitionScrapDAO {
 			
 			while(rs.next()) {;
 				
-					//공모전 정보 인덱스
-					Integer competitionScrapIx=rs.getInt("COMPETITION_SCRAP_IX");
+					//스크랩한 인덱스
+					
+					//공모전 인덱스
+					Integer competitionInfoIx = rs.getInt("COMPETITION_INFO_IX");
 					//공모전 제목
 					String CName=rs.getString("C_NAME");
 					//분야
@@ -149,7 +151,7 @@ public class CompetitionScrapDAO {
 					//공모전 이미지 파일명
 					String CImage=rs.getString("C_IMAGE");
 					
-					CompetitionInfoDTO dto = new CompetitionInfoDTO(competitionScrapIx, CName, field, teamSolo, period, readnum, CImage);
+					CompetitionInfoDTO dto = new CompetitionInfoDTO(competitionInfoIx, CName, field, teamSolo, period, readnum, CImage);
 				
 					myScrapComps.add(dto);
 					

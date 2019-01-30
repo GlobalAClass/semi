@@ -47,8 +47,8 @@ function scrapDelete(){
 		scrapHuman.action = "myScrapHumanCard_ok.jsp";
 	}
 }
-function goDetail(){
-	location.href='/sp';
+function goDetail(mix){
+	location.href='/sp/humansearch/humanSelect.jsp?member_ix='+mix;
 }
 </script>
 <style>
@@ -67,7 +67,7 @@ table :hover{
 	cursor:pointer;
 }
 </style>
-<div onclick="goDetail()">
+<div onclick="goDetail(<%=scrapMemberIdx%>)">
 <span style="<% if(i%2==0){out.print("float: left;");} else{out.print("float: right;");}%>">
 <table>
 	<tr>

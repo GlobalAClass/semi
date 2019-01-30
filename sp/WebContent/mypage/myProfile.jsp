@@ -391,7 +391,7 @@ function formCheck(){
 	<!-- 최종 추가된 addCount 수 와 맨 처음 comp 갯수를 전송하여 공모전 상세이력 추가 , 삭제 및 수정 -->
 	<input type="hidden" name="addCount" value="q">
 	<input type="hidden" name="crtCompSize" value="<%=cnt%>">
-	<div align="center" style="font-size:40px;font-weight:bold;">프로필 수정하기</div>
+	<div align="center" style="font-size:40px;font-weight:bold;margin:20px;">프로필 수정하기</div>
 	<div class="p_div" align="center">
 	<div align="left" style="margin-botton:15px;font-size:30px;font-weight:bold;">기본 인적사항</div>
 		<table style="width: 800px;">
