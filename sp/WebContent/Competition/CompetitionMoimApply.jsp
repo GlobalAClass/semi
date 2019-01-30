@@ -1,4 +1,5 @@
 
+<%@page import="java.io.File"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@page import="java.util.*" %>
@@ -122,6 +123,7 @@ MatchDTO matchdto = madao.matchInfo(match_ix);
 ArrayList<MatchOriginalDTO> matchoglist = madao.matchOriginalInfo(match_ix);
 
 //현재 글쓴 모임장의 정보들
+int m_idx = moimdto.getMemberIx();
 String m_name = moimdto.getMName();
 String m_year = manageNull(moimdetaildto.getBirthYear());
 String m_fieldmajor = moimdto.getFieldMajor();
@@ -130,13 +132,16 @@ String m_email = moimdto.getidEmail();
 String m_kakaoid = manageNull(moimdetaildto.getKakaoId());
 String m_tell = manageNull(moimdetaildto.getContact());
 
+//각자 프로필 경로가 필요한 메소드에서 사용하기 위해 루트 경로 먼저 가져옴.
+String path = request.getServletContext().getRealPath("\\")+"\\img\\profile\\";
+
 %>
 	<div style="font-size:40px;font-weight: bold;margin-bottom:10px;">신청하려는 모임의 정보</div>
 	<div id="header"align="center">
 		<h2 style="font-size:20px;margin:10px;">모임장 소개</h2>
 			<table style="width: 750px;padding-bottom:20px;">
 				<tr>
-					<td rowspan="4"><img style="width:100px;height:100px;" src="/sp/img/profile_default.jpg"></td>
+					<td rowspan="4"><img style="width:100px;height:100px;" src="<%=madao.setProfile(m_idx,path) %>"></td>
 					<td style="font-size:25px;font-weight: bold;"><%=m_name %></td>
 					<td style="font-size:12px;color:gray;"><%=m_year %>년생</td>
 					<td colspan="2" style="font-size:16px;"><%=m_fieldmajor %></td>
@@ -242,10 +247,10 @@ if(r_ability==null || r_ability.equals("")){
 			</table>
 			</div>
 			<div class="bodytype2" align="center">
-			<div align="center" style="margin:20px;font-size:35px; font-weight: bold;">자기소개서 작성</div>
+			<div align="center" style="margin:20px;font-size:35px; font-weight: bold;">나의 프로필</div>
 			<table style="width:600px;height:200px;text-align:left;">
 				<tr>
-					<td rowspan="3" style="width:120px;padding-left:20px;"><img src="/sp/img/profile_default.jpg" id="pfimg">
+					<td rowspan="3" style="width:120px;"><img style="padding-left:10px;" src="<%=madao.setProfile(member_ix,path) %>" id="pfimg">
 					<input style="width:100px; height:20px; font-size:12px;" type="button" value="프로필 수정하기" onclick="javascript:location.href='/sp/mypage/myProfile.jsp'">
 					</td>
 					<th>분야/전공</th>

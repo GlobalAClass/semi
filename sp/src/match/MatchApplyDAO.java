@@ -1,5 +1,6 @@
 package match;
 
+import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -30,13 +31,12 @@ public class MatchApplyDAO {
 			
 			MemberDTO dto = new MemberDTO();
 			if(rs.next()) {
+				int memberIx = rs.getInt("MEMBER_IX");
 				String idEmail = rs.getString("ID_EMAIL");
-				String pwd = rs.getString("PWD");
 				String mName = rs.getString("M_NAME");
-				String emailAgreement = rs.getString("EMAIL_AGREEMENT");
 				String fieldMajor = rs.getString("FIELD_MAJOR");
 				
-				dto = new MemberDTO(idEmail, pwd, mName, emailAgreement, fieldMajor);
+				dto = new MemberDTO(memberIx, idEmail, mName, fieldMajor);
 			}
 			return dto;
 			
@@ -230,14 +230,15 @@ public class MatchApplyDAO {
 		try {
 			conn=db.DB.getConn();
 			
-			String sql="INSERT INTO MATCH_APPLY_TB VALUES(Match_Apply_TB_SEQ.NEXTVAL,?,?,?,?,?)";
+			String sql="INSERT INTO MATCH_APPLY_TB VALUES(Match_Apply_TB_SEQ.NEXTVAL,?,?,?,?,?,?)";
 			ps=conn.prepareStatement(sql);
 			ps.setInt(1, applydto.getMemberIx());
 			ps.setInt(2, applydto.getMatchIx());
 			ps.setInt(3, applydto.getMatchWantedIx());
 			ps.setString(4, applydto.getAboutApplicant());
 			ps.setString(5, applydto.getOtherExC());
-			
+			ps.setString(6, "false");
+	
 			int count = ps.executeUpdate();
 			return count;
 			
@@ -281,5 +282,54 @@ public class MatchApplyDAO {
 			} catch (Exception e2) {
 			}
 		}
+	}
+	
+	//인덱스에 따라 자신이 작성한 글 가져오는 메소드
+	public MatchApplyDTO getMyApply(int match_apply_ix) {
+		try {
+			conn=db.DB.getConn();
+			
+			String sql="SELECT * FROM MATCH_APPLY_TB WHERE MATCH_APPLY_IX=?";
+			ps=conn.prepareStatement(sql);
+			
+			ps.setInt(1, match_apply_ix);
+			rs = ps.executeQuery();
+			
+			MatchApplyDTO dto = new MatchApplyDTO();
+			if(rs.next()) {
+				int memberIx = rs.getInt("MEMBER_IX");
+				int matchIx = rs.getInt("MATCH_IX");
+				int matchWantedIx = rs.getInt("MATCH_WANTED_IX");
+				String aboutApplicant = rs.getString("ABOUT_APPLICANT");
+				String otherExC = rs.getString("OTHER_EX_C");
+				String hold = rs.getString("HOLD");
+				
+				dto = new MatchApplyDTO(memberIx, matchIx, matchWantedIx, aboutApplicant, otherExC, hold);
+			}
+			return dto;
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			return null;
+		}finally {
+			try {
+				if (rs != null)rs.close();
+				if (ps != null)ps.close();
+				if (conn != null)conn.close();	
+			}catch(Exception e2) {}
+		}
+	}
+	
+	//프로필 설정하는 메소드
+	public String setProfile(int member_ix, String path) {
+		File userdir = new File(path+member_ix);
+		File[] files = userdir.listFiles();
+		String imagpath;
+		if(files.length>0){
+			imagpath = "/sp/img/profile/"+member_ix+"/"+files[0].getName();
+		}else{
+			imagpath = "/sp/img/profile_default.jpg";
+		}
+		return imagpath;
 	}
 }

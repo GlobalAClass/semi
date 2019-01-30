@@ -20,6 +20,9 @@ public class MatchApplyDTO {
 
 	// 다른 공모전or플젝 참여여부
 	private String otherExC;
+	
+	//모집 여부
+	private String hold;
 
 	// 기본 생성자
 	public MatchApplyDTO() {
@@ -28,7 +31,7 @@ public class MatchApplyDTO {
 	
 	// 모든 필드 생성자
 	public MatchApplyDTO(Integer matchApplyIx, Integer memberIx, Integer matchIx, Integer matchWantedIx,
-			String aboutApplicant, String otherExC) {
+			String aboutApplicant, String otherExC, String hold) {
 		super();
 		this.matchApplyIx = matchApplyIx;
 		this.memberIx = memberIx;
@@ -36,17 +39,19 @@ public class MatchApplyDTO {
 		this.matchWantedIx = matchWantedIx;
 		this.aboutApplicant = aboutApplicant;
 		this.otherExC = otherExC;
+		this.hold = hold;
 	}
 	
 	//MatciApplyIx를 제외한 생성자
 	public MatchApplyDTO(Integer memberIx, Integer matchIx, Integer matchWantedIx, String aboutApplicant,
-			String otherExC) {
+			String otherExC, String hold) {
 		super();
 		this.memberIx = memberIx;
 		this.matchIx = matchIx;
 		this.matchWantedIx = matchWantedIx;
 		this.aboutApplicant = aboutApplicant;
 		this.otherExC = otherExC;
+		this.hold = hold;
 	}
 	
 	public Integer getMatchApplyIx() {
@@ -97,4 +102,11 @@ public class MatchApplyDTO {
 		this.otherExC = otherExC;
 	}
 
+	public String getHold() {
+		return hold;
+	}
+
+	public void setHold(String hold) {
+		this.hold = hold;
+	}
 }
