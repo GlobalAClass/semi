@@ -96,7 +96,7 @@
 		String ra[] = request.getParameterValues("requiredAbility");
 		String wn[] = request.getParameterValues("wantedNumber");
 		String rcn[] = request.getParameterValues("recruitedNumber");
-		for(int i =0; i<cnt; i++){
+		for(int i =0; i<wcnt; i++){
 			wdto = new MatchWantedDTO(matchIx, wMainRoles[i], wDetialRole[i], ra[i], wn[i], rcn[i]);
 			checkw[i] = wdao.insertWantedM(wdto);
 		}
