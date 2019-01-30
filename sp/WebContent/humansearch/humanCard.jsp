@@ -76,7 +76,7 @@ table :hover{
 	cursor:pointer;
 }
 </style>
-<span style="<% if(i%2==0){out.print("float: left;");} else{out.print("float: right;");}%>">
+<span style="<% if(i%2!=0){out.print("float: left;");} else{out.print("float: right;");}%>">
 <input type="text" hidden="" id="mix" value="<%=member_ix %>">
 <table onclick="goDetail(this)">
 	<tr>
