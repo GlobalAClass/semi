@@ -234,12 +234,11 @@ public class MemberDAO {
 	
 	public String getMemberName(int member_ix) {
 		try {
-			conn = db.DB.getConn();
 			String sql = "select m_name from Member_TB where MEMBER_IX=?";
 			ps = conn.prepareStatement(sql);
 			ps.setInt(1, member_ix);
 			rs = ps.executeQuery();
-
+			
 			if (rs.next()) {
 				return rs.getString("M_NAME");
 			} else {
@@ -250,12 +249,7 @@ public class MemberDAO {
 			return null;
 		} finally {
 			try {
-				if (rs != null)
-					rs.close();
-				if (ps != null)
-					ps.close();
-				if (conn != null)
-					conn.close();
+				//다른 함수(=getRecruitedMemberName())에서 불린 함수라서 close하지 않음
 			} catch (Exception e2) {
 
 			}

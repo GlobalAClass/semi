@@ -380,15 +380,12 @@ function expand(obj){
 							<p>모집인원 없음</p>	
 						<%
 						}else{
-							for(int j=0; j<names.size();j++){
+							for(int n=0; n<names.size();n++){
 							%>
-								<p><%=names.get(j) %></p>
+								<%=names.get(n) %><br>
 							<%
 							}
 						}
-					%>
-						<p>&nbsp;&nbsp;&nbsp;</p></td>
-					<%
 					}else if(i==rememberNumber){ 
 					%>
 						<p style="color : red;">축하드립니다.<br>지원서 통과!</p></td>
