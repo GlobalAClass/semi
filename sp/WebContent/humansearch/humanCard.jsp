@@ -8,6 +8,16 @@
 <%@page import="java.io.File"%>
 
 <jsp:useBean id="mddao" class="member.MemberDetailDAO"/>
+<%!
+	//
+	public String manageNull(String str) {
+		if (str == null || str.equals("") || str.equals("null")) {
+			return "";
+		} else {
+			return str;
+		}
+	}
+%>
 
 <%
 	Calendar c = Calendar.getInstance(); //나이 계산을 위해 년도 받기.
@@ -86,7 +96,7 @@ table :hover{
 		<td style="margin-right: 10px;"><%=fieldMajor %></td>
 	</tr>
 	<tr>
-		<td colspan="2"><img src="/sp/img/location.png" style="width:20px;height:20px;padding-right:5px;"><%=sido %> <%=sigungu %></td>
+		<td colspan="2"><img src="/sp/img/location.png" style="width:20px;height:20px;padding-right:5px;"><%=sido %> <%=manageNull(sigungu) %></td>
 		<td align="right" rowspan="2">
 			<form name="humanCard" action="humanCard_ok.jsp" method="post">
 				<input type="image" src="<%if(scrapcheck){out.print("/sp/img/heart.jpg");}else{out.print("/sp/img/unheart.jpg");} %>" 
