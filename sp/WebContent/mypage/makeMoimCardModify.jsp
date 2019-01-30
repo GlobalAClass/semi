@@ -229,7 +229,7 @@ function nowTeam(res){
 		break;
 	}
 }
-function addTeam(){
+function addTeam(num){
 
 	var tb = document.getElementById('tb');
 	var row = tb.insertRow(cnt);
@@ -264,12 +264,13 @@ function addTeam(){
 							+'</td>'
 							+'<td style="border-bottom:0.5px gray dotted;">'
 							+'<input type="button" value="-" onclick="delTeam(this);" style="margin-left:20px"> 팀원 삭제하기'									
-							+'</td>'										
+							+'</td>'
+							+'<input type="text" hidden="" name="matchOriginalIX">'
 						+'</td>'
 						+'</tr>'
 					+'</table>'
 				+'</div>'
-	people.push(0); //테이블 생성하면 인원수 계산하는 배열에 인원수 1 넣어주기
+	people.push(num); //테이블 생성하면 인원수 계산하는 배열에 인원수 1 넣어주기
 	cnt++;
 }
 
@@ -304,7 +305,7 @@ function cntTeam(count){ //셀렉트 박스 변경될 때 마다 인원수 측�
 }
 var wcnt=0;
 var wpeople = new Array(); //각 담당 역할의 인원수가 선택될 때 저장할 배열
-function addwTeam(){
+function addwTeam(num){
 
 	var wtb = document.getElementById('wtb');
 	var row = wtb.insertRow(wcnt);
@@ -343,12 +344,13 @@ function addwTeam(){
 								+'<input style="text" hidden="" name="recruitedNumber" value="0">'
 							+'</td>'
 							+'<td style="border-bottom:0.5px gray dotted;">'
-								+'<input type="button" value="-" onclick="delwTeam(this);" style="margin-left:20px"> 삭제'									
+								+'<input type="button" value="-" onclick="delwTeam(this);" style="margin-left:20px"> 삭제'
+								+'<input type="text" hidden="" name="matchWantedIX">'
 							+'</td>'
 						+'</tr>'	
 					+'</table>'
 				+'</div>'
-	wpeople.push(0); //테이블 생성하면 인원수 계산하는 배열에 인원수 1 넣어주기
+	wpeople.push(num); //테이블 생성하면 인원수 계산하는 배열에 인원수 1 넣어주기
 	wcnt++;
 }
 
@@ -456,9 +458,9 @@ function formcheck(){
 		return false;
 	}
 	
-	
 	CompetitionMoimMake.memberIx.value = <%=member_ix%>;
-	CompetitionMoimMake.competitionInfoIx.value = <%=com_ix%>;
+	CompetitionMoimMake.competitionInfoIx.value = <%=com_ix%>;	
+	CompetitionMoimMake.matchIx.value = <%=match_ix%>;
 	CompetitionMoimMake.cnt.value = cnt;
 	CompetitionMoimMake.wcnt.value = wcnt;
 
@@ -470,9 +472,10 @@ function formcheck(){
 <%@include file="/header.jsp"%>
 <section>
 	<article>
-		<form name="CompetitionMoimMake" action="CompetitionMoimMake_ok.jsp" onsubmit="return formcheck();" method="post">
+		<form name="CompetitionMoimMake" action="makeMoimCardModify_ok.jsp" onsubmit="return formcheck();" method="post">
 		<input type="text" hidden="" name="memberIx">
 		<input type="text" hidden="" name="competitionInfoIx">
+		<input type="text" hidden="" name="matchIx">
 		<input type="text" hidden="" name="cnt">
 		<input type="text" hidden="" name="wcnt">
 		<p style="font-size: 30px; font-weight: bold;" align="center">모임 글의 공모전 정보</p>
@@ -604,19 +607,13 @@ function formcheck(){
 				<input type="radio" name="team" value="yes" onchange="nowTeam(this.value);">예
 				<input type="radio" name="team" value="no" onchange="nowTeam(this.value)">아니오
 			</div>
-			<%
-			boolean teamvalue = false;
-			if(!matdto.getOriginalMemberNumber().equals("0")){
-				teamvalue = true;
-			}	
-			%>
 			<div id="nowTeamMember" style="display: none;">
 				<h5 style="color:gray;">현재 팀원의 역할을 간단하게 소개해주세요</h5>
 				<table style="width:800px;border:1px gray dotted;">
 					<tbody id="tb">
 					</tbody>
 					<tr>
-					<td colspan="5" style="font-size:15px;"><input type="button" value="+" onclick="addTeam();"> 팀원 추가하기</td>
+					<td colspan="5" style="font-size:15px;"><input type="button" value="+" onclick="addTeam(0);"> 팀원 추가하기</td>
 					</tr>
 				</table>
 				<h3>현재 구성된 총 팀원 수 : <input type="text" id="sumTeam" name="originalMemberNumber" value="0" style="font-size:20px;width:30px;border:0px;" readonly="readonly">명</h3>
@@ -626,14 +623,15 @@ function formcheck(){
 		//구성되어있던 팀원 정보 불러오기.
 		//팀원 있는지 없는지 체크
 		var curteam = document.CompetitionMoimMake.team;
-		if(<%=teamvalue%>){
+		if(0 != Number(<%=matdto.getOriginalMemberNumber()%>)){
 			curteam[0].checked = true;
 		}
 		if(curteam[0].checked == true){
 			nowTeam(curteam[0].value);
 		}
 		//팀원 수만큼 팀원 추가
-		var i =0;
+		var c =0;
+		var ix = new Array();//matchOriginalIx
 		var marr = new Array();//mainRole
 		var darr = new Array();//detaileRole 
 		var mnarr = new Array();//memberNumber
@@ -643,19 +641,25 @@ function formcheck(){
 		int l = ormem.size();
 		for(int i =0; i<l;i++){
 		%>
-		addTeam();
+		addTeam(Number(<%=ormem.get(i).getmemberNumber()%>));
+		ix.push('<%=ormem.get(i).getMatchOriginalIx()%>');
 		marr.push('<%=ormem.get(i).getogMainRole()%>');
 		darr.push('<%=ormem.get(i).getogDetailRole()%>');
 		mnarr.push('<%=ormem.get(i).getmemberNumber()%>');
 		sum+=<%=ormem.get(i).getmemberNumber()%>;
-		i++;
 		<%
 		}
 		%>
+		c=Number(<%=l%>);
 		//현재 구성된 총 팀원 수
 		document.all.sumTeam.value=sum;
 		
 		function curTeamSet1(){
+			
+			//ix
+			var ogriginalix = document.all.matchOriginalIX;
+			var ogix = ogriginalix;
+			ogix.value = ix[0];
 			
 			//mainRole
 			var mainrole = document.CompetitionMoimMake.ogMainRole;
@@ -677,6 +681,7 @@ function formcheck(){
 			for(var j=0;j<mn.length;j++){
 				if(mn[j].value==mnarr[0]){
 					mn[j].selected = true;
+					
 				}
 			}
 			
@@ -684,7 +689,12 @@ function formcheck(){
 		
 		function curTeamSet2(){
 			//현재 팀원의 Role setting.
-			for(var k=0;k<i;k++){
+			for(var k=0;k<c;k++){
+				//ix
+				var ogriginalix = document.all.matchOriginalIX;
+				var ogix = ogriginalix[k];
+				ogix.value = ix[k];
+				
 				//mainRole
 				var mainrole = document.CompetitionMoimMake.ogMainRole;
 				var mr = mainrole[k];
@@ -697,7 +707,7 @@ function formcheck(){
 				
 				//detaileRole 
 				var detailrole = document.CompetitionMoimMake.ogDetailRole;
-				var dr = detaole[k];
+				var dr = detailrole[k];
 				dr.value = darr[k];
 				//memberNumber
 				var memberNumber = document.CompetitionMoimMake.memberNumber;
@@ -785,7 +795,7 @@ function formcheck(){
 					<tbody id="wtb">
 					</tbody>
 					<tr>
-					<td colspan="5" style="font-size:15px;"><input type="button" value="+" onclick="addwTeam();"> 팀원 추가하기</td>
+					<td colspan="5" style="font-size:15px;"><input type="button" value="+" onclick="addwTeam(0);"> 팀원 추가하기</td>
 					</tr>
 				</table>
 				<h3>현재 원하는 총 팀원 수 : <input type="text" id="sumwTeam" name="totalWantedNumber" value="0" style="font-size:20px;width:30px;border:0px;" readonly="readonly">명</h3>
@@ -808,6 +818,7 @@ function formcheck(){
 			age.value = <%=matdto.getAgeRestriction()%>;
 		}
 		var w =0;
+		var wix = new Array();//matchWantedIx
 		var wmarr = new Array();//mainRole
 		var wdarr = new Array();//detaileRole 
 		var wmnarr = new Array();//wantedNumber
@@ -822,22 +833,26 @@ function formcheck(){
 				ra = "";
 			}
 		%>
-		addwTeam();
+		addwTeam(Number(<%=wmem.get(i).getWantedNumber()%>));
+		wix.push('<%=wmem.get(i).getmatchWantedIx()%>');
 		wmarr.push('<%=wmem.get(i).getwMainRole()%>');
 		wdarr.push('<%=wmem.get(i).getwDetailRole()%>');
 		wmnarr.push('<%=wmem.get(i).getWantedNumber()%>');
 		raarr.push('<%=ra%>');
 		wsum+=<%=wmem.get(i).getWantedNumber()%>;
-		w++;
 		<%
 		}
-		%>
+		%>		
+		w = Number(<%=length%>);
 		//원하는 총 팀원 수
 		document.all.sumwTeam.value=wsum;
 
 		function wantedTeamSet1(){
 			//구하는 팀원의 Role setting.
-			
+				//ix
+				var wantedix = document.all.matchWantedIX;
+				var waix = wantedix;
+				waix.value = wix[0];
 				
 				//mainRole
 				var wmainrole = document.CompetitionMoimMake.wMainRole;
@@ -868,17 +883,13 @@ function formcheck(){
 			
 		}
 		
-		var addFunctionOnWindowLoad = function(callback){
-		      if(window.addEventListener){
-		          window.addEventListener('load',callback,false);
-		      }else{
-		          window.attachEvent('onload',callback);
-		      }
-		}
-		
 		function wantedTeamSet2(){
 			//구하는 팀원의 Role setting.
 			for(var k=0;k<w;k++){
+				//ix
+				var wantedix = document.all.matchWantedIX;
+				var waix = wantedix[k];
+				waix.value = wix[k];
 				
 				//mainRole
 				var wmainrole = document.CompetitionMoimMake.wMainRole;
@@ -902,6 +913,7 @@ function formcheck(){
 						wmn[j].selected = true;
 					}
 				}
+				
 				//requiredAbility
 				var requiredAbility = document.CompetitionMoimMake.requiredAbility;
 				var ra = requiredAbility[k];
@@ -931,7 +943,7 @@ function formcheck(){
 			<input style="background: none; border: none;" type="text">
 		</div>
 		<div style="text-align:center;">
-				<input class="btn" type="submit" value="모임 만들기">
+				<input class="btn" type="submit" value="모임 수정하기">
 				<input class="btn" type="button" value="취소">
 		</div>
 		</form>
@@ -942,7 +954,8 @@ function formcheck(){
 		}
 		
 		addFunctionOnWindowLoad(ms);
-		if(w==1){
+		
+		if(c==1){
 			addFunctionOnWindowLoad(curTeamSet1);
 		}else{
 			addFunctionOnWindowLoad(curTeamSet2);

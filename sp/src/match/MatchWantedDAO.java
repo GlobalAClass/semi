@@ -48,7 +48,7 @@ public class MatchWantedDAO {
 	public ArrayList<MatchWantedDTO> MatchAddPeople(Integer matchIx){
 		try {
 			conn=db.DB.getConn();
-			String sql="select * from Match_Wanted_TB where Match_IX=?";
+			String sql="select * from Match_Wanted_TB where Match_IX=? order by match_wanted_ix";
 			ps=conn.prepareStatement(sql);
 			ps.setInt(1, matchIx);
 			rs=ps.executeQuery();
@@ -82,7 +82,82 @@ public class MatchWantedDAO {
 		}
 	}
 	
+	//DB에 있는 index 가져오기.
+	public ArrayList<Integer> getWantedIndices(int matchIx){
+		try {
+			conn=db.DB.getConn();
+			String sql="select Match_Wanted_IX from Match_Wanted_TB where Match_IX=?";
+			ps=conn.prepareStatement(sql);
+			ps.setInt(1, matchIx);
+			rs=ps.executeQuery();
+			ArrayList<Integer> arr=new ArrayList<Integer>();
+			while(rs.next()) {
+				// 매칭 멤버 테이블 인덱스
+				Integer matchWantedIx=rs.getInt("Match_Wanted_IX");
+				arr.add(matchWantedIx);
+			}
+			return arr;
+		}catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}finally {
+			try {
+				if(rs!=null)rs.close();
+				if(ps!=null)ps.close();
+				if(conn!=null)conn.close();
+			}catch(Exception e2) {}
+		}
+	}
 	
-	
-	
+	//Match_Wanted_IX로 delete
+	public int delWantedMember(int matchWantedIx) {
+		try {
+			conn = db.DB.getConn();
+			String sql = "DELETE FROM Match_Wanted_TB WHERE Match_Wanted_IX = ?";
+			ps = conn.prepareStatement(sql);
+			ps.setInt(1, matchWantedIx);
+			int count = ps.executeUpdate();
+			return count;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -1; 
+		} finally {
+			try {
+				if (ps != null)
+					ps.close();
+				if (conn != null)
+					conn.close();
+			} catch (Exception e2) {
+			}
+		}
+	}
+		
+	//DB에 일치하는 index를 확인(_OK에서 처리)한 dto만 update
+	//recruited_number 0으로 줌.
+	public int modifyWantedMember(MatchWantedDTO wdto) {
+		try {
+			conn = db.DB.getConn();
+			String sql = "UPDATE Match_Wanted_TB SET W_MAIN_ROLE = ?, W_DETAIL_ROLE = ?, REQUIRED_ABILITY = ?, WANTED_NUMBER = ?, RECRUITED_NUMBER = 0 WHERE Match_Wanted_IX = ?";
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, wdto.getwMainRole());
+			ps.setString(2, wdto.getwDetailRole());
+			ps.setString(3, wdto.getRequiredAbility());
+			ps.setString(4, wdto.getWantedNumber());
+			ps.setInt(5, wdto.getmatchWantedIx());
+			int count = ps.executeUpdate();
+			return count;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -1; 
+		} finally {
+			try {
+				if (ps != null)
+					ps.close();
+				if (conn != null)
+					conn.close();
+			} catch (Exception e2) {
+			}
+		}
+	}
+
 }

@@ -87,7 +87,7 @@ public class MatchDAO {
 	public ArrayList<MatchDTO> MoimCardAllList(Integer competitionInfoIx){
 		try {
 			conn=db.DB.getConn();
-			String sql="select m.*, to_char(m.WRITE_DATE,'yyyy-mm-dd, hh24:mi:ss') time from Match_TB m where Competition_Info_IX=? order by Match_IX desc";
+			String sql="select m.*, to_char(m.WRITE_DATE,'yyyy-mm-dd, hh24:mi:ss') time from Match_TB m where Competition_Info_IX=? order by WRITE_DATE desc";
 			ps=conn.prepareStatement(sql);
 			ps.setInt(1, competitionInfoIx);
 			rs=ps.executeQuery();
@@ -145,7 +145,7 @@ public class MatchDAO {
 		public ArrayList<MatchDTO> RecentMoimAllList(){
 			try {
 				conn=db.DB.getConn();
-				String sql="select * from (select * from Match_TB order by Match_IX desc) where rownum<=5";
+				String sql="select * from (select * from Match_TB order by WRITE_DATE desc) where rownum<=5";
 				ps=conn.prepareStatement(sql);
 				rs=ps.executeQuery();
 				ArrayList<MatchDTO> arr=new ArrayList<MatchDTO>();
@@ -237,5 +237,43 @@ public class MatchDAO {
 		}
 	}
 	
-	
+	//모임글 수정하기.
+	public int modifyMoimCard(MatchDTO matchdto) {
+		try {
+			conn = db.DB.getConn();
+			String sql = "UPDATE Match_TB SET MATCH_NAME = ?, MAIN_ROLE = ?, DETAIL_ROLE = ?, ORIGINAL_MEMBER_NUMBER = ?, "
+						+"SIDO = ?, SIGUNGU = ?, TIMES_A_WEEK = ?, DAY = ?, TOTAL_WANTED_NUMBER = ?, AGE_RESTRICTION = ?, "
+						+"EQUIP_TECH = ?, DETAIL = ?, WRITE_DATE = SYSDATE WHERE Match_IX = ?";
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, matchdto.getMatchName());
+			ps.setString(2, matchdto.getMainRole());
+			ps.setString(3, matchdto.getDetailRole());
+			ps.setString(4, matchdto.getOriginalMemberNumber());
+			ps.setString(5, matchdto.getSido());
+			ps.setString(6, matchdto.getSigungu());
+			ps.setString(7, matchdto.getTimesAWeek());
+			ps.setString(8, matchdto.getDay());
+			ps.setString(9, matchdto.getTotalWantedNumber());
+			ps.setString(10, matchdto.getAgeRestriction());
+			ps.setString(11, matchdto.getEquipTech());
+			ps.setString(12, matchdto.getDetail());
+			ps.setInt(13, matchdto.getMatchIx());
+			int count = ps.executeUpdate();
+
+			return count;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -1; 
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (ps != null)
+					ps.close();
+				if (conn != null)
+					conn.close();
+			} catch (Exception e2) {
+			}
+		}
+	}
 }

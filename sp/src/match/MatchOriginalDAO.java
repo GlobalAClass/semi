@@ -46,7 +46,7 @@ public class MatchOriginalDAO {
 	public ArrayList<MatchOriginalDTO> getogMemberInfo(Integer matchIx){
 		try {
 			conn=db.DB.getConn();
-			String sql="select * from Match_Original_TB where Match_IX=?";
+			String sql="select * from Match_Original_TB where Match_IX=? order by match_original_ix";
 			ps=conn.prepareStatement(sql);
 			ps.setInt(1, matchIx);
 			rs=ps.executeQuery();
@@ -76,8 +76,84 @@ public class MatchOriginalDAO {
 		}
 	}
 	
+	//DB에 있는 index 가져오기.
+	public ArrayList<Integer> getOriginalIndices(int matchIx){
+		try {
+			conn=db.DB.getConn();
+			String sql="select Match_Original_IX from Match_Original_TB where Match_IX=?";
+			ps=conn.prepareStatement(sql);
+			ps.setInt(1, matchIx);
+			rs=ps.executeQuery();
+			ArrayList<Integer> arr=new ArrayList<Integer>();
+			while(rs.next()) {
+				// 매칭 멤버 테이블 인덱스
+				Integer matchOriginalIx=rs.getInt("Match_Original_IX");
+				arr.add(matchOriginalIx);
+			}
+			return arr;
+		}catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}finally {
+			try {
+				if(rs!=null)rs.close();
+				if(ps!=null)ps.close();
+				if(conn!=null)conn.close();
+			}catch(Exception e2) {}
+		}
+	}
 	
+	//Match_Original_IX로 delete
+	public int delOriginalMember(int matchOriginalIx) {
+		try {
+			conn = db.DB.getConn();
+			String sql = "DELETE FROM Match_Original_TB WHERE Match_Original_IX = ?";
+			ps = conn.prepareStatement(sql);
+			ps.setInt(1, matchOriginalIx);
+			int count = ps.executeUpdate();
+
+			return count;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -1; 
+		} finally {
+			try {
+				if (ps != null)
+					ps.close();
+				if (conn != null)
+					conn.close();
+			} catch (Exception e2) {
+			}
+		}
+	}
 	
+	//DB에 일치하는 index를 확인(_OK에서 처리)한 dto만 update
+	public int modifyOriginalMember(MatchOriginalDTO ogdto) {
+		try {
+			conn = db.DB.getConn();
+			String sql = "UPDATE Match_Original_TB SET OG_MAIN_ROLE = ?, OG_DETAIL_ROLE = ?, MEMBER_NUMBER = ? WHERE Match_Original_IX = ?";
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, ogdto.getogMainRole());
+			ps.setString(2, ogdto.getogDetailRole());
+			ps.setString(3, ogdto.getmemberNumber());
+			ps.setInt(4, ogdto.getMatchOriginalIx());
+			int count = ps.executeUpdate();
+
+			return count;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -1; 
+		} finally {
+			try {
+				if (ps != null)
+					ps.close();
+				if (conn != null)
+					conn.close();
+			} catch (Exception e2) {
+			}
+		}
+	}
 	
+
 	
 }
