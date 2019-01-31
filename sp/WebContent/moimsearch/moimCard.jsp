@@ -94,30 +94,19 @@ for(int i=0;i<search.size();i++){
 		//모임 글에서 존재하는 팀원 / 구하고 싶은 팀원수 가져오기
 		int ornum =Integer.parseInt(search.get(i).getMiddle().getOriginalMemberNumber());
 		int wnum=Integer.parseInt(search.get(i).getMiddle().getTotalWantedNumber());
-		//int le=search.get(i).getRight().getmatchWantedIx();
-		//현재 인원 계산
-		//int curnum=ornum;
-		//for(int z=0;z<le;z++){
-			//curnum+=Integer.parseInt(search.get(z).getRight().getRecruitedNumber());
-		//}
+		int curnum=Integer.parseInt(search.get(i).getRight().getRecruitedNumber());
 		%>
 		<td></td>
 		<td class="t3">현재인원/총인원</td>
-		<td>&nbsp;/&nbsp;<%=ornum+wnum%></td>
+		<td><%=ornum+curnum%>&nbsp;/&nbsp;<%=ornum+wnum%></td>
 	</tr>
 	<tr>
 		<td></td>
 		<td class="t3">모집 인원</td>
 		<td>
-		<%
-		//for(int j=0;j<le;j++){
-			%>
 			<%=search.get(i).getRight().getwMainRole()+" - "+search.get(i).getRight().getwDetailRole()%> : 
 			<%=search.get(i).getRight().getRecruitedNumber()+" / "+search.get(i).getRight().getWantedNumber()%>명
 			<br>
-			<%
-		//}
-		%>
 		</td>
 	</tr>
 </table>

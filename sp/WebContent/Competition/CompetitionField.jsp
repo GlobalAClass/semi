@@ -38,6 +38,7 @@ ArrayList<CompetitionInfoDTO> arr=cdao.CompetitionFieldList(field,cp,listsize);
 	float:left;
 	width:1000px;
 	height:auto;
+	margin-bottom:50px;
 }
 #main thead th{
 	background: #424242;
