@@ -217,7 +217,7 @@ tbody a:hover{
 							for(int i=0;i<mbarr.size();i++){
 								%>
 								<tr>
-									<td style="width:70px;"><a href=""><%=mbarr.get(i).getMName()%></a></td>
+									<td style="width:70px;"><a href="/sp/humansearch/humanSelect.jsp?member_ix=<%=mbarr.get(i).getMemberIx()%>"><%=mbarr.get(i).getMName()%></a></td>
 									<td style="width:200px;"><%=mbarr.get(i).getFieldMajor()%></td>
 								</tr>
 								<%
