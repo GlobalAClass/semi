@@ -40,6 +40,13 @@ int idx=dao.getMemberIndex(crt_id);
 CompetitionScrapDAO csdao = new CompetitionScrapDAO();
 boolean scrapcheck = csdao.checkScrapComp(idx, ix);
 
+
+String sub_s = request.getParameter("sub");
+if(sub_s==null||sub_s.equals("")){
+	sub_s="0";
+}
+int sub = Integer.parseInt(sub_s);
+
 %>
 <!DOCTYPE html>
 <html>
@@ -124,13 +131,14 @@ article {
 				</tr>
 			</table>
 		</div>
-		<!-- 현재 생성된 모임 | 공모전 상세보기 -->
+		<!-- 현재 생성된 모임  | 공모전 상세보기 -->
 		<div>
 			<table id="Competition_title">
 			<tr>
 				<td class="hvr" style="border-right:1px gray solid" 
 					onclick="javascript:location.href='CompetitionDetail.jsp?ix=<%=ix%>'">현재 생성된 모임</td>
-				<td class="hvr" >공모전 상세보기</td>
+				<td class="hvr" 
+					onclick="javascript:location.href='CompetitionDetail.jsp?ix=<%=ix%>&sub=1'">공모전 상세보기</td>
 			</tr>
 			</table>
 		</div>
@@ -145,6 +153,10 @@ article {
 			location.href='/sp';
 			</script>
 			<%
+		}else if(sub==1){
+			%>
+			<%@include file="/Competition/CompetitionDetailInfo.jsp"%>
+			<%
 		}else if(mix==-1){
 			%>
 			<p align="right"><a href="/sp/Competition/CompetitionMoimMake.jsp?ix=<%=ix%>"><input style="height:35px;" type="button" value="모임 생성하기"></a></p>
@@ -156,7 +168,6 @@ article {
 			<%
 		}
 		%>
-		<!-- 공모전 상세보기 클릭 시 -->
 		</div>
 	</article>
 </section>

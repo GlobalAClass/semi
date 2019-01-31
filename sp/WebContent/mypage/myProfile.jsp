@@ -393,8 +393,8 @@ function formCheck(){
 	<input type="hidden" name="crtCompSize" value="<%=cnt%>">
 	<div align="center" style="font-size:40px;font-weight:bold;margin:20px;">프로필 수정하기</div>
 	<div class="p_div" align="center">
-	<div align="left" style="margin-botton:15px;font-size:30px;font-weight:bold;">기본 인적사항</div>
-		<table style="width: 800px;">
+	<div align="left" style="margin-bottom:15px;font-size:30px;font-weight:bold;">기본 인적사항</div>
+		<table border="1" style="width: 800px;">
 			<tr>
 			<%
 			//카드에 출력될 프로필 가져오기.
@@ -411,9 +411,6 @@ function formCheck(){
 				<td style="font-size:35px;font-weight: bold;"><%=dto.getMName() %></td>
 				<td style="font-size:15px;color:gray;"><%=manageNull(ddto.getBirthYear()).equals("")?"":manageNull(ddto.getBirthYear())+"년생" %></td>
 				<td colspan="2" style="font-size:16px;"><%=dto.getFieldMajor() %></td>
-			</tr>
-			<tr>	
-				<td colspan="4"></td>
 			</tr>
 			<tr>
 				<td colspan="2"><img src="/sp/img/mail.png" class="msgImg"><%=dto.getidEmail() %></td>
