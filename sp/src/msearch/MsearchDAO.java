@@ -3,6 +3,7 @@ package msearch;
 import java.util.*;
 import competition.CompetitionInfoDTO;
 import match.MatchDTO;
+import match.MatchWantedDTO;
 import java.sql.*;
 
 public class MsearchDAO {
@@ -11,37 +12,79 @@ public class MsearchDAO {
 	private PreparedStatement ps;
 	private ResultSet rs;
 	
+	public MsearchDAO() {
+		System.out.println("MsearchDAO 생성");
+	}
+	
+	//part클래스 left / middle / right 정의
+	public Pairs<CompetitionInfoDTO,MatchDTO,MatchWantedDTO> Part(CompetitionInfoDTO cdto,MatchDTO mdto,MatchWantedDTO mwdto){
+		Pairs<CompetitionInfoDTO,MatchDTO,MatchWantedDTO> part = new Pairs<CompetitionInfoDTO,MatchDTO,MatchWantedDTO>(cdto,mdto,mwdto);
+		return part;
+	}
 	//모임검색 모임카드 정보 받기 DAO
-	public ArrayList<MatchDTO> MoimSearchCard(){
+	public ArrayList<Pairs<CompetitionInfoDTO,MatchDTO,MatchWantedDTO>> MoimSearch(String sidos,String sigungus,String CField,String wMainRoles,String wDetailRoles){
 		try {
 			conn=db.DB.getConn();
-			String sql="select m.*, to_char(m.WRITE_DATE,'yyyy-mm-dd, hh24:mi:ss') time from Match_TB m order by Match_IX desc";
+			String sql="select a.C_NAME,a.FIELD,b.*, to_char(b.WRITE_DATE,'yyyy-mm-dd, hh24:mi:ss') time,c.* from Competition_Info_TB a,Match_TB b,Match_Wanted_TB c where b.Competition_Info_IX=a.Competition_Info_IX and b.Match_IX=c.Match_IX";
+			if(!(sidos==null||sidos.equals("")||sidos.equals("undefiend"))) {
+				sql +=" AND b.SIDO='"+sidos+"'";
+				if(!(sigungus==null||sigungus.equals("")||sigungus.equals("undefiend"))) {
+					sql +=" AND b.SIGUNGU='"+sigungus+"'";
+					}
+			}
+			if(!(CField==null||CField.equals("")||CField.equals("undefiend"))) {
+				sql +=" AND a.FIELD='"+CField+"'";
+			}
+			if(!(wMainRoles==null||wMainRoles.equals("")||wMainRoles.equals("undefiend"))) {
+				sql +=" AND c.W_MAIN_ROLE='"+wMainRoles+"'";
+			}
+			if(!(wDetailRoles==null||wDetailRoles.equals("")||wDetailRoles.equals("undefiend"))) {
+				sql +=" AND c.W_DETAIL_ROLE='"+wDetailRoles+"'";
+			}
+			sql += " ORDER BY WRITE_DATE desc";
 			ps=conn.prepareStatement(sql);
 			rs=ps.executeQuery();
-			ArrayList<MatchDTO> arr=new ArrayList<MatchDTO>();
-			while(rs.next()) {
-				//매칭 글 인덱스
+			ArrayList<Pairs<CompetitionInfoDTO,MatchDTO,MatchWantedDTO>> search=new ArrayList<Pairs<CompetitionInfoDTO,MatchDTO,MatchWantedDTO>>();
+			if(rs.next()) {
+				do {
+				//left
+				Integer competitionInfoIx_=rs.getInt("Competition_Info_IX");
+				String CName=rs.getString("C_NAME");
+				String field=rs.getString("FIELD");
+				//middle
 				Integer matchIx=rs.getInt("Match_IX");
-				// 글 쓴 회원 인덱스
 				Integer memberIx=rs.getInt("MEMBER_IX");
-				//모임명
+				Integer competitionInfoIx=rs.getInt("Competition_Info_IX");
 				String matchName=rs.getString("MATCH_NAME");
-				//시도
-				String sido=rs.getString("SIDO");
-				//시군구
-				String sigungu=rs.getString("SIGUNGU");
-				//현재 존재하는 팀원수
+				String mainRole=rs.getString("MAIN_ROLE");
+				String detailRole=rs.getString("DETAIL_ROLE");
 				String originalMemberNumber=rs.getString("ORIGINAL_MEMBER_NUMBER");
-				//구하고 싶은 팀원수
+				String sido=rs.getString("SIDO");
+				String sigungu=rs.getString("SIGUNGU");
+				String timesAWeek=rs.getString("TIMES_A_WEEK");
+				String day=rs.getString("DAY");
 				String totalWantedNumber=rs.getString("TOTAL_WANTED_NUMBER");
-				// 나이제한
 				String ageRestriction=rs.getString("AGE_RESTRICTION");
-				//공모전 글쓴 날짜
+				String equipTech=rs.getString("EQUIP_TECH");
+				String detail=rs.getString("DETAIL");
+				String completedState=rs.getString("COMPLETED_STATE");
 				String writeDate=rs.getString("TIME");
-				MatchDTO dto=new MatchDTO(matchIx, memberIx, matchName, originalMemberNumber, sido, sigungu, totalWantedNumber,ageRestriction ,writeDate);
-				arr.add(dto);
+				//right
+				Integer matchWantedIx=rs.getInt("Match_Wanted_IX");
+				Integer matchIx_=rs.getInt("Match_IX");
+				String wMainRole=rs.getString("W_MAIN_ROLE");
+				String wDetailRole=rs.getString("W_DETAIL_ROLE");
+				String requiredAbility=rs.getString("REQUIRED_ABILITY");
+				String wantedNumber=rs.getString("WANTED_NUMBER");
+				String recruitedNumber=rs.getString("RECRUITED_NUMBER");
+				
+				CompetitionInfoDTO cdto=new CompetitionInfoDTO(competitionInfoIx_,CName, field);
+				MatchDTO mdto=new MatchDTO(matchIx, memberIx, competitionInfoIx, matchName, mainRole, detailRole, originalMemberNumber, sido, sigungu, timesAWeek, day, totalWantedNumber, ageRestriction, equipTech, detail, completedState, writeDate);
+				MatchWantedDTO mwdto=new MatchWantedDTO(matchWantedIx, matchIx_,wMainRole, wDetailRole, requiredAbility, wantedNumber, recruitedNumber);
+				search.add(Part(cdto,mdto,mwdto));
+				}while(rs.next());
 			}
-			return arr;
+			return search;
 		}catch(Exception e) {
 			e.printStackTrace();
 			return null;
@@ -53,42 +96,5 @@ public class MsearchDAO {
 				}catch(Exception e2) {}
 		}
 	}
-		
-	//모임검색 	모임카드 공모전 정보 가져오기 DAO
-	public CompetitionInfoDTO CompetitionMoimSearchCard(Integer matchIx) {
-		try {
-			conn=db.DB.getConn();
-			String sql="select * from Competition_Info_TB where Competition_Info_IX=(select Competition_Info_IX from Match_TB where MATCH_IX=?)";
-			ps=conn.prepareStatement(sql);
-			ps.setInt(1, matchIx);
-			rs=ps.executeQuery();
-			CompetitionInfoDTO dto=null;
-			if(rs.next()) {
-				//공모전 정보 인덱스
-				Integer competitionInfoIx=rs.getInt("Competition_Info_IX");
-				//공모전 제목
-				String CName=rs.getString("C_NAME");
-				//분야
-				String field=rs.getString("FIELD");
-				//공모전 조회수
-				Integer readnum=rs.getInt("READNUM");
-				dto=new CompetitionInfoDTO(competitionInfoIx, CName, field, readnum);
-			}
-			return dto;
-		}catch(Exception e){
-			e.printStackTrace();
-			return null;
-		}finally {
-			try {
-				if(rs!=null)rs.close();
-				if(ps!=null)ps.close();
-				if(conn!=null)conn.close();
-			}catch(Exception e2) {}
-		}
-	}
-		
-		
-		
-		
-		
+	
 }

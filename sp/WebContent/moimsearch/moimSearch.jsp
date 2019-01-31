@@ -1,15 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
-<%@ page import="member.MemberDAO"%>
 <%@ page import="competition.*" %>	
 <%@ page import="member.*" %>
 <%@ page import="msearch.*" %>
 <%@ page import="match.*" %>
+<%@ page import="java.sql.*" %>
 <%@ page import="java.util.*" %>
 
 <jsp:useBean id="msdao" class="msearch.MsearchDAO"/>
-<jsp:useBean id="mwdao" class="match.MatchWantedDAO"/>
 <%
 	//로그인해야 해당 페이지를 이용할 수 있음.
 	String uname=(String)session.getAttribute("smname");
@@ -25,12 +24,17 @@
 		return;
 	}
 	
-//여러개의 공모전 모임카드 데이터베이스 DAO 구성
-ArrayList<MatchDTO> arr=msdao.MoimSearchCard();
-for(int k=0;k<arr.size();k++){
-	int matchIx=arr.get(k).getMatchIx();
-	CompetitionInfoDTO dto=msdao.CompetitionMoimSearchCard(matchIx);
-}
+//해당페이지 url 값 받기 시도 / 시군구 / 분야 / 세부역할
+request.setCharacterEncoding("UTF-8");
+
+String sido_s=request.getParameter("sido");
+String sigungu_s=request.getParameter("sigungu");
+String C_Field_s=request.getParameter("C_Field");
+String wMainRole_s=request.getParameter("part");
+String wDetailRole_s=request.getParameter("wDetailRole");
+	
+//여러개의 공모전 모임카드 데이터베이스
+ArrayList<Pairs<CompetitionInfoDTO,MatchDTO,MatchWantedDTO>> search =msdao.MoimSearch(sido_s,sigungu_s,C_Field_s,wMainRole_s,wDetailRole_s);
 //본인 인덱스 가져오는 메소드
 String crt_id = (String)session.getAttribute("sidEmail");
 MemberDAO dao = new MemberDAO();
@@ -65,6 +69,7 @@ input[type="text"]{
 }
 </style>
 <script type="text/javascript">
+//선택한 지역에 따라 추가 옵션을 다르게 함.
 function addOption(obj){
 	var option = obj.value;
 	var ary;
@@ -74,7 +79,6 @@ function addOption(obj){
 			addop.length=1;	
 		}
 	}
-	//선택한 지역에 따라 추가 옵션을 다르게 함
 	if(option =='서울특별시'){
 		ary=['강남구', '강동구', '강북구', '강서구', '관악구', '광진구', '구로구', '금천구', '노원구', '도봉구', 
 			'동대문구', '동작구', '마포구', '서대문구', '서초구', '성동구', '성북구', '송파구', '양천구', '영등포구', 
@@ -91,6 +95,7 @@ function addOption(obj){
 		moimSearch.sigungu.hidden=true;
 	}
 }
+//담당역할 선택시 화면에 세부역할 보여주는 함수
 function select(){
 	var partname=document.all.part.value;//선택한 역할 값
 	document.all.developer.style.display="none";
@@ -113,19 +118,22 @@ function select(){
 	}
 	
 }
-function input(){
-	var wdf=document.all.developer.value;
-	document.moimSerch.wDetailRole.value=wdf;
+//모임 검색
+function search(){
+	var sido = moimSearch.sido.value;
+	var sigungu = moimSearch.sigungu.value;
+	var C_Field = moimSearch.C_Field.value;
+	var wMainRole= moimSearch.part.value;
+	var wDetailRole=moimSearch.wDetailRole.value;
+	location.href='/sp/moimsearch/moimSearch.jsp?sido='+sido+'&sigungu='+sigungu+'&C_Field='+C_Field+'&wMainRole='+ wMainRole+'&wDetailRole='+wDetailRole;
+}
+//기능 : 버튼 클릭시에 버튼 값이 자동으로 text에 입력
+function input_text(wdr){
+	var detail=wdr.value;
+	document.moimSearch.wDetailRole.value=detail;
 }
 </script>
 </head>
-<%
-	request.setCharacterEncoding("UTF-8");
-
-	String sido_s=request.getParameter("sido");
-	String sigungu_s=request.getParameter("sigungu");
-	String wDetailRole_s=request.getParameter("wDetailRole");
-%>
 <body>
 	<%@include file="/header.jsp"%>
 	<section>
@@ -155,60 +163,59 @@ function input(){
 				<option selected value="">전체 지역</option>
 			</select>
 			<select name="C_Field">
-				<option selected>공모전</option>
-				<option>광고/마케팅</option>
-				<option>기획/아이디어</option>
-				<option>디자인</option>
-				<option>UCC/영상</option>
-				<option>과학/공학/IT</option>
-				<option>그 외 공모전</option>
+				<option selected value="">공모전</option>
+				<option value="광고/마케팅">광고/마케팅</option>
+				<option value="기획/아이디어">기획/아이디어</option>
+				<option value="디자인">디자인</option>
+				<option value="UCC/영상">UCC/영상</option>
+				<option value="과학/공학/IT">과학/공학/IT</option>
+				<option value="그 외 공모전">그 외 공모전</option>
 			</select>
 			<select id="part" onchange="select()">
-				<option selected>담당 역할</option>
+				<option selected value="">담당 역할</option>
 				<option value="developer">개발자</option>
 				<option value="desiner">디자이너</option>
 				<option value="planner">기획자</option>
 				<option value="etc">etc</option>
 			</select>
 			<input type="text" style="height:30px;margin-left:10px;" placeholder="세부역할" id="wDetailRole">
-			<input type="button" value="모임 검색" style="float:right;width:100px;height:30px;">
-			<input type="button" value="모임 등록하기" style="float:right;margin-right: 15px;width:100px;height:30px;">
+			<input type="button" value="모임 검색" style="width:140px;height:35px;" onclick="search()">
 			<br><br><br>
 			</form>
-			<form id="developer" style="display: none;">
-				<input type="button" value="서버" onchange="input()">
-				<input type="button" value="DB">
-				<input type="button" value="블록체인">
-				<input type="button" value="클라우드">
-				<input type="button" value="빅데이터">
-				<input type="button" value="데이터 분석">
-				<input type="button" value="IOS">
-				<input type="button" value="안드로이드">
-				<input type="button" value="WEB">
+			<form name="developer" style="display: none;">
+				<input type="button" value="서버" onclick="input_text(this);">
+				<input type="button" value="DB" onclick="input_text(this);">
+				<input type="button" value="블록체인" onclick="input_text(this);">
+				<input type="button" value="클라우드" onclick="input_text(this);">
+				<input type="button" value="빅데이터" onclick="input_text(this);">
+				<input type="button" value="데이터 분석" onclick="input_text(this);">
+				<input type="button" value="IOS" onclick="input_text(this);">
+				<input type="button" value="안드로이드" onclick="input_text(this);">
+				<input type="button" value="WEB" onclick="input_text(this);">
 			</form>
 			<form id="desiner" style="display: none;">
-				<input type="button" value="UI/UX디자인">
-				<input type="button" value="일러스트">
-				<input type="button" value="에프터이펙트">
-				<input type="button" value="포토샵">
-				<input type="button" value="3D MAX">
-				<input type="button" value="웹툰">
-				<input type="button" value="프로토타이핑">
-				<input type="button" value="BI디자인">
+				<input type="button" value="UI/UX디자인" onclick="input_text(this);">
+				<input type="button" value="일러스트" onclick="input_text(this);">
+				<input type="button" value="에프터이펙트" onclick="input_text(this);">
+				<input type="button" value="포토샵" onclick="input_text(this);">
+				<input type="button" value="3D MAX" onclick="input_text(this);">
+				<input type="button" value="웹툰" onclick="input_text(this);">
+				<input type="button" value="프로토타이핑" onclick="input_text(this);">
+				<input type="button" value="BI디자인" onclick="input_text(this);">
 			</form>
 			<form id="planner" style="display: none;">
-				<input type="button" value="기획">
-				<input type="button" value="마케팅">
-				<input type="button" value="컨텐츠 제작">
-				<input type="button" value="SNS">
-				<input type="button" value="온라인 마케팅">
+				<input type="button" value="기획" onclick="input_text(this);">
+				<input type="button" value="마케팅" onclick="input_text(this);">
+				<input type="button" value="컨텐츠 제작" onclick="input_text(this);">
+				<input type="button" value="SNS" onclick="input_text(this);">
+				<input type="button" value="온라인 마케팅" onclick="input_text(this);">
 			</form>
 			<form id="etc" style="display: none;">
-				<input type="button" value="영상 제작">
-				<input type="button" value="영상 촬영">
-				<input type="button" value="영상 편집">
-				<input type="button" value="통계 분석">
-				<input type="button" value="아이디어">
+				<input type="button" value="영상 제작" onclick="input_text(this);">
+				<input type="button" value="영상 촬영" onclick="input_text(this);">
+				<input type="button" value="영상 편집" onclick="input_text(this);">
+				<input type="button" value="통계 분석" onclick="input_text(this);">
+				<input type="button" value="아이디어" onclick="input_text(this);">
 			</form>
 			<script>//모임찾기 검색조건 유지
 				var sido=moimSearch.sido;

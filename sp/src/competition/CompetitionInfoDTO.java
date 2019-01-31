@@ -90,7 +90,14 @@ public class CompetitionInfoDTO {
 		this.competitionInfoIx = competitionInfoIx;
 		CName = cName;
 	}
-	
+	//모임검색 생성자
+	public CompetitionInfoDTO(Integer competitionInfoIx, String CName, String field) {
+		super();
+		this.competitionInfoIx = competitionInfoIx;
+		this.CName = CName;
+		this.field = field;
+	}
+
 	public Integer getCompetitionInfoIx() {
 		return competitionInfoIx;
 	}

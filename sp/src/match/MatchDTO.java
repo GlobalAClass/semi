@@ -94,21 +94,6 @@ public class MatchDTO {
 		this.matchName = matchName;
 	}
 	
-	//MoimSearchCard 생성자
-	public MatchDTO(Integer matchIx, Integer memberIx, String matchName, String originalMemberNumber, String sido,
-			String sigungu, String totalWantedNumber, String ageRestriction, String writeDate) {
-		super();
-		this.matchIx = matchIx;
-		this.memberIx = memberIx;
-		this.matchName = matchName;
-		this.originalMemberNumber = originalMemberNumber;
-		this.sido = sido;
-		this.sigungu = sigungu;
-		this.totalWantedNumber = totalWantedNumber;
-		this.ageRestriction = ageRestriction;
-		this.writeDate = writeDate;
-	}
-
 	//index 제외한 생성자
 	public MatchDTO(String matchName, String mainRole, String detailRole, String originalMemberNumber, String sido,
 			String sigungu, String timesAWeek, String day, String totalWantedNumber, String ageRestriction,
@@ -147,6 +132,7 @@ public class MatchDTO {
 		this.detailRole = detailRole;
 		this.completedState = completedState;
 	}
+	
 
 	public Integer getMatchIx() {
 		return matchIx;

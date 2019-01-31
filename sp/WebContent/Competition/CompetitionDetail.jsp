@@ -120,7 +120,7 @@ article {
 				</tr>
 				<tr>
 					<td class="sub">홈페이지</td>
-					<td><a><%=dto.getCLink()%></a></td>
+					<td><a href="<%=dto.getCLink()%>"><%=dto.getCLink()%></a></td>
 				</tr>
 			</table>
 		</div>

@@ -38,14 +38,10 @@ section a{
 <section>
 <article>
 <%
-for(int i=0;i<arr.size();i++){
-	int member_ix=arr.get(i).getMemberIx();
+for(int i=0;i<search.size();i++){
+	//공모전 주최자이름 가져오기
+	int member_ix=search.get(i).getMiddle().getMemberIx();
 	String mn = dao.getMemberInfo(member_ix).getMName();
-	//공모전 이름 / 분야 정보 DAO
-	int matchIx=arr.get(i).getMatchIx();
-	CompetitionInfoDTO dto=msdao.CompetitionMoimSearchCard(matchIx);
-	//구하는 팀원 정보 DAO
-	ArrayList<MatchWantedDTO> arr2=mwdao.MatchAddPeople(matchIx);
 	//프로필 이미지 가져오기
 	File proimg=new File(request.getServletContext().getRealPath("\\")+"\\img\\profile\\"+member_ix);
 	File[] files=proimg.listFiles();
@@ -57,59 +53,70 @@ for(int i=0;i<arr.size();i++){
 	}
 %>
 <form>
-<a href="/sp/Competition/CompetitionDetail.jsp?ix=<%=dto.getCompetitionInfoIx()%>&mix=<%=matchIx%>">
+<a href="/sp/Competition/CompetitionDetail.jsp?ix=<%=search.get(i).getMiddle().getCompetitionInfoIx()%>&mix=<%=search.get(i).getMiddle().getMatchIx()%>">
 <table>
 	<tr>
-		<td class="t1" colspan="3" align="right"><%=arr.get(i).getWriteDate()%></td>
+		<td class="t1" colspan="3" align="right"><%=search.get(i).getMiddle().getWriteDate()%></td>
 	</tr>
 	<tr>
 		<td rowspan="3" align="justify"><img src="<%=imgpath%>" style="width:80px;height:80px;padding:2px;"></td>
-		<td class="t2" colspan="2">[<%=dto.getField()%>]</td>
+		<td class="t2" colspan="2">
+		[<%=search.get(i).getLeft().getField()%>]
+		</td>
 	</tr>
 	<tr>
-		<td colspan="2" style="width:400px;font-weight: bold; font-size:20px"><%=dto.getCName()%></td>
+		<td colspan="2" style="width:400px;font-weight: bold; font-size:20px"><%=search.get(i).getLeft().getCName()%></td>
 	</tr>
 	<tr>
-		<td class="t2" colspan="2"><%=arr.get(i).getMatchName()%>&nbsp;|&nbsp;<%=mn%></td>
+		<td class="t2" colspan="2"><%=search.get(i).getMiddle().getMatchName()%>&nbsp;|&nbsp;<%=mn%></td>
 	</tr>
 	<tr>
 		<td></td>
 		<td class="t3">모임 지역</td>
-		<td><%=arr.get(i).getSido()%>&nbsp;&nbsp;<%=arr.get(i).getSigungu()%></td>
+		<td><%=search.get(i).getMiddle().getSido()%>&nbsp;&nbsp;<%=search.get(i).getMiddle().getSigungu()%></td>
 	</tr>
 	<tr>
 		<td></td>
 		<td class="t3">나이제한</td>
-		<td><%=arr.get(i).getAgeRestriction()%></td>
+		<%
+		String age = search.get(i).getMiddle().getAgeRestriction();
+		if(!age.equals("무관")){
+			%><td><%=age%>이하</td><%
+		}else{
+			%>
+			<td><%=age%></td>
+			<%
+		}
+		%>
 	</tr>
 	<tr>
 		<%
-		//모임 글에서 존재하는 팀원/ 구하고 싶은 팀원수 가져오기
-		int ornum =Integer.parseInt(arr.get(i).getOriginalMemberNumber());
-		int wnum=Integer.parseInt(arr.get(i).getTotalWantedNumber());
-		int le=arr2.size();
+		//모임 글에서 존재하는 팀원 / 구하고 싶은 팀원수 가져오기
+		int ornum =Integer.parseInt(search.get(i).getMiddle().getOriginalMemberNumber());
+		int wnum=Integer.parseInt(search.get(i).getMiddle().getTotalWantedNumber());
+		//int le=search.get(i).getRight().getmatchWantedIx();
 		//현재 인원 계산
-		int curnum=ornum;
-		for(int z=0;z<le;z++){
-			curnum+=Integer.parseInt(arr2.get(z).getRecruitedNumber());
-		}
+		//int curnum=ornum;
+		//for(int z=0;z<le;z++){
+			//curnum+=Integer.parseInt(search.get(z).getRight().getRecruitedNumber());
+		//}
 		%>
 		<td></td>
 		<td class="t3">현재인원/총인원</td>
-		<td><%=curnum%>&nbsp;/&nbsp;<%=ornum+wnum%></td>
+		<td>&nbsp;/&nbsp;<%=ornum+wnum%></td>
 	</tr>
 	<tr>
 		<td></td>
 		<td class="t3">모집 인원</td>
 		<td>
 		<%
-		for(int j=0;j<le;j++){
+		//for(int j=0;j<le;j++){
 			%>
-			<%=arr2.get(j).getwMainRole()+" - "+arr2.get(j).getwDetailRole()%> : 
-			<%=arr2.get(j).getRecruitedNumber()+" / "+arr2.get(j).getWantedNumber()%>명
+			<%=search.get(i).getRight().getwMainRole()+" - "+search.get(i).getRight().getwDetailRole()%> : 
+			<%=search.get(i).getRight().getRecruitedNumber()+" / "+search.get(i).getRight().getWantedNumber()%>명
 			<br>
 			<%
-		}
+		//}
 		%>
 		</td>
 	</tr>
