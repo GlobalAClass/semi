@@ -30,11 +30,11 @@ request.setCharacterEncoding("UTF-8");
 String sido_s=request.getParameter("sido");
 String sigungu_s=request.getParameter("sigungu");
 String C_Field_s=request.getParameter("C_Field");
-String wMainRole_s=request.getParameter("part");
-String wDetailRole_s=request.getParameter("wDetailRole");
+//String wMainRole_s=request.getParameter("part");
+//String wDetailRole_s=request.getParameter("wDetailRole");
 	
 //여러개의 공모전 모임카드 데이터베이스
-ArrayList<Pairs<CompetitionInfoDTO,MatchDTO,MatchWantedDTO>> search =msdao.MoimSearch(sido_s,sigungu_s,C_Field_s,wMainRole_s,wDetailRole_s);
+ArrayList<Pairs<CompetitionInfoDTO,MatchDTO>> search =msdao.MoimSearch(sido_s,sigungu_s,C_Field_s);
 //본인 인덱스 가져오는 메소드
 String crt_id = (String)session.getAttribute("sidEmail");
 MemberDAO dao = new MemberDAO();
